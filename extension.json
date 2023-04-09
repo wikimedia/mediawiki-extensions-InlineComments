@@ -1,0 +1,36 @@
+{
+	"name": "InlineComments",
+	"version": "0.1",
+	"author": [
+		"WikiTeq"
+	],
+	"url": "https://www.mediawiki.org/wiki/Extension:InlineComments",
+	"descriptionmsg": "inlinecomments-desc",
+	"type": "other",
+	"MessagesDirs": {
+		"InlineComments": [
+			"i18n"
+		]
+	},
+	"AutoloadNamespaces": {
+		"MediaWiki\\Extension\\InlineComments\\": "src/"
+	},
+	"Hooks": {
+		"BeforePageDisplay": "main"
+	},
+	"HookHandlers": {
+		"main": {
+			"class": "MediaWiki\\Extension\\InlineComments\\Hooks",
+			"services": [
+				"InlineComments:AnnotationFetcher",
+				"InlineComments:AnnotationMarker"
+			]
+		}
+	},
+	"ServiceWiringFiles": [
+		"src/ServiceWiring.php"
+	],
+	"config": {
+	},
+	"manifest_version": 2
+}
