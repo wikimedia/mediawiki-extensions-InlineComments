@@ -1,27 +1,30 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use Wikimedia\RemexHtml\Serializer\HtmlFormatter;
+// Namespace got renamed to be prefixed with Wikimedia!
+use RemexHtml\HTMLData;
+use RemexHtml\Serializer\Serializer;
+use RemexHtml\Tokenizer\Tokenizer;
+use RemexHtml\TreeBuilder\Dispatcher;
+use RemexHtml\TreeBuilder\TreeBuilder;
 
 // Based on MediaWiki\Html\HtmlHelper
 
-class AnnotationMarker extends HtmlFormatter {
+class AnnotationMarker {
 	public const SERVICE_NAME = "InlineComments:AnnotationMarker";
 
-	public function markUp( string $html, $annotations ) {
-
-		$serializer = new Serializer( $this );
-		$treeBuilder = new TreeBuilder( $serializer );
+	public function markUp( string $html, AnnotationContent $annotationsContent ) {
+		$annotations = $annotationsContent->getData()->getValue();
+		$annotationFormatter = new AnnotationFormatter( [], $annotations );
+		$serializer = new Serializer( $annotationFormatter );
+		$alist = new AnnotationList( $serializer, $annotations );
+		$treeBuilder = new TreeBuilder( $alist );
 		$dispatcher = new Dispatcher( $treeBuilder );
-		$tokenizer = new Tokenizer( $dispatcher, $htmlFragment );
-		$tokenizer = $this->getTokenizer( $html );
+		$tokenizer = new Tokenizer( $dispatcher, $html );
 		$tokenizer->execute( [
 			'fragmentNamespace' => HTMLData::NS_HTML,
 			'fragmentName' => 'body'
 		] );
-		return $serializer->getResults();
-
+		return $serializer->getResult();
 	}
-
-	public function element( 
 }

@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiTeq"
+		]
+	},
+	"inlinecomments-desc": "{{desc|name=InlineComments}}",
+	"inlinecomments-addcomment-tooltip": "If you highlight text on a page, a speech bubble icon appears to allow the user to add a comment by clicking on the icon. If they hover over this icon, this message is the tooltip shown",
+	"inlinecomments-addcomment-save": "Text of submit button shown when adding a new comment",
+	"inlinecomments-addcomment-cancel": "Text of button to cancel adding a new inline comment"
+}

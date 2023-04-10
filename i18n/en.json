@@ -1,0 +1,24 @@
+{
+	"@metadata": {
+		"authors": [
+			"WikiTeq"
+		]
+	},
+	"inlinecomments-desc": "Allow adding comments to a page",
+	"inlinecomments-addcomment-tooltip": "Comment on the highlighted text [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "Save",
+	"inlinecomments-addcomment-cancel": "Cancel",
+	"apihelp-inlinecomments-add-summary": "Add a new inline comment.",
+	"apihelp-inlinecomments-add-param-title": "Title of page to add comment to.",
+	"apihelp-inlinecomments-add-param-pre": "Text before the selected text.",
+	"apihelp-inlinecomments-add-param-body": "Text to select.",
+	"apihelp-inlinecomments-add-param-post": "Text after the selected text.",
+	"apihelp-inlinecomments-add-param-container": "Name of element that is the common ancestor of selected text.",
+	"apihelp-inlinecomments-add-param-comment": "Text of comment being added.",
+	"apihelp-inlinecomments-add-param-containerId": "ID attribute of common ancestor.",
+	"apihelp-inlinecomments-add-param-containerClass": "Class attribute of common ancestor.",
+	"inlinecomments-invaliditem": "Invalid item",
+	"action-inlinecomments-add": "add inline comments",
+	"right-inlinecomments-add": "Add inline comments",
+	"inlinecomments-editsummary-add": "Added comment \"$1\""
+}

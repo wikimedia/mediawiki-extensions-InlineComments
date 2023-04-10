@@ -1,6 +1,6 @@
 <?php
-use MediaWiki\Extension\InlineComments\AnnotationMarker;
 use MediaWiki\Extension\InlineComments\AnnotationFetcher;
+use MediaWiki\Extension\InlineComments\AnnotationMarker;
 use MediaWiki\MediaWikiServices;
 
 return [
@@ -8,6 +8,6 @@ return [
 		return new AnnotationMarker;
 	},
 	AnnotationFetcher::SERVICE_NAME => static function ( MediaWikiServices $services ): AnnotationFetcher {
-		return new AnnotationFetcher;
+		return new AnnotationFetcher( $services->getRevisionLookup() );
 	}
 ];

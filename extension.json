@@ -16,7 +16,8 @@
 		"MediaWiki\\Extension\\InlineComments\\": "src/"
 	},
 	"Hooks": {
-		"BeforePageDisplay": "main"
+		"BeforePageDisplay": "main",
+		"MediaWikiServices": "service"
 	},
 	"HookHandlers": {
 		"main": {
@@ -25,12 +26,66 @@
 				"InlineComments:AnnotationFetcher",
 				"InlineComments:AnnotationMarker"
 			]
+		},
+		"service": {
+			"class": "MediaWiki\\Extension\\InlineComments\\ServiceHooks"
+		}
+	},
+	"APIModules": {
+		"inlinecomments-add": {
+			"class": "MediaWiki\\Extension\\InlineComments\\ApiAddAnnotation",
+			"services": [
+				"ContentLanguage"
+			]
 		}
 	},
 	"ServiceWiringFiles": [
 		"src/ServiceWiring.php"
 	],
 	"config": {
+	},
+	"ResourceModules": {
+		"ext.inlineComments.sidenotes": {
+			"scripts": [
+				"sidenotes.js",
+				"sidenotes.init.js"
+			]
+		},
+		"ext.inlineComments.sidenotes.styles": {
+			"styles": "sidenotes.css"
+		},
+		"ext.inlineComments.makeComment": {
+			"scripts": [
+				"makeComment.js"
+			],
+			"styles": [
+				"makeComment.css"
+			],
+			"dependencies": [
+				"oojs-ui.styles.icons-alerts",
+				"oojs-ui-widgets"
+			],
+			"messages": [
+				"inlinecomments-addcomment-tooltip",
+				"inlinecomments-addcomment-save",
+				"inlinecomments-addcomment-cancel"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "resources",
+		"remoteExtPath": "InlineComments/resources"
+	},
+	"AvailableRights": [
+		"inlinecomments-add"
+	],
+	"ContentHandlers": {
+		"annotation+json": "MediaWiki\\Extension\\InlineComments\\AnnotationContentHandler"
+	},
+	"GroupPermissions": {
+		"user": {
+			"inlinecomments-add": true
+		}
 	},
 	"manifest_version": 2
 }
