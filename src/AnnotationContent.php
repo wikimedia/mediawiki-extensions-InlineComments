@@ -140,6 +140,6 @@ class AnnotationContent extends JsonContent {
 		}
 
 		$data[] = $item;
-		return new self( FormatJson::encode( $data, true ), FormatJson::UTF8_OK );
+		return new AnnotationContent( FormatJson::encode( $data, true, FormatJson::UTF8_OK ) );
 	}
 }

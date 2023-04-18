@@ -5,6 +5,7 @@ namespace MediaWiki\Extension\InlineComments;
 use ApiBase;
 use CommentStoreComment;
 use Language;
+use LogicException;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
 use WikiPage;
@@ -62,6 +63,7 @@ class ApiAddAnnotation extends ApiBase {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
 
+		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		$this->addItemToTitle( $title, $item );
 
 		$result = $this->getResult();
