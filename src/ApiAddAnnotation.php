@@ -3,22 +3,30 @@
 namespace MediaWiki\Extension\InlineComments;
 
 use ApiBase;
-use Wikimedia\ParamValidator\ParamValidator;
-use Title;
-use FormatJson;
-use WikiPage;
-use Language;
 use CommentStoreComment;
+use Language;
+use Title;
+use Wikimedia\ParamValidator\ParamValidator;
+use WikiPage;
 
 class ApiAddAnnotation extends ApiBase {
 
+	/** @var Language */
 	private $contentLang;
 
+	/**
+	 * @param \ApiMain $parent parent module
+	 * @param string $name module name
+	 * @param Language $lang Language (Expected to be the content language)
+	 */
 	public function __construct( $parent, $name, Language $lang ) {
 		$this->contentLang = $lang;
 		parent::__construct( $parent, $name );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function execute() {
 		$this->checkUserRightsAny( 'inlinecomments-add' );
 
@@ -49,7 +57,7 @@ class ApiAddAnnotation extends ApiBase {
 			$this->dieWithError( 'inlinecomments-invaliditem' );
 		}
 
-		$title = $this->getTitleFromTitleOrPageId($data);
+		$title = $this->getTitleFromTitleOrPageId( $data );
 		if ( !$title || $title->getNamespace() < 0 ) {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
@@ -67,6 +75,12 @@ class ApiAddAnnotation extends ApiBase {
 		);
 	}
 
+	/**
+	 * Add an annotation item to those stored for a specific title
+	 *
+	 * @param Title $title Page to add annotation to
+	 * @param array $item Item to add
+	 */
 	private function addItemToTitle( Title $title, array $item ) {
 		$wp = WikiPage::factory( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
@@ -109,14 +123,23 @@ class ApiAddAnnotation extends ApiBase {
 		}
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function needsToken() {
 		return 'csrf';
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function isWriteMode() {
 		return true;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getAllowedParams() {
 		return [
 			'title' => [

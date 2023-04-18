@@ -6,9 +6,6 @@ use LogicException;
 use RemexHtml\TreeBuilder\Element;
 use RemexHtml\TreeBuilder\RelayTreeHandler;
 use RemexHtml\TreeBuilder\TreeHandler;
-use RemexHtml\TreeBuilder\TreeBuilder;
-use RemexHtml\Tokenizer\PlainAttributes;
-use RemexHtml\HtmlData;
 
 class AnnotationList extends RelayTreeHandler {
 	private const INACTIVE = 1;
@@ -17,8 +14,13 @@ class AnnotationList extends RelayTreeHandler {
 	private const LOOKING_POST = 4;
 	private const DONE = 5;
 
+	/** @var array Annotations (as an array) */
 	private $annotations;
 
+	/**
+	 * @param TreeHandler $serializer Base serializer class that provides fallback
+	 * @param array $annotations List of annotations to add
+	 */
 	public function __construct( TreeHandler $serializer, $annotations ) {
 		parent::__construct( $serializer );
 		// Can access serializer via $this->nextHandler.
@@ -27,6 +29,7 @@ class AnnotationList extends RelayTreeHandler {
 	}
 
 	/**
+	 * Initialise annotation structure with state data
 	 *
 	 * Initial structure is: [ pre, body, post, container, containerAttribs ]
 	 *
@@ -42,6 +45,11 @@ class AnnotationList extends RelayTreeHandler {
 		}
 	}
 
+	/**
+	 * Mark a specific annotation as currently being in progress matched
+	 *
+	 * @param int $key The key in the annotations array (not the annotation id)
+	 */
 	private function markActive( $key ) {
 		$annotation =& $this->annotations[$key];
 		if ( $annotation['state'] === self::DONE ) {
@@ -55,6 +63,11 @@ class AnnotationList extends RelayTreeHandler {
 		$this->maybeTransition( $key );
 	}
 
+	/**
+	 * Check if a specific annotation should change state
+	 *
+	 * @param int $key Annotation key to check
+	 */
 	private function maybeTransition( $key ) {
 		$annotation =& $this->annotations[$key];
 		switch ( $annotation['state'] ) {
@@ -97,7 +110,14 @@ class AnnotationList extends RelayTreeHandler {
 		parent::characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength );
 	}
 
-	// Really inefficient.
+	/**
+	 * Process characters
+	 *
+	 * @param string $str String to look at. Note that may contain extra stuff outside of start and length
+	 * @param Element $ref Reference element
+	 * @param int $start where $str starts
+	 * @param int $length how long string goes for (ignore after this point)
+	 */
 	public function handleCharacters( $str, $ref, $start, $length ) {
 		for ( $i = $start; $i < $start + $length; $i++ ) {
 			$char = substr( $str, $i, 1 );
@@ -159,6 +179,9 @@ class AnnotationList extends RelayTreeHandler {
 		parent::insertElement( $preposition, $ref, $element, $void, $sourceStart, $sourceLength );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function endTag( Element $element, $sourceStart, $sourceLength ) {
 		// FIXME this needs to be rewritten.
 		$keys = $element->userData->snData['annotationMaybe'] ?? [];
@@ -194,7 +217,12 @@ class AnnotationList extends RelayTreeHandler {
 		unset( $element->userData->snData['annotationMaybe'] );
 	}
 
-	public function getMatchingContainer( Element $node ) {
+	/**
+	 * Figure out which annotations to look for at this container
+	 *
+	 * @param Element $node
+	 */
+	private function getMatchingContainer( Element $node ) {
 		$newList = [];
 		foreach ( $this->annotations as $key => $annotation ) {
 			if ( $annotation['state'] !== self::INACTIVE ) {
@@ -206,7 +234,7 @@ class AnnotationList extends RelayTreeHandler {
 			}
 
 			$id = $node->attrs['id'] ?? false;
-			if ( $id !== ($annotation['containerAttribs']['id'] ?? null) ) {
+			if ( $id !== ( $annotation['containerAttribs']['id'] ?? null ) ) {
 				continue;
 			}
 			$nodeClass = $node->attrs['class'] ?? '';
@@ -229,14 +257,5 @@ class AnnotationList extends RelayTreeHandler {
 			*/
 			$newList[] = $key;
 		}
-		return $newList;
-	}
-
-	public function getAnnotations() {
-		return $this->annotations;
-	}
-
-	public function isEmpty() {
-		return count( $this->annotations ) === 0;
 	}
 }

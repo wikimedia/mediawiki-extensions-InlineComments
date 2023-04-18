@@ -8,10 +8,16 @@ class AnnotationContentHandler extends JsonContentHandler {
 		parent::__construct( AnnotationContent::CONTENT_MODEL );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function makeEmptyContent() {
 		return new AnnotationContent( '[]' );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public function getContentClass() {
 		return AnnotationContent::class;
 	}

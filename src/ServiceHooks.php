@@ -2,7 +2,7 @@
 namespace MediaWiki\Extension\InlineComments;
 
 use MediaWiki\Hook\MediaWikiServicesHook;
-use \MediaWiki\Revision\SlotRoleRegistry;
+use MediaWiki\Revision\SlotRoleRegistry;
 
 class ServiceHooks implements MediaWikiServicesHook {
 
@@ -12,7 +12,7 @@ class ServiceHooks implements MediaWikiServicesHook {
 	public function onMediaWikiServices( $services ) {
 		$services->addServiceManipulator(
 			'SlotRoleRegistry',
-			function ( SlotRoleRegistry $registry ) {
+			static function ( SlotRoleRegistry $registry ) {
 				$registry->defineRoleWithModel(
 					AnnotationContent::SLOT_NAME,
 					AnnotationContent::CONTENT_MODEL,

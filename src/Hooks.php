@@ -5,9 +5,15 @@ use MediaWiki\Hook\BeforePageDisplayHook;
 
 class Hooks implements BeforePageDisplayHook {
 
+	/** @var AnnotationFetcher */
 	private AnnotationFetcher $annotationFetcher;
+	/** @var AnnotationMarker */
 	private AnnotationMarker $annotationMarker;
 
+	/**
+	 * @param AnnotationFetcher $annotationFetcher
+	 * @param AnnotationMarker $annotationMarker
+	 */
 	public function __construct( AnnotationFetcher $annotationFetcher, AnnotationMarker $annotationMarker ) {
 		$this->annotationFetcher = $annotationFetcher;
 		$this->annotationMarker = $annotationMarker;

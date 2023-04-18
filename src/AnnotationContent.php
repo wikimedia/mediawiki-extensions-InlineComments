@@ -1,23 +1,36 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use JsonContent;
 use FormatJson;
+use JsonContent;
 use LogicException;
 
 class AnnotationContent extends JsonContent {
-	const CONTENT_MODEL = 'annotation+json';
-	const SLOT_NAME = 'inlinecomments';
+	public const CONTENT_MODEL = 'annotation+json';
+	public const SLOT_NAME = 'inlinecomments';
 
-	public function __construct( $text, $modelId = null ) {
-		parent::__construct( $text, $modelId ?: self::CONTENT_MODEL );
+	/**
+	 * @param string $text JSON data
+	 * @param string $modelId for subclassing
+	 */
+	public function __construct( $text, $modelId = self::CONTENT_MODEL ) {
+		parent::__construct( $text, $modelId );
 	}
 
+	/**
+	 * @todo Why is this needed it should not be.
+	 * @inheritDoc
+	 */
 	public function getModel() {
 		// FIXME FIXME this should not be needed
 		return self::CONTENT_MODEL;
 	}
 
+	/**
+	 * Is data valid. Check it has right properties
+	 *
+	 * @return bool
+	 */
 	public function isValid() {
 		if ( !parent::isValid() ) {
 			return false;
@@ -26,7 +39,7 @@ class AnnotationContent extends JsonContent {
 		if ( !is_array( $data ) ) {
 			return false;
 		}
-		foreach( $data as $item ) {
+		foreach ( $data as $item ) {
 			if ( !self::validateItem( $item ) ) {
 				return false;
 			}
@@ -35,7 +48,12 @@ class AnnotationContent extends JsonContent {
 	}
 
 	/**
+	 * Check if a specific annotation is valid
+	 *
+	 * Static so it can be called from API
+	 *
 	 * @param array $item
+	 * @return bool
 	 */
 	public static function validateItem( array $item ) {
 		// TODO: Should we use more user-friendly key names? They may be shown in diffs.
@@ -48,14 +66,14 @@ class AnnotationContent extends JsonContent {
 				return false;
 			}
 		}
-		foreach( $item as $key => $value ) {
-			switch( $key ) {
+		foreach ( $item as $key => $value ) {
+			switch ( $key ) {
 			case 'pre':
 			case 'post':
 			if ( !is_string( $value ) ) {
 				return false;
 			}
-			break;
+				break;
 			case 'container':
 			case 'body':
 			case 'comment':
@@ -100,13 +118,21 @@ class AnnotationContent extends JsonContent {
 		return $this->jsonParse;
 	}
 
+	/**
+	 * Make a new annotation content but with extra item and return it.
+	 *
+	 * Does not affect this object, returns a new one.
+	 *
+	 * @param array $item New item to add
+	 * @return self
+	 */
 	public function newWithAddedItem( array $item ) {
 		if ( !$this->isValid() || !self::validateItem( $item ) ) {
 			throw new LogicException( "Invalid annotation data" );
 		}
 
 		$data = $this->getData()->getValue();
-		foreach( $data as $annotation ) {
+		foreach ( $data as $annotation ) {
 			if ( $annotation['id'] === $item['id'] ) {
 				// Should not be possible.
 				throw new LogicException( "ID collision" );
@@ -114,6 +140,6 @@ class AnnotationContent extends JsonContent {
 		}
 
 		$data[] = $item;
-		return new self( FormatJson::encode( $data ), true, FormatJson::UTF8_OK );
+		return new self( FormatJson::encode( $data, true ), FormatJson::UTF8_OK );
 	}
 }

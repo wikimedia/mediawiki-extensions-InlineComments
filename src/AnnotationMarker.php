@@ -13,6 +13,13 @@ use RemexHtml\TreeBuilder\TreeBuilder;
 class AnnotationMarker {
 	public const SERVICE_NAME = "InlineComments:AnnotationMarker";
 
+	/**
+	 * Add annotations to html
+	 *
+	 * @param string $html Input html
+	 * @param AnnotationContent $annotationsContent The annotations to add
+	 * @return string HTML with annotations and asides added
+	 */
 	public function markUp( string $html, AnnotationContent $annotationsContent ) {
 		$annotations = $annotationsContent->getData()->getValue();
 		$annotationFormatter = new AnnotationFormatter( [], $annotations );

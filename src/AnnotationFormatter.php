@@ -2,9 +2,9 @@
 namespace MediaWiki\Extension\InlineComments;
 
 use Html;
+use Linker;
 use RemexHtml\Serializer\HtmlFormatter;
 use RemexHtml\Serializer\SerializerNode;
-use Linker;
 
 // Based on MediaWiki\Html\HtmlHelper
 
@@ -13,21 +13,32 @@ class AnnotationFormatter extends HtmlFormatter {
 	public const START = 0;
 	public const END = 1;
 
+	/**
+	 * @var array Annotations (as in array, not a content obect)
+	 */
 	private $annotations;
 
+	/**
+	 * @param array $options Options for the html formatter base class
+	 * @param array $annotations
+	 */
 	public function __construct( $options, $annotations ) {
 		parent::__construct( $options );
 		$this->annotations = $annotations;
 	}
 
-
+	/**
+	 * Get the html for the right hand actual comments
+	 *
+	 * @return string html
+	 */
 	private function getAsides() {
 		if ( !$this->annotations ) {
 			return '';
 		}
 
 		$res = '<div id="mw-inlinecomment-annotations">';
-		foreach( $this->annotations as $annotation ) {
+		foreach ( $this->annotations as $annotation ) {
 			// User handling seems likely to be a forwards compatibility risk.
 			$userId = $annotation['userId'];
 			$username = $annotation['username'];
@@ -51,6 +62,13 @@ class AnnotationFormatter extends HtmlFormatter {
 		return $res . '</div>';
 	}
 
+	/**
+	 * Go through the html and add annotated spans where appropriate to highlight
+	 *
+	 * The snData has been pre-populated by AnnotationList
+	 *
+	 * @inheritDoc
+	 */
 	public function element( SerializerNode $parent, SerializerNode $node, $contents ) {
 		if ( $node->name == 'div' && ( $node->attrs->getValues()['class'] ?? '' ) === 'mw-parser-output' ) {
 			return parent::element( $parent, $node, $contents ) . $this->getAsides();
