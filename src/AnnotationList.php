@@ -206,7 +206,7 @@ class AnnotationList extends RelayTreeHandler {
 			}
 
 			$id = $node->attrs['id'] ?? false;
-			if ( $id !== $annotation['containerAttribs']['id'] ) {
+			if ( $id !== ($annotation['containerAttribs']['id'] ?? null) ) {
 				continue;
 			}
 			$nodeClass = $node->attrs['class'] ?? '';

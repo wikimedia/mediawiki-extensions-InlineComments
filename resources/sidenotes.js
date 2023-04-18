@@ -145,6 +145,17 @@
 			};
 			element.style.position = 'absolute';
 			this.select( element.id, offset );
+		},
+		remove: function ( id ) {
+			// For now, we assume no highlight in document yet.
+			this.items.filter( function (a) {
+				if ( a.element.id === id ) {
+					a.element.remove();
+					return false;
+				}
+				return true;
+			} );
+			this.renderUnselected();
 		}
 	};
 	mw.inlineComments = mw.inlineComments || {};

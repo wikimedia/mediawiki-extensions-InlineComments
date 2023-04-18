@@ -70,7 +70,180 @@
 		return range.commonAncestorContainer.offsetTop;
 	}
 
-	var getForm = function() {
+	var highlightRange = function ( asideId, range ) {
+		// We can't use range.surroundContents because doesn't work if spans elements
+		var newClass = asideId.replace( /^mw-inlinecomment-aside-/, 'mw-annotation-' );
+		var combinedClass = 'mw-annotation-highlight ' + newClass
+		if ( range.startContainer === range.endContainer ) {
+			let span = document.createElement( 'span' );
+			span.className = combinedClass;
+			range.surroundContents( span );
+			return;
+		}
+
+		// The complex case:
+
+		// Start node.
+		if ( range.startContainer.nodeType === Node.ELEMENT_NODE ) {
+			// Not sure if this case is possible, but if it does happen
+			// we should have the whole node highlighted.
+			range.startContainer.classList.add( newClass );
+			range.startContainer.classList.add( 'mw-annotation-highlight' );
+		} else if ( range.startContainer.nodeType === Node.TEXT_NODE ) {
+			let startParent = range.startContainer.parentNode;
+			let preText = document.createTextNode( range.startContainer.data.substring( 0, range.startOffset ) );
+			let startHighlight = document.createTextNode( range.startContainer.data.substring( range.startOffset ) );
+			let span = document.createElement( 'span' );
+			span.className = combinedClass;
+			span.appendChild( startHighlight );
+			let frag = document.createDocumentFragment();
+			frag.appendChild( preText );
+			frag.appendChild( span );
+			range.startContainer.parentNode.replaceChild( frag, range.startContainer );
+		} else {
+			// ignore i guess.
+			console.log( "Unexpected start node type " + range.startContainer.nodeType );
+		}
+
+		
+		var curNode = range.startContainer;
+
+		// Middle nodes
+		// We know that endContainer !== startContainer because we used surroundContents in that case.
+		while ( true ) {
+			if (
+				curNode.nextSibling === null &&
+				curNode.parentNode &&
+				curNode.parentNode.nextSibling &&
+				range.commonAncestorContainer.contains( curNode.parentNode.nextSibling ) )
+			{
+				// We have to go up a level in tree
+				curNode = curNode.parentNode.nextSibling;
+			} else {
+				curNode = curNode.nextSibling;
+				while ( curNode && curNode.contains( range.endContainer ) ) {
+					// descend into tree
+					curNode = curNode.firstChild;
+				}
+				if ( !curNode || curNode === range.endContainer ) {
+					break;
+				}
+			}
+
+			if ( curNode.nodeType === Node.ELEMENT_NODE ) {
+				curNode.classList.add( newClass );
+				curNode.classList.add( 'mw-annotation-highlight' );
+			} else if ( curNode.nodeType === Node.TEXT_NODE ) {
+				// FIXME, maybe should not highlight nodes consisting of "\n"
+				let startParent = curNode.parentNode;
+				let startHighlight = document.createTextNode( curNode.data );
+				let span = document.createElement( 'span' );
+				span.className = combinedClass;
+				span.appendChild( startHighlight );
+				curNode.parentNode.replaceChild( span, curNode );
+				// Since we detached for document, change curNode reference so loop still works
+				curNode = span;
+			} else {
+				// ignore i guess.
+				console.log( "Unexpected node type during highlight " + curNode.nodeType );
+			}
+		}
+
+		// End node
+ 		if ( range.endContainer.nodeType === Node.ELEMENT_NODE ) {
+			// Not sure if this case is possible, but if it does happen
+			// we should have the whole node highlighted.
+			range.endContainer.classList.add( newClass );
+			range.endContainer.classList.add( 'mw-annotation-highlight' );
+		} else if ( range.endContainer.nodeType === Node.TEXT_NODE ) {
+			let endParent = range.endContainer.parentNode;
+			let postText = document.createTextNode( range.endContainer.data.substring( range.endOffset ) );
+			let endHighlight = document.createTextNode( range.endContainer.data.substring( 0, range.endOffset ) );
+			let span = document.createElement( 'span' );
+			span.className = combinedClass;
+			span.appendChild( endHighlight );
+			let frag = document.createDocumentFragment();
+			frag.appendChild( span );
+			frag.appendChild( postText );
+			range.endContainer.parentNode.replaceChild( frag, range.endContainer );
+		} else {
+			// ignore i guess.
+			console.log( "Unexpected end node type " + range.endContainer.nodeType );
+		}
+		
+	}
+	var saveToServer = function( asideElm, range, comment ) {
+		var pre = range.startContainer.textContent.substring( 0, range.startOffset );
+		var body = '';
+		if ( range.startContainer === range.endContainer ) {
+			body = range.startContainer.textContent.substring( range.startOffset, range.endOffset );
+		} else {
+			body += range.startContainer.textContent.substring( range.startOffset );
+			let curNode = range.startContainer;
+			while( curNode.nextSibling && curNode.nextSibling !== range.endContainer ) {
+				body += curNode.textContent;
+				curNode = curNode.nextSibling;
+			}
+			if ( curNode.nextSibling === range.endContainer ) {
+				body += range.endContainer.textContent.substring( 0, range.endOffset );
+			}
+		}
+		var post = range.endContainer.textContent.substring( range.endOffset );
+		var containerNode = range.commonAncestorContainer;
+		// FIXME also check that container is not a highlight element.
+		// since if not in original document we won't be able to match it.
+		if (containerNode.nodeType !== Node.ELEMENT_NODE ) {
+			containerNode = containerNode.parentElement;
+		}
+		var container = containerNode.tagName.toLowerCase();
+		var data = {
+			pre: pre,
+			body: body,
+			post: post,
+			comment: comment,
+			container: container,
+			format: 'json',
+			formatversion: 2,
+			action: 'inlinecomments-add',
+			title: mw.config.get( 'wgPageName' )
+		}
+		if ( containerNode.hasAttribute( 'id' ) ) {
+			data['containerId'] = containerNode.id;
+		}
+		if ( containerNode.hasAttribute( 'class' ) ) {
+			data['containerClass'] = containerNode.className;
+		}
+
+		mw.loader.using( 'mediawiki.api', function () {
+			var api = new mw.Api();
+			api.postWithToken( 'csrf', data ).then( function (res) {
+				if ( !res['inlinecomments-add'] || !res['inlinecomments-add'].success ) {
+					mw.notify( 'Unknown error', { type: 'error'} );
+					return;
+				}
+				// FIXME this should look like to does on the server.
+				var p = document.createElement( 'p' );
+				p.textContent = comment;
+				if ( mw.config.get( 'wgUserName' ) !== null ) {
+					// username will be null if anon.
+					var author = document.createElement( 'div' );
+					author.className = 'mw-inlinecomment-author';
+					author.textContent = mw.config.get( 'wgUserName' );
+					asideElm.replaceChildren( p, author );
+				} else {
+					asideElm.replaceChildren( p );
+				}
+
+				highlightRange( asideElm.id, range );
+			} ).fail( function ( code, data ) {
+				// FIXME be more graceful.
+				mw.notify( api.getErrorMessage( data ), { type: 'error' } );
+				throw new Error( "Error saving" );
+			} );
+		} );
+	}
+
+	var getForm = function( aside, range ) {
 		var textbox = new OO.ui.MultilineTextInputWidget( {
 			value: '',
 			placeholder: 'Enter your comment here'
@@ -86,7 +259,16 @@
 		// FIXME add a cancel button somewhere, or maybe reuse the UI for resolving comment.
 		var div = document.createElement( 'div' );
 		div.className = 'mw-inlinecomments-editor';
-		save.$element.click( function () { alert( "FIXME" ) } );
+		save.$element.click( function () {
+			// FIXME does this work, better ui indication save happened.
+			//save.$element.prop( 'disabled', true );
+			save.setDisabled( true );
+			cancel.setDisabled( true );
+			saveToServer( aside, range, textbox.getValue() );
+		} );
+		cancel.$element.click( function () {
+			mw.inlineComments.manager.remove( id );
+		} );
 		$( div ).append( textbox.$element, save.$element, cancel.$element );
 		return div;
 	}
@@ -113,10 +295,12 @@
 			var aside = document.createElement( 'aside' );
 			aside.className = 'mw-inlinecomment-aside';
 			aside.id = 'mw-inlinecomment-aside-' + Math.random();
-			aside.appendChild( getForm() );
+			aside.appendChild( getForm( aside, range ) );
 			sidenoteContainer.appendChild( aside );
 
 			mw.inlineComments.manager.add( aside, getOffset( range ) );
+			// FIXME Should probably call OOUI widget focus() method instead.
+			aside.querySelector( 'textarea' ).focus();
 		} );
 	}
 } )();

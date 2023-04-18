@@ -61,7 +61,7 @@ class ApiAddAnnotation extends ApiBase {
 			null,
 			$this->getModuleName(),
 			[
-				'success' => 'true',
+				'success' => true,
 				'id' => $item['id']
 			]
 		);
@@ -133,6 +133,7 @@ class ApiAddAnnotation extends ApiBase {
 				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',
 			],
+			// FIXME does required prevent empty string?
 			'post' => [
 				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',

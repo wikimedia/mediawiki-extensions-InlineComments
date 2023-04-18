@@ -28,7 +28,15 @@ $( function () {
 
 	document.addEventListener(
 		'click',
-		function () { sidenoteManager.renderUnselected(); }
+		function (e) {
+			if (
+				e.target.tagName === 'TEXTAREA' ||
+				e.target.classList.contains( 'oo-ui-labelElement-label' )
+			) {
+				return;
+			}
+			sidenoteManager.renderUnselected();
+		}
 	);
  
 	// Todo: Have some way to deselct all.
