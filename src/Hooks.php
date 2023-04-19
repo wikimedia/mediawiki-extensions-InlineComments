@@ -39,7 +39,7 @@ class Hooks implements BeforePageDisplayHook {
 			$out->addModules( 'ext.inlineComments.makeComment' );
 		}
 
-		$annotations = $this->annotationFetcher->getAnnotations( $out->getRevisionId() );
+		$annotations = $this->annotationFetcher->getAnnotations( (int)$out->getRevisionId() );
 		if ( !$annotations ) {
 			return;
 		}
