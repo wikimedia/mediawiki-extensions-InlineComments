@@ -267,7 +267,7 @@
 			saveToServer( aside, range, textbox.getValue() );
 		} );
 		cancel.$element.click( function () {
-			mw.inlineComments.manager.remove( id );
+			mw.inlineComments.manager.remove( aside.id );
 		} );
 		$( div ).append( textbox.$element, save.$element, cancel.$element );
 		return div;
