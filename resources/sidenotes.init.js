@@ -38,6 +38,4 @@ $( function () {
 			sidenoteManager.renderUnselected();
 		}
 	);
- 
-	// Todo: Have some way to deselct all.
 } );

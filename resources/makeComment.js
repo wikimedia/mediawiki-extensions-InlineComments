@@ -74,9 +74,15 @@
 		// We can't use range.surroundContents because doesn't work if spans elements
 		var newClass = asideId.replace( /^mw-inlinecomment-aside-/, 'mw-annotation-' );
 		var combinedClass = 'mw-annotation-highlight ' + newClass
+		var clickHandler = function (event) {
+			event.stopPropagation();
+			mw.inlineComments.manager.select( asideId, this.offsetTop );
+		};
+
 		if ( range.startContainer === range.endContainer ) {
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
+			span.addEventListener( 'click', clickHandler, true );
 			range.surroundContents( span );
 			return;
 		}
@@ -95,6 +101,7 @@
 			let startHighlight = document.createTextNode( range.startContainer.data.substring( range.startOffset ) );
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
+			span.addEventListener( 'click', clickHandler, true );
 			span.appendChild( startHighlight );
 			let frag = document.createDocumentFragment();
 			frag.appendChild( preText );
@@ -139,6 +146,7 @@
 				let startHighlight = document.createTextNode( curNode.data );
 				let span = document.createElement( 'span' );
 				span.className = combinedClass;
+				span.addEventListener( 'click', clickHandler, true );
 				span.appendChild( startHighlight );
 				curNode.parentNode.replaceChild( span, curNode );
 				// Since we detached for document, change curNode reference so loop still works
@@ -161,6 +169,7 @@
 			let endHighlight = document.createTextNode( range.endContainer.data.substring( 0, range.endOffset ) );
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
+			span.addEventListener( 'click', clickHandler, true );
 			span.appendChild( endHighlight );
 			let frag = document.createDocumentFragment();
 			frag.appendChild( span );
@@ -300,6 +309,7 @@
 
 			mw.inlineComments.manager.add( aside, getOffset( range ) );
 			// FIXME Should probably call OOUI widget focus() method instead.
+			// FIXME: Calling focus unselects text
 			aside.querySelector( 'textarea' ).focus();
 		} );
 	}
