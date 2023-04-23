@@ -51,15 +51,27 @@ class AnnotationFormatter extends HtmlFormatter {
 				],
 				// TODO: Do we want any formatting in comments? Newlines to <br>?
 				Html::element( 'p', [], $annotation['comment'] ) .
-				Html::rawElement(
-					'div',
-					[ 'class' => 'mw-inlinecomment-author' ],
-					Linker::userLink( $userId, $username ) .
-					Linker::userToolLinks( $userId, $username, false, Linker::TOOL_LINKS_NOBLOCK )
-				)
+				$this->formatUser( $userId, $username )
 			);
 		}
 		return $res . '</div>';
+	}
+
+	/**
+	 * Format the user author line for an annotation
+	 *
+	 * @todo MW is eventually moving to actor, we should be forward-compatible.
+	 * @param int $userId Will be 0 for unregistered users
+	 * @param string $username
+	 * @return string HTML
+	 */
+	private function formatUser( $userId, $username ) {
+		return Html::rawElement(
+			'div',
+			[ 'class' => 'mw-inlinecomment-author' ],
+			Linker::userLink( $userId, $username ) .
+			Linker::userToolLinks( $userId, $username, false, Linker::TOOL_LINKS_NOBLOCK )
+		);
 	}
 
 	/**
@@ -104,5 +116,13 @@ class AnnotationFormatter extends HtmlFormatter {
 		}
 		$newContents .= substr( $contents, $curIndex );
 		return parent::element( $parent, $node, $newContents );
+	}
+
+	/**
+	 * Do not output a doctype.
+	 * @inheritDoc
+	 */
+	public function startDocument( $fragmentNamespace, $fragmentName ) {
+		'';
 	}
 }

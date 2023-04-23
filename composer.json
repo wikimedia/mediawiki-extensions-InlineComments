@@ -20,6 +20,7 @@
 			"phpcbf"
 		],
 		"phan": "phan -d . --long-progress-bar",
-		"phpcs": "phpcs -sp --cache"
+		"phpcs": "phpcs -sp --cache",
+		"phpunit": "php ../../tests/phpunit/phpunit.php tests/phpunit/"
 	}
 }
