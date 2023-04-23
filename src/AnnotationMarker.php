@@ -22,6 +22,7 @@ class AnnotationMarker {
 	 */
 	public function markUp( string $html, AnnotationContent $annotationsContent ) {
 		$annotations = $annotationsContent->getData()->getValue();
+		// TODO: We may want to set the performance optimisation options.
 		$annotationFormatter = new AnnotationFormatter( [], $annotations );
 		$serializer = new Serializer( $annotationFormatter );
 		$alist = new AnnotationList( $serializer, $annotations );

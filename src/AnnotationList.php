@@ -244,8 +244,9 @@ class AnnotationList extends RelayTreeHandler {
 				continue;
 			}
 
-			// FIXME do multiple class case.
-			if ( count( $nodeClassArray ) < 2 && implode( ' ', $nodeClassArray ) !== implode( ' ', $aClass ) ) {
+			sort( $nodeClassArray );
+			sort( $aClass );
+			if ( implode( ' ', $nodeClassArray ) !== implode( ' ', $aClass ) ) {
 				continue;
 			}
 			$this->markActive( $key );
