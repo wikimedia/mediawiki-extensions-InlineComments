@@ -151,16 +151,13 @@ class ApiAddAnnotation extends ApiBase {
 				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'pre' => [
-				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'body' => [
 				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',
 			],
-			// FIXME does required prevent empty string?
 			'post' => [
-				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'container' => [
