@@ -20,5 +20,13 @@
 	"inlinecomments-invaliditem": "Invalid item",
 	"action-inlinecomments-add": "add inline comments",
 	"right-inlinecomments-add": "Add inline comments",
-	"inlinecomments-editsummary-add": "Added comment \"$1\""
+	"inlinecomments-editsummary-add": "Added comment \"$1\"",
+	"inlinecomments-editsummary-resolve": "Marked comment resolved",
+	"inlinecomments-addcomment-reply": "Reply",
+	"inlinecomments-addcomment-resolve": "Mark resolved",
+	"inlinecomments-placeholder": "Enter your comment.",
+	"inlinecomments-missingpage": "Could not edit comments as page does not exist.",
+	"inlinecomments-saveerror": "Error saving comments.",
+	"inlinecomments-noitembyid": "Cannot mark comment as resolved as it does not exist.",
+	"inlinecomments-noitembyid": "Cannot reply to comment as it does not exist."
 }

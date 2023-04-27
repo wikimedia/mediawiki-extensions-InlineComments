@@ -39,19 +39,23 @@ class AnnotationFormatter extends HtmlFormatter {
 
 		$res = '<div id="mw-inlinecomment-annotations">';
 		foreach ( $this->annotations as $annotation ) {
-			// User handling seems likely to be a forwards compatibility risk.
-			$userId = $annotation['userId'];
-			$username = $annotation['username'];
-			// FIXME, don't show missing.
+			$asideContent = '';
+			foreach ( $annotation['comments'] as $comment ) {
+				// User handling seems likely to be a forwards compatibility risk.
+				$userId = $comment['userId'];
+				$username = $comment['username'];
+				// FIXME, don't show missing.
+				// TODO: Do we want any formatting in comments? Newlines to <br>?
+				$asideContent .= Html::element( 'p', [], $comment['comment'] );
+				$asideContent .= $this->formatUser( $userId, $username );
+			}
 			$res .= Html::rawElement(
 				'aside',
 				[
 					'id' => 'mw-inlinecomment-aside-' . $annotation['id'],
 					'class' => 'mw-inlinecomment-aside',
 				],
-				// TODO: Do we want any formatting in comments? Newlines to <br>?
-				Html::element( 'p', [], $annotation['comment'] ) .
-				$this->formatUser( $userId, $username )
+				$asideContent
 			);
 		}
 		return $res . '</div>';
@@ -105,7 +109,7 @@ class AnnotationFormatter extends HtmlFormatter {
 					'span',
 					[
 						'class' => [ 'mw-annotation-highlight', 'mw-annotation-' . $this->annotations[$item[0]]['id'] ],
-						'title' => $this->annotations[$item[0]]['comment'],
+						'title' => $this->annotations[$item[0]]['comments'][0]['comment'],
 						'data-mw-highlight-id' => $this->annotations[$item[0]]['id'],
 					]
 				);

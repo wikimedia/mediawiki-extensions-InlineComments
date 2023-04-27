@@ -16,14 +16,17 @@
 			);
 			var annotations = document.getElementsByClassName( annotationClass );
 			let preferredOffset = 0;
+			let offsetTiebreaker = 0;
 			if ( annotations.length >= 1 ) {
 				// Todo, should check what offsetParent is, and combine if appropriate.
 				// In case someone uses position css in page body.
 				preferredOffset = annotations[0].offsetTop;
+				offsetTiebreaker = annotations[0].offsetLeft;
 			}
 
 			this.items[this.items.length] = {
 				preferredOffset: preferredOffset,
+				offsetTiebreaker: offsetTiebreaker,
 				// FIXME do we really need to store this.
 				annotations: annotations,
 				element: notes[i],
@@ -37,9 +40,9 @@
 				function (event) {
 					event.stopPropagation();
 					that.select( id, preferredOffset );
-				},
-				true
+				}
 			);
+			this.addTools( notes[i] );
 		}
 
 		this.sortItems();
@@ -133,6 +136,9 @@
 		},
 		sortItems: function () {
 			this.items.sort( function (a,b) {
+				if ( a.preferredOffset === b.preferredOffset ) {
+					return a.offsetTiebreaker - b.offsetTiebreaker;
+				}
 				return a.preferredOffset - b.preferredOffset;
 			} );
 		},
@@ -155,7 +161,97 @@
 				}
 				return true;
 			} );
+			var highlightClass = id.replace(
+				this.opts.idRegex,
+				this.opts.annotationClassPrefix
+			);
+			var hls = document.getElementsByClassName( highlightClass );
+			// Elements get removed from collection when class changes!
+			for ( let i = hls.length - 1; i >= 0; i-- ) {
+				// TODO: if there are multiple annotations, we maybe shouldn't.
+				hls[i].classList.remove( 'mw-annotation-highlight' );
+				hls[i].classList.remove( highlightClass );
+			}
 			this.renderUnselected();
+		},
+		// Add reply and resolve buttons to an aside
+		addTools: function ( aside ) {
+			var that = this;
+			var asideId = aside.id.replace( this.opts.idRegex, '' );
+			var div = document.createElement( 'div' );
+			div.className = 'mw-inlinecomment-tools';
+			var replyButton = new OO.ui.ButtonInputWidget( {
+				label: mw.msg( 'inlinecomments-addcomment-reply' ),
+				flags: [ 'progressive' ]
+			} );
+			var resolveButton = new OO.ui.ButtonInputWidget( {
+				label: mw.msg( 'inlinecomments-addcomment-resolve' ),
+				flags: [ 'desctructive' ]
+			} );
+
+			var textbox = new OO.ui.MultilineTextInputWidget( {
+				value: '',
+				placeholder: mw.msg( 'inlinecomments-placeholder' )
+			} );
+			var saveButton = new OO.ui.ButtonInputWidget( {
+				label: mw.msg( 'inlinecomments-addcomment-save' ),
+				flags: [ 'primary', 'progressive' ]
+			} );
+
+			var saveFunc = function () {
+				saveButton.setDisabled( true );
+				mw.loader.using( 'mediawiki.api', function () {
+					var api = new mw.Api();
+					var text = textbox.getValue();
+					var data = {
+						title: mw.config.get( 'wgPageName' ),
+						id: asideId,
+						action: 'inlinecomments-addreply',
+						comment: text
+					};
+					api.postWithToken( 'csrf', data ).then( function () {
+						div.remove();
+						var p = document.createElement( 'p' );
+						p.textContent = text;
+						aside.appendChild( p );
+						if ( mw.config.get( 'wgUserName' ) !== null ) {
+							var author = document.createElement( 'div' );
+							author.className = 'mw-inlinecomment-author';
+							author.textContent = mw.config.get( 'wgUserName' );
+							aside.appendChild( author );
+						}
+					} ).fail( function ( code, data ) {
+						mw.notify( api.getErrorMessage( data ), { type: 'error' } );
+					} );
+				} );
+			};
+			var replyFunc = function () {
+				saveButton.$element.click( saveFunc );
+				// TODO maybe a cancel button.
+				div.replaceChildren( textbox.$element[0], saveButton.$element[0] );
+			}
+			var resolveFunc = function () {
+				resolveButton.setDisabled( true );
+				mw.loader.using( 'mediawiki.api', function () {
+					var api = new mw.Api();
+					var data = {
+						title: mw.config.get( 'wgPageName' ),
+						id: asideId,
+						action: 'inlinecomments-resolve'
+					}
+					api.postWithToken( 'csrf', data ).then( function () {
+						that.remove( aside.id );
+						// FIXME need to remove highlighting. 
+					} ).fail( function ( code, data ) {
+						mw.notify( api.getErrorMessage( data ), { type: 'error' } );
+					} );
+				} );
+			}
+
+			resolveButton.$element.click( resolveFunc );
+			replyButton.$element.click( replyFunc );
+			$( div ).append( replyButton.$element, resolveButton.$element );
+			aside.appendChild( div );
 		}
 	};
 	mw.inlineComments = mw.inlineComments || {};

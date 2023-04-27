@@ -33,10 +33,16 @@
 	},
 	"APIModules": {
 		"inlinecomments-add": {
-			"class": "MediaWiki\\Extension\\InlineComments\\ApiAddAnnotation",
+			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiAddAnnotation",
 			"services": [
 				"ContentLanguage"
 			]
+		},
+		"inlinecomments-resolve": {
+			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiResolveAnnotation"
+		},
+		"inlinecomments-addreply": {
+			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiAddReply"
 		}
 	},
 	"ServiceWiringFiles": [
@@ -49,6 +55,15 @@
 			"scripts": [
 				"sidenotes.js",
 				"sidenotes.init.js"
+			],
+			"messages": [
+				"inlinecomments-addcomment-reply",
+				"inlinecomments-addcomment-resolve",
+				"inlinecomments-addcomment-save",
+				"inlinecomments-placeholder"
+			],
+			"dependencies": [
+				"oojs-ui-widgets"
 			]
 		},
 		"ext.inlineComments.sidenotes.styles": {
@@ -68,7 +83,8 @@
 			"messages": [
 				"inlinecomments-addcomment-tooltip",
 				"inlinecomments-addcomment-save",
-				"inlinecomments-addcomment-cancel"
+				"inlinecomments-addcomment-cancel",
+				"inlinecomments-placeholder"
 			]
 		}
 	},

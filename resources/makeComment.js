@@ -255,7 +255,7 @@
 	var getForm = function( aside, range ) {
 		var textbox = new OO.ui.MultilineTextInputWidget( {
 			value: '',
-			placeholder: 'Enter your comment here'
+			placeholder: mw.msg( 'inlinecomments-placeholder' )
 		} );
 		var save = new OO.ui.ButtonInputWidget( {
 			label: mw.msg( 'inlinecomments-addcomment-save' ),

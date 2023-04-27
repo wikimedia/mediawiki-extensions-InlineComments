@@ -29,6 +29,13 @@
 .mw-inlinecomment-author {
 	padding-left: 1em;
 }
+.mw-inlinecomment-tools {
+	display:none
+}
+.mw-inlinecomment-selected .mw-inlinecomment-tools {
+	display:block;
+}
+
 
 #mw-content-text .mw-annotation-highlight:hover {
   background-color: var(--sidenoteAnchorColorHover, rgba(247, 207, 105, 0.7137254902));

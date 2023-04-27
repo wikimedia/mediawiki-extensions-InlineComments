@@ -1,29 +1,17 @@
 <?php
 
-namespace MediaWiki\Extension\InlineComments;
+namespace MediaWiki\Extension\InlineComments\Api;
 
 use ApiBase;
 use CommentStoreComment;
-use Language;
 use LogicException;
+use MediaWiki\Extension\InlineComments\AnnotationContent;
+use MediaWiki\Extension\InlineComments\AnnotationContentHandler;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
 use WikiPage;
 
-class ApiAddAnnotation extends ApiBase {
-
-	/** @var Language */
-	private $contentLang;
-
-	/**
-	 * @param \ApiMain $parent parent module
-	 * @param string $name module name
-	 * @param Language $lang Language (Expected to be the content language)
-	 */
-	public function __construct( $parent, $name, Language $lang ) {
-		$this->contentLang = $lang;
-		parent::__construct( $parent, $name );
-	}
+class ApiResolveAnnotation extends ApiBase {
 
 	/**
 	 * @inheritDoc
@@ -33,38 +21,13 @@ class ApiAddAnnotation extends ApiBase {
 
 		$user = $this->getUser();
 		$data = $this->extractRequestParams();
-		$item = [
-			'pre' => $data['pre'],
-			'body' => $data['body'],
-			'post' => $data['post'],
-			'container' => $data['container'],
-			// FIXME do we want to enforce max length (Other than 2MB article limit)
-			'comment' => $data['comment'],
-			'id' => (string)mt_rand(),
-			'username' => $user->getName(),
-			'userId' => $user->getId(),
-			'containerAttribs' => []
-		];
-
-		if ( isset( $data['containerId'] ) && $data['containerId'] !== '' ) {
-			$item['containerAttribs']['id'] = $data['containerId'];
-		}
-
-		if ( isset( $data['containerClass'] ) ) {
-			$item['containerAttribs']['class'] = explode( ' ', $data['containerClass'] );
-		}
-
-		if ( !AnnotationContent::validateItem( $item ) ) {
-			$this->dieWithError( 'inlinecomments-invaliditem' );
-		}
-
 		$title = $this->getTitleFromTitleOrPageId( $data );
 		if ( !$title || $title->getNamespace() < 0 ) {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
 
 		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
-		$this->addItemToTitle( $title, $item );
+		$this->removeItemFromTitle( $title, $data['id'] );
 
 		$result = $this->getResult();
 		$result->addValue(
@@ -72,18 +35,17 @@ class ApiAddAnnotation extends ApiBase {
 			$this->getModuleName(),
 			[
 				'success' => true,
-				'id' => $item['id']
 			]
 		);
 	}
 
 	/**
-	 * Add an annotation item to those stored for a specific title
+	 * Remove an item from a page.
 	 *
-	 * @param Title $title Page to add annotation to
-	 * @param array $item Item to add
+	 * @param Title $title Page to remove annotation from
+	 * @param string $id Id of annotation to remove
 	 */
-	private function addItemToTitle( Title $title, array $item ) {
+	private function removeItemFromTitle( Title $title, $id ) {
 		$wp = WikiPage::factory( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 
@@ -95,8 +57,7 @@ class ApiAddAnnotation extends ApiBase {
 		if ( $prevRevision->hasSlot( AnnotationContent::SLOT_NAME ) ) {
 			$content = $prevRevision->getContent( AnnotationContent::SLOT_NAME );
 		} else {
-			// FIXME should use AnnotationContentHandler
-			$content = new AnnotationContent( '[]' );
+			$content = AnnotationContentHandler::makeEmptyContent();
 		}
 		if ( !( $content instanceof AnnotationContent ) ) {
 			throw new LogicException( "Unexpected content type" );
@@ -105,21 +66,20 @@ class ApiAddAnnotation extends ApiBase {
 		// TODO: In future, we might want to re-render page, check if
 		// any annotations don't apply anymore, and remove them at this
 		// point.
-		$newContent = $content->newWithAddedItem( $item );
+		if ( !$content->hasItem( $id ) ) {
+			$this->dieWithError( "inlinecomments-noitembyid" );
+		}
+		$newContent = $content->removeItem( $id );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
-		// 70 is chosen very arbitrarily.
-		$commentTruncated = $this->contentLang->truncateForVisual( $item['comment'], 70 );
 		$summary = CommentStoreComment::newUnsavedComment(
-			$this->msg( 'inlinecomments-editsummary-add' )
+			$this->msg( 'inlinecomments-editsummary-resolve' )
 				->inContentLanguage()
-				->params( $commentTruncated )
 		);
 		// TODO: If someone edits the page between when we ran grabRevision()
 		// and saveRevision an exception will happen, which we do not handle gracefully.
 		// FIXME: Should comment adds go in RC? Should they be marked minor? Tagged?
 		$pageUpdater->saveRevision( $summary, EDIT_INTERNAL | EDIT_UPDATE );
-
 		if ( !$pageUpdater->wasSuccessful() ) {
 			$this->dieWithError( 'inlinecomments-saveerror' );
 		}
@@ -150,30 +110,10 @@ class ApiAddAnnotation extends ApiBase {
 			'pageid' => [
 				ParamValidator::PARAM_TYPE => 'string',
 			],
-			'pre' => [
-				ParamValidator::PARAM_TYPE => 'string',
-			],
-			'body' => [
+			'id' => [
 				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',
-			],
-			'post' => [
-				ParamValidator::PARAM_TYPE => 'string',
-			],
-			'container' => [
-				ParamValidator::PARAM_REQUIRED => true,
-				ParamValidator::PARAM_TYPE => 'string',
-			],
-			'comment' => [
-				ParamValidator::PARAM_REQUIRED => true,
-				ParamValidator::PARAM_TYPE => 'string',
-			],
-			'containerId' => [
-				ParamValidator::PARAM_TYPE => 'string',
-			],
-			'containerClass' => [
-				ParamValidator::PARAM_TYPE => 'string',
-			],
+			]
 		];
 	}
 }

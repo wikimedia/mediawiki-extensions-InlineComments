@@ -40,7 +40,7 @@ class Hooks implements BeforePageDisplayHook {
 		}
 
 		$annotations = $this->annotationFetcher->getAnnotations( (int)$out->getRevisionId() );
-		if ( !$annotations ) {
+		if ( !$annotations || $annotations->isEmpty() ) {
 			return;
 		}
 

@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\InlineComments;
 use FormatJson;
 use JsonContent;
 use LogicException;
+use User;
 
 class AnnotationContent extends JsonContent {
 	public const CONTENT_MODEL = 'annotation+json';
@@ -59,7 +60,7 @@ class AnnotationContent extends JsonContent {
 		// TODO: Should we use more user-friendly key names? They may be shown in diffs.
 		$requiredKeys = [
 			'pre', 'body', 'post', 'container', 'containerAttribs',
-			'comment', 'id', 'userId', 'username'
+			'comments'
 		];
 		foreach ( $requiredKeys as $key ) {
 			if ( !isset( $item[$key] ) ) {
@@ -70,22 +71,14 @@ class AnnotationContent extends JsonContent {
 			switch ( $key ) {
 			case 'pre':
 			case 'post':
-			if ( !is_string( $value ) ) {
-				return false;
-			}
-				break;
-			case 'container':
-			case 'body':
-			case 'comment':
-			case 'id':
-			case 'username':
-				if ( !is_string( $value ) || strlen( $value ) === 0 ) {
+				if ( !is_string( $value ) ) {
 					return false;
 				}
 				break;
-			case 'userId':
-				if ( !is_int( $value ) || $value < 0 ) {
-					// May be 0 for anon.
+			case 'container':
+			case 'body':
+			case 'id':
+				if ( !is_string( $value ) || $value === '' ) {
 					return false;
 				}
 				break;
@@ -98,6 +91,27 @@ class AnnotationContent extends JsonContent {
 				}
 				if ( isset( $value['class'] ) && !is_array( $value['class'] ) ) {
 					return false;
+				}
+				break;
+			case 'comments':
+				if ( !is_array( $value ) || count( $value ) === 0 ) {
+					return false;
+				}
+				foreach ( $value as $commentVal ) {
+					if (
+						!isset( $commentVal['userId'] ) ||
+						!is_int( $commentVal['userId'] ) ||
+						$commentVal['userId'] < 0 ||
+						!isset( $commentVal['username'] ) ||
+						!is_string( $commentVal['username'] ) ||
+						$commentVal['username'] === '' ||
+						!isset( $commentVal['actorId'] ) ||
+						!is_int( $commentVal['actorId'] ) ||
+						$commentVal['actorId'] <= 0 ||
+						!is_string( $commentVal['comment'] )
+					) {
+						return false;
+					}
 				}
 				break;
 			default:
@@ -140,6 +154,71 @@ class AnnotationContent extends JsonContent {
 		}
 
 		$data[] = $item;
+		return new AnnotationContent( FormatJson::encode( $data, true, FormatJson::UTF8_OK ) );
+	}
+
+	/**
+	 * Do we have an annotation with a specific item id
+	 *
+	 * @param string $itemId
+	 * @return bool
+	 */
+	public function hasItem( string $itemId ) {
+		$data = $this->getData()->getValue();
+		foreach ( $data as $annotation ) {
+			if ( $annotation['id'] === $itemId ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function isEmpty() {
+		$data = $this->getData()->getValue();
+		return count( $data ) === 0;
+	}
+
+	/**
+	 * Get a new content object but with a specific item removed.
+	 *
+	 * @param string $itemId
+	 * @return bool
+	 */
+	public function removeItem( string $itemId ) {
+		$data = $this->getData()->getValue();
+		for ( $i = 0; $i < count( $data ); $i++ ) {
+			if ( $data[$i]['id'] === $itemId ) {
+				unset( $data[$i] );
+				break;
+			}
+		}
+		return new AnnotationContent( FormatJson::encode( array_values( $data ), true, FormatJson::UTF8_OK ) );
+	}
+
+	/**
+	 * Add a reply to a comment
+	 *
+	 * @param string $itemId
+	 * @param string $comment
+	 * @param User $user
+	 * @return AnnotationContent A new content object with the changes made.
+	 */
+	public function addReply( string $itemId, string $comment, User $user ) {
+		$data = $this->getData()->getValue();
+		if ( !$this->hasItem( $itemId ) ) {
+			throw new LogicException( "No item by that id" );
+		}
+		for ( $i = 0; $i < count( $data ); $i++ ) {
+			if ( $data[$i]['id'] === $itemId ) {
+				$data[$i]['comments'][] = [
+					'comment' => $comment,
+					'userId' => $user->getId(),
+					'username' => $user->getName(),
+					'actorId' => $user->getActorId()
+				];
+				break;
+			}
+		}
 		return new AnnotationContent( FormatJson::encode( $data, true, FormatJson::UTF8_OK ) );
 	}
 }
