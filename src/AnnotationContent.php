@@ -182,7 +182,7 @@ class AnnotationContent extends JsonContent {
 	 * Get a new content object but with a specific item removed.
 	 *
 	 * @param string $itemId
-	 * @return bool
+	 * @return AnnotationContent
 	 */
 	public function removeItem( string $itemId ) {
 		$data = $this->getData()->getValue();

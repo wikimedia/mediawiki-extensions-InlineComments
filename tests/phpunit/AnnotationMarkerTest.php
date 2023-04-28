@@ -47,12 +47,12 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'post' => 'r',
 					'container' => 'div',
 					'containerAttribs' => [ 'id' => 'foo' ],
-					'comments' => [[
-						'comment' =>'Hello',
+					'comments' => [ [
+						'comment' => 'Hello',
 						'userId' => 0,
-						'actorId' => 1, // Not valid, but not used yet.
+						'actorId' => 1,
 						'username' => '127.0.0.1'
-					]],
+					] ],
 				]
 			],
 			'<div class="mw-parser-output"><div id="foo">b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',
@@ -67,12 +67,12 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'body' => 'a',
 					'post' => 'r',
 					'container' => 'div',
-					'comments' => [[
+					'comments' => [ [
 						'comment' => 'Hello',
 						'userId' => 0,
-						'actorId' => 1, // Not valid, but not used yet.
+						'actorId' => 1,
 						'username' => '127.0.0.1'
-					]],
+					] ],
 				]
 			],
 			'<div class="mw-parser-output"><div>b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',

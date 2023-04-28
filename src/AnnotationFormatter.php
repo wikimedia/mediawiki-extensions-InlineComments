@@ -127,6 +127,6 @@ class AnnotationFormatter extends HtmlFormatter {
 	 * @inheritDoc
 	 */
 	public function startDocument( $fragmentNamespace, $fragmentName ) {
-		'';
+		return '';
 	}
 }

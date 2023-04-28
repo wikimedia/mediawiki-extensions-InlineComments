@@ -58,7 +58,7 @@ class ApiAddReply extends ApiBase {
 		if ( $prevRevision->hasSlot( AnnotationContent::SLOT_NAME ) ) {
 			$content = $prevRevision->getContent( AnnotationContent::SLOT_NAME );
 		} else {
-			$content = AnnotationContentHandler::makeEmptyContent();
+			$content = ( new AnnotationContentHandler )->makeEmptyContent();
 		}
 		if ( !( $content instanceof AnnotationContent ) ) {
 			throw new LogicException( "Unexpected content type" );
