@@ -216,42 +216,6 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 					[ $key, -1, -1, AnnotationFormatter::SIBLING_END ];
 			}
 		}
-
-		// FIXME this needs to be rewritten.
-		$keys = $element->userData->snData['annotationMaybe'] ?? [];
-
-		// Assumption: we cannot have recusive containers
-		// Assumption: All children get called before the endTag method is called.
-		foreach ( $keys as $key ) {
-			if ( $this->annotations[$key]['state'] !== self::DONE ) {
-				// We didn't match it all
-				$this->annotations[$key]['state'] = self::INACTIVE;
-				$startElm = $this->annotations[$key]['startElement'];
-				if ( $startElm ) {
-					$compare = static function ( $value ) use ( $key ) {
-						return $value[AnnotationFormatter::KEY] !== $key;
-					};
-					$startElm->userData->snData['annotations'] = array_filter(
-						$startElm->userData->snData['annotations'],
-						$compare
-					);
-					$this->annotations[$key]['startElement'] = null;
-				}
-				$endElm = $this->annotations[$key]['endElement'];
-				if ( $endElm ) {
-					$compare = static function ( $value ) use ( $key ) {
-						return $value[AnnotationFormatter::KEY] !== $key;
-					};
-					$endElm->userData->snData['annotations'] = array_filter(
-						$endElm->userData->snData['annotations'],
-						$compare
-					);
-					$this->annotations[$key]['endElement'] = null;
-				}
-			}
-		}
-
-		unset( $element->userData->snData['annotationMaybe'] );
 	}
 
 	/**
