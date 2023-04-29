@@ -24,7 +24,8 @@
 			"class": "MediaWiki\\Extension\\InlineComments\\Hooks",
 			"services": [
 				"InlineComments:AnnotationFetcher",
-				"InlineComments:AnnotationMarker"
+				"InlineComments:AnnotationMarker",
+				"MainConfig"
 			]
 		},
 		"service": {
