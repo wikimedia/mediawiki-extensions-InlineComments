@@ -38,12 +38,35 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 *   pre text does not span elements?
 	 */
 	private function initStateMachine() {
-		foreach ( $this->annotations as &$annotation ) {
-			$annotation['state'] = self::INACTIVE;
-			$annotation['startElement'] = null;
-			$annotation['topElements'] = [];
-			$annotation['endElement'] = null;
+		foreach ( $this->annotations as $key => $annotation ) {
+			$this->resetAnnotation( $key );
 		}
+	}
+
+	/**
+	 * reset the annotation state machine back to start
+	 *
+	 * @param int $key The key for the annotation to reset
+	 */
+	private function resetAnnotation( int $key ) {
+		$this->annotations[$key]['state'] = self::INACTIVE;
+		$this->annotations[$key]['startElement'] = null;
+		$this->annotations[$key]['endElement'] = null;
+		$this->annotations[$key]['preRemaining'] = $this->annotations[$key]['pre'];
+		$this->annotations[$key]['bodyRemaining'] = $this->annotations[$key]['body'];
+		$topElems = $this->annotations[$key]['topElements'] ?? [];
+		foreach ( $topElems as $elem ) {
+			// TODO: in certain circumstances, this may run too late.
+			if ( isset( $elem->userData->snData['annotations'] ) ) {
+				$elem->userData->snData['annotations'] = array_filter(
+					$elem->userData->snData['annotations'],
+					static function ( $i ) use ( $key ) {
+						return $i[AnnotationFormatter::KEY] !== $key;
+					}
+				);
+			}
+		}
+		$this->annotations[$key]['topElements'] = [];
 	}
 
 	/**
@@ -103,13 +126,17 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 					$nextChar = substr( $annotation['preRemaining'], 0, 1 );
 					if ( $nextChar === $text[$i] ) {
 						$annotation['preRemaining'] = substr( $annotation['preRemaining'], 1 );
+					} else {
+						// Restart looking for the prefix.
+						$annotation['preRemaining'] = $annotation['pre'];
+						break;
 					}
 					if ( strlen( $annotation['preRemaining'] ) !== 0 ) {
 						break;
 					} else {
 						$this->maybeTransition( $key );
 					}
-					/* fallthrough */
+					break;
 				case self::LOOKING_SIBLING_RESTART:
 				case self::LOOKING_BODY:
 					$nextChar = substr( $annotation['bodyRemaining'], 0, 1 );
@@ -138,6 +165,13 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 							$annotation['bodyRemaining'],
 							1
 						);
+					} else {
+						// TODO: In certain cases, this may run too late.
+						$this->resetAnnotation( $key );
+						// We are still in the right container, so we
+						// can try for another match.
+						$this->markActive( $key );
+						break;
 					}
 					if ( strlen( $annotation['bodyRemaining'] ) !== 0 ) {
 						break;
