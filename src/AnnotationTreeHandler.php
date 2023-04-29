@@ -250,13 +250,20 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 				continue;
 			}
 			$this->markActive( $key );
-			/*
-			if ( $node->userData->snData === null ) {
-				$node->userData->snData = [ 'annotationsMaybe' => [] ];
-			}
-			$node->userData->snData['annotationsMaybe'][] = $key;
-			*/
 			$newList[] = $key;
 		}
+	}
+
+	/**
+	 * Get an associative array of which annotations are unused.
+	 *
+	 * @return array
+	 */
+	public function getUnusedAnnotations() {
+		$unused = [];
+		foreach ( $this->annotations as $annotation ) {
+			$unused[$annotation['id']] = $annotation['state'] !== self::DONE;
+		}
+		return $unused;
 	}
 }

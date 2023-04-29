@@ -3,6 +3,7 @@ namespace MediaWiki\Extension\InlineComments;
 
 use Html;
 use Linker;
+use LogicException;
 use RemexHtml\Serializer\HtmlFormatter;
 use RemexHtml\Serializer\SerializerNode;
 
@@ -26,13 +27,18 @@ class AnnotationFormatter extends HtmlFormatter {
 	 */
 	private $annotations;
 
+	/** @var callable Callback to find out which annotations are used */
+	private $annotationsToSkipCB;
+
 	/**
 	 * @param array $options Options for the html formatter base class
 	 * @param array $annotations
+	 * @param callable $annotationsToSkipCB Callback to give an array of annotations to not show
 	 */
-	public function __construct( $options, $annotations ) {
+	public function __construct( $options, $annotations, callable $annotationsToSkipCB ) {
 		parent::__construct( $options );
 		$this->annotations = $annotations;
+		$this->annotationsToSkipCB = $annotationsToSkipCB;
 	}
 
 	/**
@@ -45,8 +51,12 @@ class AnnotationFormatter extends HtmlFormatter {
 			return '';
 		}
 
+		$skippable = ( $this->annotationsToSkipCB )();
 		$res = '<div id="mw-inlinecomment-annotations">';
 		foreach ( $this->annotations as $annotation ) {
+			if ( isset( $skippable[$annotation['id']] ) && $skippable[$annotation['id']] ) {
+				continue;
+			}
 			$asideContent = '';
 			foreach ( $annotation['comments'] as $comment ) {
 				// User handling seems likely to be a forwards compatibility risk.

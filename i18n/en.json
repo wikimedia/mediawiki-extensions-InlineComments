@@ -12,7 +12,6 @@
 	"apihelp-inlinecomments-add-param-title": "Title of page to add comment to.",
 	"apihelp-inlinecomments-add-param-pre": "Text before the selected text.",
 	"apihelp-inlinecomments-add-param-body": "Text to select.",
-	"apihelp-inlinecomments-add-param-post": "Text after the selected text.",
 	"apihelp-inlinecomments-add-param-container": "Name of element that is the common ancestor of selected text.",
 	"apihelp-inlinecomments-add-param-comment": "Text of comment being added.",
 	"apihelp-inlinecomments-add-param-containerId": "ID attribute of common ancestor.",

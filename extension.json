@@ -49,6 +49,10 @@
 		"src/ServiceWiring.php"
 	],
 	"config": {
+		"InlineCommentsAutoResolveComments": {
+			"value": true,
+			"description": "Automatically resolve and do not show comments if the text being commented on has been removed"
+		}
 	},
 	"ResourceModules": {
 		"ext.inlineComments.sidenotes": {

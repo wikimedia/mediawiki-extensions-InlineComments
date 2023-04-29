@@ -1,6 +1,7 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
+use Config;
 use MediaWiki\Hook\BeforePageDisplayHook;
 
 class Hooks implements BeforePageDisplayHook {
@@ -9,14 +10,22 @@ class Hooks implements BeforePageDisplayHook {
 	private AnnotationFetcher $annotationFetcher;
 	/** @var AnnotationMarker */
 	private AnnotationMarker $annotationMarker;
+	/** @var Config */
+	private $config;
 
 	/**
 	 * @param AnnotationFetcher $annotationFetcher
 	 * @param AnnotationMarker $annotationMarker
+	 * @param Config $config
 	 */
-	public function __construct( AnnotationFetcher $annotationFetcher, AnnotationMarker $annotationMarker ) {
+	public function __construct(
+		AnnotationFetcher $annotationFetcher,
+		AnnotationMarker $annotationMarker,
+		Config $config
+	) {
 		$this->annotationFetcher = $annotationFetcher;
 		$this->annotationMarker = $annotationMarker;
+		$this->config = $config;
 	}
 
 	/**

@@ -19,7 +19,8 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 	 */
 	public function testMarkUp( string $inputHtml, array $annotations, string $expectedOutput, string $info ) {
 		$content = $this->getAC( $annotations );
-		$marker = new AnnotationMarker;
+		$config = new HashConfig( [ 'InlineCommentsAutoResolveComments' => true ] );
+		$marker = new AnnotationMarker( $config );
 		$res = $marker->markUp( $inputHtml, $content );
 		$this->assertEquals( $expectedOutput, $res, $info );
 	}
