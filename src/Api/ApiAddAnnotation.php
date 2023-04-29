@@ -38,7 +38,6 @@ class ApiAddAnnotation extends ApiBase {
 		$item = [
 			'pre' => $data['pre'],
 			'body' => $data['body'],
-			'post' => $data['post'],
 			'container' => $data['container'],
 			// FIXME do we want to enforce max length (Other than 2MB article limit)
 			'comments' => [
@@ -164,9 +163,6 @@ class ApiAddAnnotation extends ApiBase {
 			],
 			'body' => [
 				ParamValidator::PARAM_REQUIRED => true,
-				ParamValidator::PARAM_TYPE => 'string',
-			],
-			'post' => [
 				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'container' => [

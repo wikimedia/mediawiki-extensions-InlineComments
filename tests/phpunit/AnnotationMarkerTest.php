@@ -44,7 +44,6 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'id' => 'abc',
 					'pre' => 'b',
 					'body' => 'a',
-					'post' => 'r',
 					'container' => 'div',
 					'containerAttribs' => [ 'id' => 'foo' ],
 					'comments' => [ [
@@ -65,7 +64,6 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'id' => 'abc',
 					'pre' => 'b',
 					'body' => 'a',
-					'post' => 'r',
 					'container' => 'div',
 					'comments' => [ [
 						'comment' => 'Hello',
@@ -85,7 +83,6 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'id' => 'abc',
 					'pre' => 'b',
 					'body' => 'a',
-					'post' => 'r',
 					'container' => 'div',
 					'comments' => [ [
 						'comment' => 'Hello',
@@ -105,7 +102,6 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'id' => 'abc',
 					'pre' => 'This is ',
 					'body' => 'first paragraph',
-					'post' => ".\n",
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
@@ -125,7 +121,6 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'id' => 'abc',
 					'pre' => 'This is ',
 					'body' => 'first paragraph',
-					'post' => ".\n",
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
@@ -145,7 +140,6 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'id' => 'abc',
 					'pre' => 'This is ',
 					'body' => "first paragraph.\nThis",
-					'post' => " is the second.",
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',

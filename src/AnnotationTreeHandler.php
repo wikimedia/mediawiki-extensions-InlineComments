@@ -12,8 +12,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	private const LOOKING_PRE = 2;
 	private const LOOKING_BODY = 3;
 	private const LOOKING_SIBLING_RESTART = 4;
-	private const LOOKING_POST = 5;
-	private const DONE = 6;
+	private const DONE = 5;
 
 	/** @var array Annotations (as an array) */
 	private $annotations;
@@ -32,9 +31,9 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	/**
 	 * Initialise annotation structure with state data
 	 *
-	 * Initial structure is: [ pre, body, post, container, containerAttribs ]
+	 * Initial structure is: [ pre, body, container, containerAttribs ]
 	 *
-	 * We add preRemaining, bodyRemaining, postRemaining, state.
+	 * We add preRemaining, bodyRemaining, state.
 	 * Assumption - block elements stop matching
 	 *   pre text does not span elements?
 	 */
@@ -83,19 +82,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 			/* fallthrough */
 		case self::LOOKING_BODY:
 			if ( $annotation['bodyRemaining'] === '' ) {
-				$annotation['state'] = self::LOOKING_POST;
-				$annotation['postRemaining'] = $annotation['post'];
-			} else {
-				break;
-			}
-			/* fallthrough */
-		case self::LOOKING_POST:
-		// FIXME this is broken.
-			if ( $annotation['postRemaining'] === '' ) {
 				$annotation['state'] = self::DONE;
-		/*		$attr = new PlainAttributes( [ 'class' => 'mw-highlight-aside' ] );
-				$asideElement = new Element( HTMLData::NS_HTML, 'aside', $attr );
-				$this->nextHandler->insertElement( TreeBuilder::ROOT, null, $asideElement, false, 0, 0 ); */
 			}
 			break;
 		}
@@ -164,17 +151,6 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 						$annotation['endElement'] = $ref;
 						$this->maybeTransition( $key );
 					}
-					/* fallthrough */
-
-				case self::LOOKING_POST:
-					$nextChar = substr( $annotation['postRemaining'], 0, 1 );
-					if ( $nextChar === $text[$i] ) {
-						$annotation['postRemaining'] = substr( $annotation['postRemaining'], 1 );
-					}
-					if ( strlen( $annotation['postRemaining'] ) === 0 ) {
-						$this->maybeTransition( $key );
-					}
-					break;
 				}
 			}
 		}

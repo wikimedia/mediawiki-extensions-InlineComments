@@ -59,7 +59,7 @@ class AnnotationContent extends JsonContent {
 	public static function validateItem( array $item ) {
 		// TODO: Should we use more user-friendly key names? They may be shown in diffs.
 		$requiredKeys = [
-			'pre', 'body', 'post', 'container', 'containerAttribs',
+			'pre', 'body', 'container', 'containerAttribs',
 			'comments'
 		];
 		foreach ( $requiredKeys as $key ) {
@@ -70,7 +70,6 @@ class AnnotationContent extends JsonContent {
 		foreach ( $item as $key => $value ) {
 			switch ( $key ) {
 			case 'pre':
-			case 'post':
 				if ( !is_string( $value ) ) {
 					return false;
 				}

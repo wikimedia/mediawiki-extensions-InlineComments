@@ -195,7 +195,7 @@
 		}
 		return textContent;
 	}
-	var saveToServer = function( asideElm, containerNode, pre, body, post, comment ) {
+	var saveToServer = function( asideElm, containerNode, pre, body, comment ) {
 		// FIXME also check that container is not a highlight element.
 		// since if not in original document we won't be able to match it.
 		if (containerNode.nodeType !== Node.ELEMENT_NODE ) {
@@ -206,7 +206,6 @@
 			// Put an upper limit for how much of a prefix we match against.
 			pre: pre.substring( pre.length - 150 ),
 			body: body,
-			post: post,
 			comment: comment,
 			container: container,
 			format: 'json',
@@ -249,7 +248,7 @@
 		} );
 	}
 
-	var getForm = function( aside, containerNode, preText, bodyText, postText ) {
+	var getForm = function( aside, containerNode, preText, bodyText ) {
 		var textbox = new OO.ui.MultilineTextInputWidget( {
 			value: '',
 			placeholder: mw.msg( 'inlinecomments-placeholder' )
@@ -270,7 +269,7 @@
 			//save.$element.prop( 'disabled', true );
 			save.setDisabled( true );
 			cancel.setDisabled( true );
-			saveToServer( aside, containerNode, preText, bodyText, postText, textbox.getValue() );
+			saveToServer( aside, containerNode, preText, bodyText, textbox.getValue() );
 		} );
 		cancel.$element.click( function () {
 			mw.inlineComments.manager.remove( aside.id );
@@ -302,11 +301,10 @@
 			aside.className = 'mw-inlinecomment-aside';
 			aside.id = 'mw-inlinecomment-aside-' + Math.random();
 			var preText = range.startContainer.textContent.substring( 0, range.startOffset );
-			var postText  = range.endContainer.textContent.substring( range.endOffset );
 			// Calling focus will unselect text, so highlight now.
 			var bodyText = highlightRange( aside.id, range );
 			var containerNode = range.commonAncestorContainer;
-			aside.appendChild( getForm( aside, containerNode, preText, bodyText, postText ) );
+			aside.appendChild( getForm( aside, containerNode, preText, bodyText ) );
 			sidenoteContainer.appendChild( aside );
 
 			mw.inlineComments.manager.add( aside, getOffset( range ) );
