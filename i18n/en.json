@@ -28,5 +28,15 @@
 	"inlinecomments-missingpage": "Could not edit comments as page does not exist.",
 	"inlinecomments-saveerror": "Error saving comments.",
 	"inlinecomments-noitembyid": "Cannot mark comment as resolved as it does not exist.",
-	"inlinecomments-addcomment-noitembyid": "Cannot reply to comment as it does not exist."
+	"inlinecomments-addcomment-noitembyid": "Cannot reply to comment as it does not exist.",
+	"apihelp-inlinecomments-add-param-pageid": "Page id to add comment to. Use either this or title parameter but not both",
+	"apihelp-inlinecomments-addreply-param-title": "Title of page to add reply to. Use this or pageid but not both",
+	"apihelp-inlinecomments-addreply-param-pageid": "page id of page to add reply to. Use this or pageid but not both",
+	"apihelp-inlinecomments-addreply-param-id": "id number of the comment you are replying to",
+	"apihelp-inlinecomments-addreply-param-comment": "The text of your reply",
+	"apihelp-inlinecomments-addreply-summary": "Add a reply to an inline comment",
+	"apihelp-inlinecomments-resolve-summary": "Mark an inline comment resolved and remove from page",
+	"apihelp-inlinecomments-resolve-param-title": "Title of page to resolve comment on. Use this or pageid but not both",
+	"apihelp-inlinecomments-resolve-param-pageid": "page id of page to resolve comment on. Use this or pageid but not both",
+	"apihelp-inlinecomments-resolve-param-id": "id number of the comment you are resolving"
 }
