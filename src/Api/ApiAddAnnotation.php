@@ -115,7 +115,10 @@ class ApiAddAnnotation extends ApiBase {
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		// 70 is chosen very arbitrarily.
-		$commentTruncated = $this->contentLang->truncateForVisual( $item['comment'], 70 );
+		$commentTruncated = $this->contentLang->truncateForVisual(
+			$item['comments'][0]['comment'],
+			70
+		);
 		$summary = CommentStoreComment::newUnsavedComment(
 			$this->msg( 'inlinecomments-editsummary-add' )
 				->inContentLanguage()

@@ -69,7 +69,7 @@
 		// This deselects the highlighted text not the actual comments.
 		deselectAnnotation: function () {
 			var annotations = document.getElementsByClassName( this.opts.selectedAnnotationClass );
-			for ( var i = 0; i < annotations.length; i++ ) {
+			for ( var i = annotations.length - 1; i >= 0; i-- ) {
 				annotations[i].classList.remove( this.opts.selectedAnnotationClass );
 			}
 

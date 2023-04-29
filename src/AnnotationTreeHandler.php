@@ -7,12 +7,13 @@ use RemexHtml\TreeBuilder\Element;
 use RemexHtml\TreeBuilder\RelayTreeHandler;
 use RemexHtml\TreeBuilder\TreeHandler;
 
-class AnnotationList extends RelayTreeHandler {
+class AnnotationTreeHandler extends RelayTreeHandler {
 	private const INACTIVE = 1;
 	private const LOOKING_PRE = 2;
 	private const LOOKING_BODY = 3;
-	private const LOOKING_POST = 4;
-	private const DONE = 5;
+	private const LOOKING_SIBLING_RESTART = 4;
+	private const LOOKING_POST = 5;
+	private const DONE = 6;
 
 	/** @var array Annotations (as an array) */
 	private $annotations;
@@ -41,6 +42,7 @@ class AnnotationList extends RelayTreeHandler {
 		foreach ( $this->annotations as &$annotation ) {
 			$annotation['state'] = self::INACTIVE;
 			$annotation['startElement'] = null;
+			$annotation['topElements'] = [];
 			$annotation['endElement'] = null;
 		}
 	}
@@ -103,29 +105,16 @@ class AnnotationList extends RelayTreeHandler {
 	 * @inheritDoc
 	 */
 	public function characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength ) {
-		if ( $ref instanceof Element ) {
-			// FIXME, maybe more efficient not to create new strings??
-			$this->handleCharacters( $text, $ref, $start, $length );
+		if ( !( $ref instanceof Element ) ) {
+			parent::characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength );
+			return;
 		}
-		parent::characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength );
-	}
-
-	/**
-	 * Process characters
-	 *
-	 * @param string $str String to look at. Note that may contain extra stuff outside of start and length
-	 * @param Element $ref Reference element
-	 * @param int $start where $str starts
-	 * @param int $length how long string goes for (ignore after this point)
-	 */
-	public function handleCharacters( $str, $ref, $start, $length ) {
 		for ( $i = $start; $i < $start + $length; $i++ ) {
-			$char = substr( $str, $i, 1 );
 			foreach ( $this->annotations as $key => &$annotation ) {
 				switch ( $annotation['state'] ) {
 				case self::LOOKING_PRE:
 					$nextChar = substr( $annotation['preRemaining'], 0, 1 );
-					if ( $nextChar === $char ) {
+					if ( $nextChar === $text[$i] ) {
 						$annotation['preRemaining'] = substr( $annotation['preRemaining'], 1 );
 					}
 					if ( strlen( $annotation['preRemaining'] ) !== 0 ) {
@@ -134,23 +123,44 @@ class AnnotationList extends RelayTreeHandler {
 						$this->maybeTransition( $key );
 					}
 					/* fallthrough */
+				case self::LOOKING_SIBLING_RESTART:
 				case self::LOOKING_BODY:
 					$nextChar = substr( $annotation['bodyRemaining'], 0, 1 );
-					if ( $nextChar === $char ) {
-						if ( $annotation['bodyRemaining'] === $annotation['body'] ) {
-							// Matched first character of body
+					if ( $nextChar === $text[$i] ) {
+						if (
+							$annotation['bodyRemaining'] === $annotation['body']
+							|| $annotation['state'] === self::LOOKING_SIBLING_RESTART
+						) {
+							// Matched first character of body or
+							// we are at a sibling node and need to reopen
+							// the span tag
+							$annotation['state'] = self::LOOKING_BODY;
 							if ( $ref->userData->snData === null ) {
 								$ref->userData->snData = [];
 							}
-							$ref->userData->snData['annotations'][] = [ $key, $i - $start, AnnotationFormatter::START ];
+							$ref->userData->snData['annotations'][] = [
+								$key,
+								$i - $start,
+								count( $ref->userData->children ),
+								AnnotationFormatter::START
+							];
 							$annotation['startElement'] = $ref;
+							$annotation['topElements'][] = $ref;
 						}
-						$annotation['bodyRemaining'] = substr( $annotation['bodyRemaining'], 1 );
+						$annotation['bodyRemaining'] = substr(
+							$annotation['bodyRemaining'],
+							1
+						);
 					}
 					if ( strlen( $annotation['bodyRemaining'] ) !== 0 ) {
 						break;
 					} else {
-						$ref->userData->snData['annotations'][] = [ $key, $i - $start + 1, AnnotationFormatter::END ];
+						$ref->userData->snData['annotations'][] = [
+							$key,
+							$i - $start + 1,
+							count( $ref->userData->children ),
+							AnnotationFormatter::END
+						];
 						$annotation['endElement'] = $ref;
 						$this->maybeTransition( $key );
 					}
@@ -158,7 +168,7 @@ class AnnotationList extends RelayTreeHandler {
 
 				case self::LOOKING_POST:
 					$nextChar = substr( $annotation['postRemaining'], 0, 1 );
-					if ( $nextChar === $char ) {
+					if ( $nextChar === $text[$i] ) {
 						$annotation['postRemaining'] = substr( $annotation['postRemaining'], 1 );
 					}
 					if ( strlen( $annotation['postRemaining'] ) === 0 ) {
@@ -168,6 +178,7 @@ class AnnotationList extends RelayTreeHandler {
 				}
 			}
 		}
+		parent::characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength );
 	}
 
 	/**
@@ -183,6 +194,19 @@ class AnnotationList extends RelayTreeHandler {
 	 * @inheritDoc
 	 */
 	public function endTag( Element $element, $sourceStart, $sourceLength ) {
+		// If the tag we are in ended, we need to restart at next sibing tag
+		foreach ( $this->annotations as $key => &$annotation ) {
+			if (
+				$annotation['state'] === self::LOOKING_BODY &&
+				in_array( $element, $annotation['topElements'] )
+			) {
+				// FIXME maybe also check no more body data
+				$annotation['state'] = self::LOOKING_SIBLING_RESTART;
+				$element->userData->snData['annotations'][] =
+					[ $key, -1, -1, AnnotationFormatter::SIBLING_END ];
+			}
+		}
+
 		// FIXME this needs to be rewritten.
 		$keys = $element->userData->snData['annotationMaybe'] ?? [];
 
@@ -193,10 +217,10 @@ class AnnotationList extends RelayTreeHandler {
 				// We didn't match it all
 				$this->annotations[$key]['state'] = self::INACTIVE;
 				$startElm = $this->annotations[$key]['startElement'];
-				$compare = static function ( $value ) use ( $key ) {
-					return $value[0] !== $key;
-				};
 				if ( $startElm ) {
+					$compare = static function ( $value ) use ( $key ) {
+						return $value[AnnotationFormatter::KEY] !== $key;
+					};
 					$startElm->userData->snData['annotations'] = array_filter(
 						$startElm->userData->snData['annotations'],
 						$compare
@@ -205,6 +229,9 @@ class AnnotationList extends RelayTreeHandler {
 				}
 				$endElm = $this->annotations[$key]['endElement'];
 				if ( $endElm ) {
+					$compare = static function ( $value ) use ( $key ) {
+						return $value[AnnotationFormatter::KEY] !== $key;
+					};
 					$endElm->userData->snData['annotations'] = array_filter(
 						$endElm->userData->snData['annotations'],
 						$compare
@@ -228,7 +255,6 @@ class AnnotationList extends RelayTreeHandler {
 			if ( $annotation['state'] !== self::INACTIVE ) {
 				continue;
 			}
-			// FIXME how does case work?
 			if ( $node->name !== $annotation['container'] ) {
 				continue;
 			}

@@ -10,8 +10,16 @@ use RemexHtml\Serializer\SerializerNode;
 
 class AnnotationFormatter extends HtmlFormatter {
 
+	// snData position constants
 	public const START = 0;
 	public const END = 1;
+	public const SIBLING_END = 2;
+
+	// snData indicies
+	public const KEY = 0;
+	public const OFFSET = 1;
+	public const CHILD = 2;
+	public const POSITION = 3;
 
 	/**
 	 * @var array Annotations (as in array, not a content obect)
@@ -79,9 +87,65 @@ class AnnotationFormatter extends HtmlFormatter {
 	}
 
 	/**
+	 * When we encounter a text node, insert <span>'s in it to highlight text
+	 *
+	 * @inheritDoc
+	 */
+	public function characters( SerializerNode $parent, $text, $start, $length ) {
+		if ( !( $parent->snData['annotations'] ?? null ) ) {
+			return parent::characters( $parent, $text, $start, $length );
+		}
+
+		$childNumb = count( $parent->children );
+		$data = array_filter(
+			$parent->snData['annotations'],
+			static function ( $val ) use ( $childNumb ) {
+				return $val[self::CHILD] === $childNumb;
+			}
+		);
+		usort( $data, static function ( $a, $b ) {
+			return $a[self::OFFSET] - $b[self::OFFSET];
+		} );
+		$curIndex = $start;
+		$newContents = '';
+		foreach ( $data as $item ) {
+			$index = $item[self::OFFSET] + $start;
+			$advance = $index - $curIndex;
+			if ( $advance ) {
+				$newContents .= parent::characters( $parent, $text, $curIndex, $advance );
+			}
+			switch ( $item[self::POSITION] ) {
+				case self::START:
+					$newContents .= Html::openElement(
+						'span',
+						[
+							'class' => [
+								'mw-annotation-highlight',
+								'mw-annotation-' . $this->annotations[$item[0]]['id']
+							],
+							'title' => $this->annotations[$item[0]]['comments'][0]['comment'],
+							'data-mw-highlight-id' => $this->annotations[$item[0]]['id'],
+						]
+					);
+					break;
+				case self::END:
+					$newContents .= Html::closeElement( 'span' );
+					break;
+				// It should be impossible for sibling end to have valid child offset.
+				case self::SIBLING_END:
+				default:
+					throw new LogicException( "Unrecognized position" );
+			}
+			$curIndex += $advance;
+		}
+		$newContents .= parent::characters( $parent, $text, $curIndex, $start + $length - $curIndex );
+		return $newContents;
+	}
+
+	/**
 	 * Go through the html and add annotated spans where appropriate to highlight
 	 *
-	 * The snData has been pre-populated by AnnotationList
+	 * The snData has been pre-populated by AnnotationTreeHandler
 	 *
 	 * @inheritDoc
 	 */
@@ -94,32 +158,15 @@ class AnnotationFormatter extends HtmlFormatter {
 		}
 
 		$data = $node->snData['annotations'];
-		usort( $data, static function ( $a, $b ) { return $a[1] - $b[1];
-		} );
-		$curIndex = 0;
-		$newContents = '';
+		$spanEnds = '';
 		foreach ( $data as $item ) {
-			$index = $item[1];
-			$advance = $index - $curIndex;
-			if ( $advance ) {
-				$newContents .= substr( $contents, $curIndex, $advance );
+			if ( $item[self::POSITION] === self::SIBLING_END ) {
+				// We have to close a tag so it can be
+				// reopened inside the next sibling element.
+				$spanEnds .= '</span>';
 			}
-			if ( $item[2] === self::START ) {
-				$newContents .= Html::openElement(
-					'span',
-					[
-						'class' => [ 'mw-annotation-highlight', 'mw-annotation-' . $this->annotations[$item[0]]['id'] ],
-						'title' => $this->annotations[$item[0]]['comments'][0]['comment'],
-						'data-mw-highlight-id' => $this->annotations[$item[0]]['id'],
-					]
-				);
-			} else {
-				$newContents .= Html::closeElement( 'span' );
-			}
-			$curIndex += $advance;
 		}
-		$newContents .= substr( $contents, $curIndex );
-		return parent::element( $parent, $node, $newContents );
+		return parent::element( $parent, $node, $contents . $spanEnds );
 	}
 
 	/**

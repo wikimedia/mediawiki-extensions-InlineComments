@@ -74,7 +74,7 @@ class ApiAddReply extends ApiBase {
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		$summary = CommentStoreComment::newUnsavedComment(
-			$this->msg( 'inlinecomments-editsummary-resolve' )
+			$this->msg( 'inlinecomments-editsummary-addreply' )
 				->inContentLanguage()
 		);
 		// TODO: If someone edits the page between when we ran grabRevision()

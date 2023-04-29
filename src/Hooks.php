@@ -39,6 +39,7 @@ class Hooks implements BeforePageDisplayHook {
 			$out->addModules( 'ext.inlineComments.makeComment' );
 		}
 
+		// TODO: Should page previews have annotations?
 		$annotations = $this->annotationFetcher->getAnnotations( (int)$out->getRevisionId() );
 		if ( !$annotations || $annotations->isEmpty() ) {
 			return;

@@ -25,7 +25,7 @@ class AnnotationMarker {
 		// TODO: We may want to set the performance optimisation options.
 		$annotationFormatter = new AnnotationFormatter( [], $annotations );
 		$serializer = new Serializer( $annotationFormatter );
-		$alist = new AnnotationList( $serializer, $annotations );
+		$alist = new AnnotationTreeHandler( $serializer, $annotations );
 		$treeBuilder = new TreeBuilder( $alist );
 		$dispatcher = new Dispatcher( $treeBuilder );
 		$tokenizer = new Tokenizer( $dispatcher, $html );

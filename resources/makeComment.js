@@ -71,34 +71,41 @@
 	}
 
 	var highlightRange = function ( asideId, range ) {
-		// We can't use range.surroundContents because doesn't work if spans elements
 		var newClass = asideId.replace( /^mw-inlinecomment-aside-/, 'mw-annotation-' );
 		var combinedClass = 'mw-annotation-highlight ' + newClass
 		var clickHandler = function (event) {
-			event.stopPropagation();
-			mw.inlineComments.manager.select( asideId, this.offsetTop );
+			if ( this.classList.contains( newClass ) ) {
+				// If we don't have the class, that means the user cancelled.
+				event.stopPropagation();
+				mw.inlineComments.manager.select( asideId, this.offsetTop );
+			}
 		};
+		var textContent = '';
 
 		if ( range.startContainer === range.endContainer ) {
+			textContent = range.startContainer.textContent.substring( range.startOffset, range.endOffset );
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
 			span.addEventListener( 'click', clickHandler, true );
 			range.surroundContents( span );
-			return;
+			return textContent;
 		}
-
+		// We can't use range.surroundContents because doesn't work if spans elements
 		// The complex case:
 
+		var curNode = range.startContainer;
 		// Start node.
 		if ( range.startContainer.nodeType === Node.ELEMENT_NODE ) {
 			// Not sure if this case is possible, but if it does happen
 			// we should have the whole node highlighted.
 			range.startContainer.classList.add( newClass );
 			range.startContainer.classList.add( 'mw-annotation-highlight' );
+			textContent += range.startContainer.textContent;
 		} else if ( range.startContainer.nodeType === Node.TEXT_NODE ) {
 			let startParent = range.startContainer.parentNode;
 			let preText = document.createTextNode( range.startContainer.data.substring( 0, range.startOffset ) );
 			let startHighlight = document.createTextNode( range.startContainer.data.substring( range.startOffset ) );
+			textContent += startHighlight.textContent;
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
 			span.addEventListener( 'click', clickHandler, true );
@@ -107,13 +114,16 @@
 			frag.appendChild( preText );
 			frag.appendChild( span );
 			range.startContainer.parentNode.replaceChild( frag, range.startContainer );
+			// We are replacing the startContainer. This can cause the start container
+			// to become the entire parent element, so make sure the currentNode is the
+			// span we just highlighted.
+			curNode = span;
 		} else {
 			// ignore i guess.
 			console.log( "Unexpected start node type " + range.startContainer.nodeType );
 		}
 
 		
-		var curNode = range.startContainer;
 
 		// Middle nodes
 		// We know that endContainer !== startContainer because we used surroundContents in that case.
@@ -138,11 +148,13 @@
 			}
 
 			if ( curNode.nodeType === Node.ELEMENT_NODE ) {
+				textContent += curNode.textContent;
 				curNode.classList.add( newClass );
 				curNode.classList.add( 'mw-annotation-highlight' );
 			} else if ( curNode.nodeType === Node.TEXT_NODE ) {
 				// FIXME, maybe should not highlight nodes consisting of "\n"
 				let startParent = curNode.parentNode;
+				textContent += curNode.data;
 				let startHighlight = document.createTextNode( curNode.data );
 				let span = document.createElement( 'span' );
 				span.className = combinedClass;
@@ -161,12 +173,14 @@
  		if ( range.endContainer.nodeType === Node.ELEMENT_NODE ) {
 			// Not sure if this case is possible, but if it does happen
 			// we should have the whole node highlighted.
+			textContent += range.endContainer.textContent;
 			range.endContainer.classList.add( newClass );
 			range.endContainer.classList.add( 'mw-annotation-highlight' );
 		} else if ( range.endContainer.nodeType === Node.TEXT_NODE ) {
 			let endParent = range.endContainer.parentNode;
 			let postText = document.createTextNode( range.endContainer.data.substring( range.endOffset ) );
 			let endHighlight = document.createTextNode( range.endContainer.data.substring( 0, range.endOffset ) );
+			textContent += endHighlight.textContent;
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
 			span.addEventListener( 'click', clickHandler, true );
@@ -179,26 +193,9 @@
 			// ignore i guess.
 			console.log( "Unexpected end node type " + range.endContainer.nodeType );
 		}
-		
+		return textContent;
 	}
-	var saveToServer = function( asideElm, range, comment ) {
-		var pre = range.startContainer.textContent.substring( 0, range.startOffset );
-		var body = '';
-		if ( range.startContainer === range.endContainer ) {
-			body = range.startContainer.textContent.substring( range.startOffset, range.endOffset );
-		} else {
-			body += range.startContainer.textContent.substring( range.startOffset );
-			let curNode = range.startContainer;
-			while( curNode.nextSibling && curNode.nextSibling !== range.endContainer ) {
-				body += curNode.textContent;
-				curNode = curNode.nextSibling;
-			}
-			if ( curNode.nextSibling === range.endContainer ) {
-				body += range.endContainer.textContent.substring( 0, range.endOffset );
-			}
-		}
-		var post = range.endContainer.textContent.substring( range.endOffset );
-		var containerNode = range.commonAncestorContainer;
+	var saveToServer = function( asideElm, containerNode, pre, body, post, comment ) {
 		// FIXME also check that container is not a highlight element.
 		// since if not in original document we won't be able to match it.
 		if (containerNode.nodeType !== Node.ELEMENT_NODE ) {
@@ -206,7 +203,8 @@
 		}
 		var container = containerNode.tagName.toLowerCase();
 		var data = {
-			pre: pre,
+			// Put an upper limit for how much of a prefix we match against.
+			pre: pre.substring( pre.length - 150 ),
 			body: body,
 			post: post,
 			comment: comment,
@@ -243,7 +241,6 @@
 					asideElm.replaceChildren( p );
 				}
 
-				highlightRange( asideElm.id, range );
 			} ).fail( function ( code, data ) {
 				// FIXME be more graceful.
 				mw.notify( api.getErrorMessage( data ), { type: 'error' } );
@@ -252,7 +249,7 @@
 		} );
 	}
 
-	var getForm = function( aside, range ) {
+	var getForm = function( aside, containerNode, preText, bodyText, postText ) {
 		var textbox = new OO.ui.MultilineTextInputWidget( {
 			value: '',
 			placeholder: mw.msg( 'inlinecomments-placeholder' )
@@ -273,7 +270,7 @@
 			//save.$element.prop( 'disabled', true );
 			save.setDisabled( true );
 			cancel.setDisabled( true );
-			saveToServer( aside, range, textbox.getValue() );
+			saveToServer( aside, containerNode, preText, bodyText, postText, textbox.getValue() );
 		} );
 		cancel.$element.click( function () {
 			mw.inlineComments.manager.remove( aside.id );
@@ -304,12 +301,16 @@
 			var aside = document.createElement( 'aside' );
 			aside.className = 'mw-inlinecomment-aside';
 			aside.id = 'mw-inlinecomment-aside-' + Math.random();
-			aside.appendChild( getForm( aside, range ) );
+			var preText = range.startContainer.textContent.substring( 0, range.startOffset );
+			var postText  = range.endContainer.textContent.substring( range.endOffset );
+			// Calling focus will unselect text, so highlight now.
+			var bodyText = highlightRange( aside.id, range );
+			var containerNode = range.commonAncestorContainer;
+			aside.appendChild( getForm( aside, containerNode, preText, bodyText, postText ) );
 			sidenoteContainer.appendChild( aside );
 
 			mw.inlineComments.manager.add( aside, getOffset( range ) );
 			// FIXME Should probably call OOUI widget focus() method instead.
-			// FIXME: Calling focus unselects text
 			aside.querySelector( 'textarea' ).focus();
 		} );
 	}
