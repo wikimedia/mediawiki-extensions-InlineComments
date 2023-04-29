@@ -72,6 +72,7 @@
 
 	var highlightRange = function ( asideId, range ) {
 		var newClass = asideId.replace( /^mw-inlinecomment-aside-/, 'mw-annotation-' );
+		var dataAttrib = asideId.replace( /^mw-inlinecomment-aside-/, '' );
 		var combinedClass = 'mw-annotation-highlight ' + newClass
 		var clickHandler = function (event) {
 			if ( this.classList.contains( newClass ) ) {
@@ -86,6 +87,7 @@
 			textContent = range.startContainer.textContent.substring( range.startOffset, range.endOffset );
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
+			span.setAttribute( 'data-mw-highlight-id', dataAttrib );
 			span.addEventListener( 'click', clickHandler, true );
 			range.surroundContents( span );
 			return textContent;
@@ -108,6 +110,7 @@
 			textContent += startHighlight.textContent;
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
+			span.setAttribute( 'data-mw-highlight-id', dataAttrib );
 			span.addEventListener( 'click', clickHandler, true );
 			span.appendChild( startHighlight );
 			let frag = document.createDocumentFragment();
@@ -142,9 +145,9 @@
 					// descend into tree
 					curNode = curNode.firstChild;
 				}
-				if ( !curNode || curNode === range.endContainer ) {
-					break;
-				}
+			}
+			if ( !curNode || curNode === range.endContainer ) {
+				break;
 			}
 
 			if ( curNode.nodeType === Node.ELEMENT_NODE ) {
@@ -158,6 +161,7 @@
 				let startHighlight = document.createTextNode( curNode.data );
 				let span = document.createElement( 'span' );
 				span.className = combinedClass;
+				span.setAttribute( 'data-mw-highlight-id', dataAttrib );
 				span.addEventListener( 'click', clickHandler, true );
 				span.appendChild( startHighlight );
 				curNode.parentNode.replaceChild( span, curNode );
@@ -183,6 +187,7 @@
 			textContent += endHighlight.textContent;
 			let span = document.createElement( 'span' );
 			span.className = combinedClass;
+			span.setAttribute( 'data-mw-highlight-id', dataAttrib );
 			span.addEventListener( 'click', clickHandler, true );
 			span.appendChild( endHighlight );
 			let frag = document.createDocumentFragment();
@@ -200,6 +205,15 @@
 		// since if not in original document we won't be able to match it.
 		if (containerNode.nodeType !== Node.ELEMENT_NODE ) {
 			containerNode = containerNode.parentElement;
+		}
+		// Make sure the container node we use isn't one inserted for highlighting
+		// an annotation.
+		while ( containerNode && containerNode.getAttribute( 'data-mw-highlight-id' ) !== null ) {
+			containerNode = containerNode.parentElement;
+		}
+		if ( containerNode === null ) {
+			// This should not happen.
+			throw new Error( "All container nodes had data-mw-highlight-id attribute" );
 		}
 		var container = containerNode.tagName.toLowerCase();
 		var data = {
