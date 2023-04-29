@@ -6,6 +6,7 @@
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:InlineComments",
 	"descriptionmsg": "inlinecomments-desc",
+	"license-name": "GPL-2.0-or-later",
 	"type": "other",
 	"MessagesDirs": {
 		"InlineComments": [
