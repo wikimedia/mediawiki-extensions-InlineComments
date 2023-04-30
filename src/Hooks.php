@@ -20,6 +20,7 @@ class Hooks implements BeforePageDisplayHook {
 	 * @param AnnotationFetcher $annotationFetcher
 	 * @param AnnotationMarker $annotationMarker
 	 * @param Config $config
+	 * @param PermissionManager $permissionManager
 	 */
 	public function __construct(
 		AnnotationFetcher $annotationFetcher,

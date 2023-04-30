@@ -4,8 +4,8 @@
 */
 
 #mw-inlinecomments-addicon {
-        cursor: pointer;
-        border: 1px dashed grey;
+	cursor: pointer;
+	border: 1px dashed grey;
 	border-radius: 2px;
 	/* the plus in the icon is transparent */
 	background-color: white;

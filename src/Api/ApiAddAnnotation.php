@@ -56,12 +56,12 @@ class ApiAddAnnotation extends ApiBase {
 			'containerAttribs' => []
 		];
 
-		if ( isset( $data['containerId'] ) && $data['containerId'] !== '' ) {
-			$item['containerAttribs']['id'] = $data['containerId'];
+		if ( isset( $data['containerid'] ) && $data['containerid'] !== '' ) {
+			$item['containerAttribs']['id'] = $data['containerid'];
 		}
 
-		if ( isset( $data['containerClass'] ) ) {
-			$item['containerAttribs']['class'] = explode( ' ', $data['containerClass'] );
+		if ( isset( $data['containerclass'] ) ) {
+			$item['containerAttribs']['class'] = explode( ' ', $data['containerclass'] );
 		}
 
 		if ( !AnnotationContent::validateItem( $item ) ) {
@@ -175,10 +175,10 @@ class ApiAddAnnotation extends ApiBase {
 				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',
 			],
-			'containerId' => [
+			'containerid' => [
 				ParamValidator::PARAM_TYPE => 'string',
 			],
-			'containerClass' => [
+			'containerclass' => [
 				ParamValidator::PARAM_TYPE => 'string',
 			],
 		];

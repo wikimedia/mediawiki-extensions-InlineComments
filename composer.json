@@ -21,6 +21,12 @@
 		],
 		"phan": "phan -d . --long-progress-bar",
 		"phpcs": "phpcs -sp --cache",
-		"phpunit": "php ../../tests/phpunit/phpunit.php tests/phpunit/"
+		"phpunit": "php ../../tests/phpunit/phpunit.php tests/phpunit/",
+		"test-all": [
+			"@test",
+			"npm test",
+			"@phpunit",
+			"@phan"
+		]
 	}
 }

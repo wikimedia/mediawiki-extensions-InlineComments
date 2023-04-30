@@ -227,10 +227,10 @@
 			title: mw.config.get( 'wgPageName' )
 		}
 		if ( containerNode.hasAttribute( 'id' ) ) {
-			data['containerId'] = containerNode.id;
+			data['containerid'] = containerNode.id;
 		}
 		if ( containerNode.hasAttribute( 'class' ) ) {
-			data['containerClass'] = containerNode.className;
+			data['containerclass'] = containerNode.className;
 		}
 
 		mw.loader.using( 'mediawiki.api', function () {
