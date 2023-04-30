@@ -56,7 +56,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 		$this->annotations[$key]['bodyRemaining'] = $this->annotations[$key]['body'];
 		$topElems = $this->annotations[$key]['topElements'] ?? [];
 		foreach ( $topElems as $elem ) {
-			// TODO: in certain circumstances, this may run too late.
+			// TODO: Potentially there may be circurmstances where this is called too late.
 			if ( isset( $elem->userData->snData['annotations'] ) ) {
 				$elem->userData->snData['annotations'] = array_filter(
 					$elem->userData->snData['annotations'],
@@ -76,9 +76,6 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 */
 	private function markActive( $key ) {
 		$annotation =& $this->annotations[$key];
-		if ( $annotation['state'] === self::DONE ) {
-			return;
-		}
 		if ( $annotation['state'] !== self::INACTIVE ) {
 			throw new LogicException( "Annotation $key already active" );
 		}
@@ -95,19 +92,19 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	private function maybeTransition( $key ) {
 		$annotation =& $this->annotations[$key];
 		switch ( $annotation['state'] ) {
-		case self::LOOKING_PRE:
-			if ( $annotation['preRemaining'] === '' ) {
-				$annotation['state'] = self::LOOKING_BODY;
-				$annotation['bodyRemaining'] = $annotation['body'];
-			} else {
+			case self::LOOKING_PRE:
+				if ( $annotation['preRemaining'] === '' ) {
+					$annotation['state'] = self::LOOKING_BODY;
+					$annotation['bodyRemaining'] = $annotation['body'];
+				} else {
+					break;
+				}
+				/* fallthrough */
+			case self::LOOKING_BODY:
+				if ( $annotation['bodyRemaining'] === '' ) {
+					$annotation['state'] = self::DONE;
+				}
 				break;
-			}
-			/* fallthrough */
-		case self::LOOKING_BODY:
-			if ( $annotation['bodyRemaining'] === '' ) {
-				$annotation['state'] = self::DONE;
-			}
-			break;
 		}
 	}
 
@@ -122,69 +119,74 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 		for ( $i = $start; $i < $start + $length; $i++ ) {
 			foreach ( $this->annotations as $key => &$annotation ) {
 				switch ( $annotation['state'] ) {
-				case self::LOOKING_PRE:
-					$nextChar = substr( $annotation['preRemaining'], 0, 1 );
-					if ( $nextChar === $text[$i] ) {
-						$annotation['preRemaining'] = substr( $annotation['preRemaining'], 1 );
-					} else {
-						// Restart looking for the prefix.
-						$annotation['preRemaining'] = $annotation['pre'];
+					case self::DONE:
+					case self::INACTIVE:
 						break;
-					}
-					if ( strlen( $annotation['preRemaining'] ) !== 0 ) {
+					case self::LOOKING_PRE:
+						$nextChar = substr( $annotation['preRemaining'], 0, 1 );
+						if ( $nextChar === $text[$i] ) {
+							$annotation['preRemaining'] = substr( $annotation['preRemaining'], 1 );
+						} else {
+							// Restart looking for the prefix.
+							$annotation['preRemaining'] = $annotation['pre'];
+							break;
+						}
+						if ( strlen( $annotation['preRemaining'] ) !== 0 ) {
+							break;
+						} else {
+							$this->maybeTransition( $key );
+						}
 						break;
-					} else {
-						$this->maybeTransition( $key );
-					}
-					break;
-				case self::LOOKING_SIBLING_RESTART:
-				case self::LOOKING_BODY:
-					$nextChar = substr( $annotation['bodyRemaining'], 0, 1 );
-					if ( $nextChar === $text[$i] ) {
-						if (
-							$annotation['bodyRemaining'] === $annotation['body']
-							|| $annotation['state'] === self::LOOKING_SIBLING_RESTART
-						) {
-							// Matched first character of body or
-							// we are at a sibling node and need to reopen
-							// the span tag
-							$annotation['state'] = self::LOOKING_BODY;
-							if ( $ref->userData->snData === null ) {
-								$ref->userData->snData = [];
+					case self::LOOKING_SIBLING_RESTART:
+					case self::LOOKING_BODY:
+						$nextChar = substr( $annotation['bodyRemaining'], 0, 1 );
+						if ( $nextChar === $text[$i] ) {
+							if (
+								$annotation['bodyRemaining'] === $annotation['body']
+								|| $annotation['state'] === self::LOOKING_SIBLING_RESTART
+							) {
+								// Matched first character of body or
+								// we are at a sibling node and need to reopen
+								// the span tag
+								$annotation['state'] = self::LOOKING_BODY;
+								if ( $ref->userData->snData === null ) {
+									$ref->userData->snData = [];
+								}
+								$ref->userData->snData['annotations'][] = [
+									$key,
+									$i - $start,
+									count( $ref->userData->children ),
+									AnnotationFormatter::START
+								];
+								$annotation['startElement'] = $ref;
+								$annotation['topElements'][] = $ref;
 							}
+							$annotation['bodyRemaining'] = substr(
+								$annotation['bodyRemaining'],
+								1
+							);
+						} else {
+							$this->resetAnnotation( $key );
+							// We are still in the right container, so we
+							// can try for another match.
+							$this->markActive( $key );
+							break;
+						}
+						if ( strlen( $annotation['bodyRemaining'] ) !== 0 ) {
+							break;
+						} else {
 							$ref->userData->snData['annotations'][] = [
 								$key,
-								$i - $start,
+								$i - $start + 1,
 								count( $ref->userData->children ),
-								AnnotationFormatter::START
+								AnnotationFormatter::END
 							];
-							$annotation['startElement'] = $ref;
-							$annotation['topElements'][] = $ref;
+							$annotation['endElement'] = $ref;
+							$this->maybeTransition( $key );
 						}
-						$annotation['bodyRemaining'] = substr(
-							$annotation['bodyRemaining'],
-							1
-						);
-					} else {
-						// TODO: In certain cases, this may run too late.
-						$this->resetAnnotation( $key );
-						// We are still in the right container, so we
-						// can try for another match.
-						$this->markActive( $key );
 						break;
-					}
-					if ( strlen( $annotation['bodyRemaining'] ) !== 0 ) {
-						break;
-					} else {
-						$ref->userData->snData['annotations'][] = [
-							$key,
-							$i - $start + 1,
-							count( $ref->userData->children ),
-							AnnotationFormatter::END
-						];
-						$annotation['endElement'] = $ref;
-						$this->maybeTransition( $key );
-					}
+					default:
+						throw new LogicException( "Unrecognized state" );
 				}
 			}
 		}
@@ -195,7 +197,6 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 * @inheritDoc
 	 */
 	public function insertElement( $preposition, $ref, Element $element, $void, $sourceStart, $sourceLength ) {
-		// FIXME, should we do something with preposition/ref?
 		$this->getMatchingContainer( $element );
 		parent::insertElement( $preposition, $ref, $element, $void, $sourceStart, $sourceLength );
 	}
@@ -210,7 +211,6 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 				$annotation['state'] === self::LOOKING_BODY &&
 				in_array( $element, $annotation['topElements'] )
 			) {
-				// FIXME maybe also check no more body data
 				$annotation['state'] = self::LOOKING_SIBLING_RESTART;
 				$element->userData->snData['annotations'][] =
 					[ $key, -1, -1, AnnotationFormatter::SIBLING_END ];

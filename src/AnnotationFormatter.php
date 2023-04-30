@@ -62,7 +62,6 @@ class AnnotationFormatter extends HtmlFormatter {
 				// User handling seems likely to be a forwards compatibility risk.
 				$userId = $comment['userId'];
 				$username = $comment['username'];
-				// FIXME, don't show missing.
 				// TODO: Do we want any formatting in comments? Newlines to <br>?
 				$asideContent .= Html::element( 'p', [], $comment['comment'] );
 				$asideContent .= $this->formatUser( $userId, $username );

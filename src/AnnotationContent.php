@@ -19,15 +19,6 @@ class AnnotationContent extends JsonContent {
 	}
 
 	/**
-	 * @todo Why is this needed it should not be.
-	 * @inheritDoc
-	 */
-	public function getModel() {
-		// FIXME FIXME this should not be needed
-		return self::CONTENT_MODEL;
-	}
-
-	/**
 	 * Is data valid. Check it has right properties
 	 *
 	 * @return bool
@@ -69,52 +60,52 @@ class AnnotationContent extends JsonContent {
 		}
 		foreach ( $item as $key => $value ) {
 			switch ( $key ) {
-			case 'pre':
-				if ( !is_string( $value ) ) {
-					return false;
-				}
-				break;
-			case 'container':
-			case 'body':
-			case 'id':
-				if ( !is_string( $value ) || $value === '' ) {
-					return false;
-				}
-				break;
-			case 'containerAttribs':
-				if ( !is_array( $value ) ) {
-					return false;
-				}
-				if ( isset( $value['id'] ) && !is_string( $value['id'] ) ) {
-					return false;
-				}
-				if ( isset( $value['class'] ) && !is_array( $value['class'] ) ) {
-					return false;
-				}
-				break;
-			case 'comments':
-				if ( !is_array( $value ) || count( $value ) === 0 ) {
-					return false;
-				}
-				foreach ( $value as $commentVal ) {
-					if (
-						!isset( $commentVal['userId'] ) ||
-						!is_int( $commentVal['userId'] ) ||
-						$commentVal['userId'] < 0 ||
-						!isset( $commentVal['username'] ) ||
-						!is_string( $commentVal['username'] ) ||
-						$commentVal['username'] === '' ||
-						!isset( $commentVal['actorId'] ) ||
-						!is_int( $commentVal['actorId'] ) ||
-						$commentVal['actorId'] <= 0 ||
-						!is_string( $commentVal['comment'] )
-					) {
+				case 'pre':
+					if ( !is_string( $value ) ) {
 						return false;
 					}
-				}
-				break;
-			default:
-				return false;
+					break;
+				case 'container':
+				case 'body':
+				case 'id':
+					if ( !is_string( $value ) || $value === '' ) {
+						return false;
+					}
+					break;
+				case 'containerAttribs':
+					if ( !is_array( $value ) ) {
+						return false;
+					}
+					if ( isset( $value['id'] ) && !is_string( $value['id'] ) ) {
+						return false;
+					}
+					if ( isset( $value['class'] ) && !is_array( $value['class'] ) ) {
+						return false;
+					}
+					break;
+				case 'comments':
+					if ( !is_array( $value ) || count( $value ) === 0 ) {
+						return false;
+					}
+					foreach ( $value as $commentVal ) {
+						if (
+							!isset( $commentVal['userId'] ) ||
+							!is_int( $commentVal['userId'] ) ||
+							$commentVal['userId'] < 0 ||
+							!isset( $commentVal['username'] ) ||
+							!is_string( $commentVal['username'] ) ||
+							$commentVal['username'] === '' ||
+							!isset( $commentVal['actorId'] ) ||
+							!is_int( $commentVal['actorId'] ) ||
+							$commentVal['actorId'] <= 0 ||
+							!is_string( $commentVal['comment'] )
+						) {
+							return false;
+						}
+					}
+					break;
+				default:
+					return false;
 			}
 		}
 		return true;

@@ -2,7 +2,7 @@
 
 	var addComment;
 
-	document.addEventListener( 'keyup', function (e) {
+	document.addEventListener( 'keydown', function (e) {
 		if (
 			( e.key === 'M' || e.key === 'm'  ) &&
 			e.ctrlKey && e.altKey &&
@@ -156,6 +156,7 @@
 				curNode.classList.add( 'mw-annotation-highlight' );
 			} else if ( curNode.nodeType === Node.TEXT_NODE ) {
 				// FIXME, maybe should not highlight nodes consisting of "\n"
+				// Looks kind of ugly.
 				let startParent = curNode.parentNode;
 				textContent += curNode.data;
 				let startHighlight = document.createTextNode( curNode.data );
@@ -201,8 +202,6 @@
 		return textContent;
 	}
 	var saveToServer = function( asideElm, containerNode, pre, body, comment ) {
-		// FIXME also check that container is not a highlight element.
-		// since if not in original document we won't be able to match it.
 		if (containerNode.nodeType !== Node.ELEMENT_NODE ) {
 			containerNode = containerNode.parentElement;
 		}
@@ -241,7 +240,7 @@
 					mw.notify( 'Unknown error', { type: 'error'} );
 					return;
 				}
-				// FIXME this should look like to does on the server.
+				// TODO this should look more like it does on the server.
 				var p = document.createElement( 'p' );
 				p.textContent = comment;
 				if ( mw.config.get( 'wgUserName' ) !== null ) {
@@ -255,7 +254,6 @@
 				}
 
 			} ).fail( function ( code, data ) {
-				// FIXME be more graceful.
 				mw.notify( api.getErrorMessage( data ), { type: 'error' } );
 				throw new Error( "Error saving" );
 			} );
@@ -275,12 +273,9 @@
 			label: mw.msg( 'inlinecomments-addcomment-cancel' ),
 			flags: [ 'destructive' ]
 		} );
-		// FIXME add a cancel button somewhere, or maybe reuse the UI for resolving comment.
 		var div = document.createElement( 'div' );
 		div.className = 'mw-inlinecomments-editor';
 		save.$element.click( function () {
-			// FIXME does this work, better ui indication save happened.
-			//save.$element.prop( 'disabled', true );
 			save.setDisabled( true );
 			cancel.setDisabled( true );
 			saveToServer( aside, containerNode, preText, bodyText, textbox.getValue() );
@@ -322,7 +317,6 @@
 			sidenoteContainer.appendChild( aside );
 
 			mw.inlineComments.manager.add( aside, getOffset( range ) );
-			// FIXME Should probably call OOUI widget focus() method instead.
 			aside.querySelector( 'textarea' ).focus();
 		} );
 	}

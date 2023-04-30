@@ -120,6 +120,7 @@ class ApiAddAnnotation extends ApiBase {
 			$item['comments'][0]['comment'],
 			70
 		);
+		// TODO: Use comment data to make the edit summary follow user language.
 		$summary = CommentStoreComment::newUnsavedComment(
 			$this->msg( 'inlinecomments-editsummary-add' )
 				->inContentLanguage()

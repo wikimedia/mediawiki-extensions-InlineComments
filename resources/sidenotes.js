@@ -27,8 +27,6 @@
 			this.items[this.items.length] = {
 				preferredOffset: preferredOffset,
 				offsetTiebreaker: offsetTiebreaker,
-				// FIXME do we really need to store this.
-				annotations: annotations,
 				element: notes[i],
 
 			}
@@ -147,7 +145,6 @@
 			this.items[this.items.length] = {
 				preferredOffset: offset,
 				element: element,
-				annotations: [],
 			};
 			element.style.position = 'absolute';
 			this.select( element.id, offset );
@@ -241,7 +238,6 @@
 					}
 					api.postWithToken( 'csrf', data ).then( function () {
 						that.remove( aside.id );
-						// FIXME need to remove highlighting. 
 					} ).fail( function ( code, data ) {
 						mw.notify( api.getErrorMessage( data ), { type: 'error' } );
 					} );
