@@ -49,9 +49,3 @@
   cursor: context-menu;
 }
 
-
-/* Maybe should be monobook specific? */
-#content {
-	width: calc( 100% - 340px - 12.5em );
-}
-

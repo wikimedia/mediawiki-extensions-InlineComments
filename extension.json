@@ -73,7 +73,18 @@
 			]
 		},
 		"ext.inlineComments.sidenotes.styles": {
-			"styles": "sidenotes.css"
+			"styles": "sidenotes.css",
+			"skinStyles": {
+				"default": [
+					"defaultSkin.css"
+				],
+				"vector": [
+					"vector.css"
+				],
+				"vector-2022": [
+					"vector-2022.css"
+				]
+			}
 		},
 		"ext.inlineComments.makeComment": {
 			"scripts": [

@@ -1,0 +1,13 @@
+@media screen and (min-width: 1000px) {
+	html .mw-body {
+		grid-template: min-content min-content min-content 1fr / minmax(0,60em) minmax( min-content, 300px );
+		grid-template-areas: 'titlebar-cx .' 'titlebar columnEnd' 'toolbar columnEnd' 'content columnEnd';
+	}
+}
+
+@media screen and (min-width: 500px) and (max-width: 1000px) {
+	html .mw-body{
+		width: calc( 100% - 300px );
+	}
+}
+

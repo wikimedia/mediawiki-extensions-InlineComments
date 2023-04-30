@@ -85,7 +85,7 @@
 
 		if ( range.startContainer === range.endContainer ) {
 			textContent = range.startContainer.textContent.substring( range.startOffset, range.endOffset );
-			let span = document.createElement( 'span' );
+			var span = document.createElement( 'span' );
 			span.className = combinedClass;
 			span.setAttribute( 'data-mw-highlight-id', dataAttrib );
 			span.addEventListener( 'click', clickHandler, true );
