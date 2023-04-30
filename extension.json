@@ -18,7 +18,9 @@
 	},
 	"Hooks": {
 		"BeforePageDisplay": "main",
-		"MediaWikiServices": "service"
+		"MediaWikiServices": "service",
+		"MultiContentSave": "main",
+		"UserGetReservedNames": "main"
 	},
 	"HookHandlers": {
 		"main": {
@@ -26,7 +28,8 @@
 			"services": [
 				"InlineComments:AnnotationFetcher",
 				"InlineComments:AnnotationMarker",
-				"PermissionManager"
+				"PermissionManager",
+				"MainConfig"
 			]
 		},
 		"service": {

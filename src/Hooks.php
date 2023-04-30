@@ -1,10 +1,17 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
+use CommentStoreComment;
+use Config;
+use DeferredUpdates;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Storage\Hook\MultiContentSaveHook;
+use MediaWiki\User\Hook\UserGetReservedNamesHook;
+use User;
+use WikiPage;
 
-class Hooks implements BeforePageDisplayHook {
+class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReservedNamesHook {
 
 	/** @var AnnotationFetcher */
 	private AnnotationFetcher $annotationFetcher;
@@ -12,20 +19,27 @@ class Hooks implements BeforePageDisplayHook {
 	private AnnotationMarker $annotationMarker;
 	/** @var PermissionManager */
 	private $permissionManager;
+	/** @var Config */
+	private $config;
+	/** @var bool Variable to guard against indef loop when removing comments */
+	private static $loopCheck = false;
 
 	/**
 	 * @param AnnotationFetcher $annotationFetcher
 	 * @param AnnotationMarker $annotationMarker
 	 * @param PermissionManager $permissionManager
+	 * @param Config $config
 	 */
 	public function __construct(
 		AnnotationFetcher $annotationFetcher,
 		AnnotationMarker $annotationMarker,
-		PermissionManager $permissionManager
+		PermissionManager $permissionManager,
+		Config $config
 	) {
 		$this->annotationFetcher = $annotationFetcher;
 		$this->annotationMarker = $annotationMarker;
 		$this->permissionManager = $permissionManager;
+		$this->config = $config;
 	}
 
 	/**
@@ -120,5 +134,76 @@ class Hooks implements BeforePageDisplayHook {
 				\RemexHtml\HTMLData::class
 			);
 		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function onMultiContentSave( $renderedRevision, $user, $summary, $flags,
+		$status
+		) {
+		if ( !$this->config->get( 'InlineCommentsAutoResolveComments' ) || self::$loopCheck ) {
+			return;
+		}
+
+		$rev = $renderedRevision->getRevision();
+		if ( !$rev->hasSlot( AnnotationContent::SLOT_NAME ) ) {
+			return;
+		}
+		$annotations = $rev->getSlot( AnnotationContent::SLOT_NAME )->getContent();
+		if ( $annotations->isEmpty() ) {
+			return;
+		}
+
+		DeferredUpdates::addCallableUpdate(
+			function () use ( $renderedRevision, $annotations, $user ) {
+				self::$loopCheck = true;
+				$rev = $renderedRevision->getRevision();
+				// Do this deferred, because parsing can take a lot of time.
+				$html = $renderedRevision->getRevisionParserOutput()->getText();
+				[ , $unused ] = $this->annotationMarker->markUpAndGetUnused( $html, $annotations );
+				if ( in_array( true, $unused ) ) {
+					$count = 0;
+					foreach ( $unused as $key => $value ) {
+						if ( $value ) {
+							$annotations = $annotations->removeItem( $key );
+							$count++;
+						}
+					}
+					$wp = WikiPage::factory( $rev->getPageAsLinkTarget() );
+					$sysUser = User::newSystemUser( 'InlineComments bot' );
+					$pageUpdater = $wp->newPageUpdater( $sysUser );
+					$prevRevision = $pageUpdater->grabParentRevision();
+					if (
+						!$prevRevision ||
+						!$prevRevision->hasSlot( AnnotationContent::SLOT_NAME ) ||
+						$prevRevision->getSha1() !== $rev->getSha1()
+					) {
+						return;
+					}
+					$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $annotations );
+					$summary = CommentStoreComment::newUnsavedComment(
+						wfMessage( 'inlinecomments-editsummary-autoresolve' )
+							->numParams( $count )
+							->params( $user->getName() )
+							->inContentLanguage()
+							->text()
+					);
+					$pageUpdater->saveRevision(
+						$summary,
+						EDIT_INTERNAL | EDIT_UPDATE | EDIT_MINOR | EDIT_FORCE_BOT
+					);
+				}
+			},
+			DeferredUpdates::POSTSEND,
+			wfGetDB( DB_PRIMARY )
+		);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function onUserGetReservedNames( &$reservedUsernames ) {
+		$reservedUsernames[] = 'InlineComments bot';
 	}
 }

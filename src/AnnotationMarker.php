@@ -40,7 +40,7 @@ class AnnotationMarker {
 	 *
 	 * @param string $html Input html
 	 * @param AnnotationContent $annotationsContent The annotations to add
-	 * @return array HTML with annotations and asides added, plus array of annotations used.
+	 * @return array HTML with annotations and asides added, plus array of annotations not used.
 	 */
 	public function markUpAndGetUnused( string $html, AnnotationContent $annotationsContent ) {
 		$annotations = $annotationsContent->getData()->getValue();

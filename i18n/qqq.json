@@ -38,5 +38,6 @@
 	"apihelp-inlinecomments-resolve-summary": "{{doc-apihelp-summary|inlinecomments-resolve}}",
 	"apihelp-inlinecomments-resolve-param-title": "{{doc-apihelp-param|inlinecomments-resolve|title}}",
 	"apihelp-inlinecomments-resolve-param-pageid": "{{doc-apihelp-param|inlinecomments-resolve|pageid}}",
-	"apihelp-inlinecomments-resolve-param-id": "{{doc-apihelp-param|inlinecomments-resolve|id}}"
+	"apihelp-inlinecomments-resolve-param-id": "{{doc-apihelp-param|inlinecomments-resolve|id}}",
+	"inlinecomments-editsummary-autoresolve": "Edit summary for automatic comment removal after text gets removed. $1 is number of comments resolved, $2 is user who made edit triggering this"
 }

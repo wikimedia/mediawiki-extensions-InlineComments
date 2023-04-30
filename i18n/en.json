@@ -38,5 +38,6 @@
 	"apihelp-inlinecomments-resolve-summary": "Mark an inline comment resolved and remove from page",
 	"apihelp-inlinecomments-resolve-param-title": "Title of page to resolve comment on. Use this or pageid but not both",
 	"apihelp-inlinecomments-resolve-param-pageid": "page id of page to resolve comment on. Use this or pageid but not both",
-	"apihelp-inlinecomments-resolve-param-id": "id number of the comment you are resolving"
+	"apihelp-inlinecomments-resolve-param-id": "id number of the comment you are resolving",
+	"inlinecomments-editsummary-autoresolve": "Automatically resolving {{PLURAL:$1|a comment after the text it was linked to was removed by $2|$1 comments after the text they were linked to were removed by $2}}."
 }
