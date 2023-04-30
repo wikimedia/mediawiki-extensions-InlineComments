@@ -1,8 +1,10 @@
-#content {
-	width: calc( 100% - 340px - 12.5em );
-}
+@media screen and ( min-width: 500px ) {
+	#content {
+		width: calc( 100% - 340px - 12.5em );
+	}
 
-/* vector has a little extra padding relative to monobook */
-#mw-content-text #mw-inlinecomment-annotations .mw-inlinecomment-aside {
-	margin-left: 1.5em;
+	/* vector has a little extra padding relative to monobook */
+	#mw-content-text #mw-inlinecomment-annotations .mw-inlinecomment-aside {
+		margin-left: 1.5em;
+	}
 }

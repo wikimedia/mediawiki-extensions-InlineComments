@@ -124,6 +124,19 @@
 				curOffset += this.items[i].element.offsetHeight + this.opts.padding;
 			}
 
+			// If selected aside not in view, scroll into view.
+			var html = document.documentElement;
+			var rect = this.items[itemIndex].element.getBoundingClientRect();
+			if (
+				rect && (
+				rect.bottom <= 0 ||
+				rect.right <= 0 ||
+				rect.left >= html.clientWidth ||
+				rect.top >= html.clientHeight )
+			) {
+				this.items[itemIndex].element.scrollIntoView(false);
+			}
+
 			this.deselectAnnotation();
 			var annotationClass = this.items[itemIndex].element.id.replace(
 				this.opts.idRegex,

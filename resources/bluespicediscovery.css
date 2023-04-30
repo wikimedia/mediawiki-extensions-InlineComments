@@ -1,7 +1,9 @@
-#mw-content-text #mw-inlinecomment-annotations {
-	right: 0 !important;
-}
+@media screen and ( min-width: 500px ) {
+	#mw-content-text #mw-inlinecomment-annotations {
+		right: 0 !important;
+	}
 
-#main {
-	padding-right: calc( max(2.5rem, 300px ) ) !important;
+	#main {
+		padding-right: calc( max(2.5rem, 300px ) ) !important;
+	}
 }
