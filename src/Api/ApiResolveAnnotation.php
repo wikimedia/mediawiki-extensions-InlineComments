@@ -46,6 +46,8 @@ class ApiResolveAnnotation extends ApiBase {
 	 * @param string $id Id of annotation to remove
 	 */
 	private function removeItemFromTitle( Title $title, $id ) {
+		// TODO: When support for 1.35 is dropped, replace with dependecy
+		// injected WikiPageFactory.
 		$wp = WikiPage::factory( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 

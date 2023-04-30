@@ -90,6 +90,8 @@ class ApiAddAnnotation extends ApiBase {
 	 * @param array $item Item to add
 	 */
 	private function addItemToTitle( Title $title, array $item ) {
+		// TODO: When support for 1.35 is dropped, replace with dependecy
+		// injected WikiPageFactory.
 		$wp = WikiPage::factory( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 

@@ -47,6 +47,8 @@ class ApiAddReply extends ApiBase {
 	 * @param string $comment Text of comment
 	 */
 	private function addReply( Title $title, string $id, string $comment ) {
+		// TODO: When support for 1.35 is dropped, replace with dependecy
+		// injected WikiPageFactory.
 		$wp = WikiPage::factory( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 
