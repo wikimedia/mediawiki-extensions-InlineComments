@@ -7,7 +7,8 @@
 			( e.key === 'M' || e.key === 'm'  ) &&
 			e.ctrlKey && e.altKey &&
 			getSelection().rangeCount >= 1 &&
-			getSelection().getRangeAt(0).collapsed === false
+			getSelection().getRangeAt(0).collapsed === false &&
+			!document.getElementsByClassName( 've-init-target' ).length
 		) {
 			addComment();
 		}
@@ -23,7 +24,6 @@
 	iconContainer.style.display = 'none';
 	$( iconContainer ).append( icon.$element );
 	iconContainer.addEventListener( 'click', function(e) {
-		// Can clicking the icon ever cause the selection to go away?
 		if (
 			getSelection().rangeCount >= 1 &&
 			getSelection().getRangeAt(0).collapsed === false
@@ -39,7 +39,8 @@
 	var checkForNewSelection = function () {
 		if (
 			getSelection().rangeCount >= 1 &&
-			getSelection().getRangeAt(0).collapsed === false
+			getSelection().getRangeAt(0).collapsed === false &&
+			!document.getElementsByClassName( 've-init-target' ).length
 		) {
 			var rect = getSelection().getRangeAt(0).getBoundingClientRect();
 			iconContainer.style.position = 'fixed';

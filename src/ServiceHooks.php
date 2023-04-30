@@ -13,11 +13,14 @@ class ServiceHooks implements MediaWikiServicesHook {
 		$services->addServiceManipulator(
 			'SlotRoleRegistry',
 			static function ( SlotRoleRegistry $registry ) {
-				$registry->defineRoleWithModel(
-					AnnotationContent::SLOT_NAME,
-					AnnotationContent::CONTENT_MODEL,
-					[ 'display' => 'none' ]
-				);
+				// This hook gets called multiple times in bluespice
+				if ( !$registry->isDefinedRole( AnnotationContent::SLOT_NAME ) ) {
+					$registry->defineRoleWithModel(
+						AnnotationContent::SLOT_NAME,
+						AnnotationContent::CONTENT_MODEL,
+						[ 'display' => 'none' ]
+					);
+				}
 			}
 		);
 	}

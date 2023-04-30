@@ -45,7 +45,6 @@ class Hooks implements BeforePageDisplayHook {
 			$out->getTitle(),
 			PermissionManager::RIGOR_QUICK
 		);
-
 		if (
 			$out->getRequest()->getVal( 'action', 'view' ) === 'view' &&
 			$out->isRevisionCurrent() &&
