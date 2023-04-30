@@ -17,14 +17,14 @@ class ApiAddReply extends ApiBase {
 	 * @inheritDoc
 	 */
 	public function execute() {
-		$this->checkUserRightsAny( 'inlinecomments-add' );
-
-		$user = $this->getUser();
 		$data = $this->extractRequestParams();
 		$title = $this->getTitleFromTitleOrPageId( $data );
 		if ( !$title || $title->getNamespace() < 0 ) {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
+		$this->checkTitleUserPermissions( $title, 'inlinecomments-add' );
+
+		$user = $this->getUser();
 
 		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		$this->addReply( $title, $data['id'], $data['comment'] );

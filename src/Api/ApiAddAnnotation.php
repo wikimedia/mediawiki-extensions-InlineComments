@@ -31,10 +31,14 @@ class ApiAddAnnotation extends ApiBase {
 	 * @inheritDoc
 	 */
 	public function execute() {
-		$this->checkUserRightsAny( 'inlinecomments-add' );
+		$data = $this->extractRequestParams();
+		$title = $this->getTitleFromTitleOrPageId( $data );
+		if ( !$title || $title->getNamespace() < 0 ) {
+			$this->dieWithError( 'inlinecomments-invalidtitle' );
+		}
+		$this->checkTitleUserPermissions( $title, 'inlinecomments-add' );
 
 		$user = $this->getUser();
-		$data = $this->extractRequestParams();
 		$item = [
 			'pre' => $data['pre'],
 			'body' => $data['body'],
@@ -62,11 +66,6 @@ class ApiAddAnnotation extends ApiBase {
 
 		if ( !AnnotationContent::validateItem( $item ) ) {
 			$this->dieWithError( 'inlinecomments-invaliditem' );
-		}
-
-		$title = $this->getTitleFromTitleOrPageId( $data );
-		if ( !$title || $title->getNamespace() < 0 ) {
-			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
 
 		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable

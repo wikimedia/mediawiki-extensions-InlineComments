@@ -40,7 +40,9 @@
 					that.select( id, preferredOffset );
 				}
 			);
-			this.addTools( notes[i] );
+			if ( mw.config.get( 'wgInlineCommentsCanEdit' ) === true ) {
+				this.addTools( notes[i] );
+			}
 		}
 
 		this.sortItems();

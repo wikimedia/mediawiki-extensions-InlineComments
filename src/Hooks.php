@@ -3,6 +3,7 @@ namespace MediaWiki\Extension\InlineComments;
 
 use Config;
 use MediaWiki\Hook\BeforePageDisplayHook;
+use MediaWiki\Permissions\PermissionManager;
 
 class Hooks implements BeforePageDisplayHook {
 
@@ -12,6 +13,8 @@ class Hooks implements BeforePageDisplayHook {
 	private AnnotationMarker $annotationMarker;
 	/** @var Config */
 	private $config;
+	/** @var PermissionManager */
+	private $permissionManager;
 
 	/**
 	 * @param AnnotationFetcher $annotationFetcher
@@ -21,11 +24,13 @@ class Hooks implements BeforePageDisplayHook {
 	public function __construct(
 		AnnotationFetcher $annotationFetcher,
 		AnnotationMarker $annotationMarker,
-		Config $config
+		Config $config,
+		PermissionManager $permissionManager
 	) {
 		$this->annotationFetcher = $annotationFetcher;
 		$this->annotationMarker = $annotationMarker;
 		$this->config = $config;
+		$this->permissionManager = $permissionManager;
 	}
 
 	/**
@@ -40,10 +45,17 @@ class Hooks implements BeforePageDisplayHook {
 		) {
 			return;
 		}
+		$canEditComments = $this->permissionManager->userCan(
+			'inlinecomments-add',
+			$out->getUser(),
+			$out->getTitle(),
+			PermissionManager::RIGOR_QUICK
+		);
 
 		if (
 			$out->getRequest()->getVal( 'action', 'view' ) === 'view' &&
-			$out->isRevisionCurrent()
+			$out->isRevisionCurrent() &&
+			$canEditComments
 		) {
 			$out->addModules( 'ext.inlineComments.makeComment' );
 		}
@@ -59,6 +71,7 @@ class Hooks implements BeforePageDisplayHook {
 		$result = $this->annotationMarker->markUp( $html, $annotations );
 		$out->addHtml( $result );
 
+		$out->addJsConfigVars( 'wgInlineCommentsCanEdit', $canEditComments );
 		$out->addModules( 'ext.inlineComments.sidenotes' );
 		$out->addModuleStyles( 'ext.inlineComments.sidenotes.styles' );
 	}
