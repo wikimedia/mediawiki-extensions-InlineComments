@@ -123,6 +123,16 @@
 			"inlinecomments-add": true
 		}
 	},
+	"attributes": {
+		"BlueSpiceFoundation": {
+			"PermissionRegistry": {
+				"inlinecomments-add": {
+					"type": "global",
+					"roles": [ "editor", "admin" ]
+				}
+			}
+		}
+	},
 	"callback": "MediaWiki\\Extension\\InlineComments\\Hooks::setup",
 	"manifest_version": 2
 }
