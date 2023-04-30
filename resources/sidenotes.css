@@ -16,6 +16,11 @@
 	background-color: white;
 }
 
+/* Prevent resizing textboxes greater than element size. */
+#mw-inlinecomment-annotations textarea {
+	max-width: 100%;
+}
+
 #mw-content-text #mw-inlinecomment-annotations .mw-inlinecomment-aside p {
 	text-align: left;
 }
