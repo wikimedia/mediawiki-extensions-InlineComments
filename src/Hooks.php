@@ -1,7 +1,6 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use Config;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Permissions\PermissionManager;
 
@@ -11,26 +10,21 @@ class Hooks implements BeforePageDisplayHook {
 	private AnnotationFetcher $annotationFetcher;
 	/** @var AnnotationMarker */
 	private AnnotationMarker $annotationMarker;
-	/** @var Config */
-	private $config;
 	/** @var PermissionManager */
 	private $permissionManager;
 
 	/**
 	 * @param AnnotationFetcher $annotationFetcher
 	 * @param AnnotationMarker $annotationMarker
-	 * @param Config $config
 	 * @param PermissionManager $permissionManager
 	 */
 	public function __construct(
 		AnnotationFetcher $annotationFetcher,
 		AnnotationMarker $annotationMarker,
-		Config $config,
 		PermissionManager $permissionManager
 	) {
 		$this->annotationFetcher = $annotationFetcher;
 		$this->annotationMarker = $annotationMarker;
-		$this->config = $config;
 		$this->permissionManager = $permissionManager;
 	}
 
@@ -38,7 +32,6 @@ class Hooks implements BeforePageDisplayHook {
 	 * @inheritDoc
 	 */
 	public function onBeforePageDisplay( $out, $skin ): void {
-		// Fixme, only if user has rights
 		if (
 			!$out->getTitle() ||
 			$out->getTitle()->getNamespace() < 0 ||

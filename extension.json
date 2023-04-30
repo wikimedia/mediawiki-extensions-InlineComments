@@ -26,7 +26,6 @@
 			"services": [
 				"InlineComments:AnnotationFetcher",
 				"InlineComments:AnnotationMarker",
-				"MainConfig",
 				"PermissionManager"
 			]
 		},
