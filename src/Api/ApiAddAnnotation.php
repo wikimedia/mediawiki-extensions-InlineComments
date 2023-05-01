@@ -40,7 +40,8 @@ class ApiAddAnnotation extends ApiBase {
 
 		$user = $this->getUser();
 		$item = [
-			'pre' => $data['pre'],
+			// Sometimes there is disagreement about if text starts with a newline so left trim.
+			'pre' => ltrim( $data['pre'] ),
 			'body' => $data['body'],
 			'container' => $data['container'],
 			// FIXME do we want to enforce max length (Other than 2MB article limit)
