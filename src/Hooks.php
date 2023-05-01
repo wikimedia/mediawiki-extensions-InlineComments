@@ -51,8 +51,12 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 		if (
 			!$out->getTitle() ||
 			$out->getTitle()->getNamespace() < 0 ||
-			!$out->getTitle()->exists()
+			!$out->getTitle()->exists() ||
+			$out->getRequest()->getVal( 'veaction' ) === 'edit' ||
+			$out->getRequest()->getVal( 'action', 'view' ) !== 'view'
 		) {
+			// TODO: In the future we might not exit on action=submit
+			// and instead show the previous annotations on page preview.
 			return;
 		}
 		$canEditComments = $this->permissionManager->userCan(
