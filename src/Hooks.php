@@ -4,10 +4,12 @@ namespace MediaWiki\Extension\InlineComments;
 use CommentStoreComment;
 use Config;
 use DeferredUpdates;
+use LogicException;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Storage\Hook\MultiContentSaveHook;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
+use Title;
 use User;
 use WikiPage;
 
@@ -87,6 +89,7 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 	 * Setup function.
 	 *
 	 * Make forwards compatible with 1.39
+	 * @suppress PhanUndeclaredClassReference
 	 */
 	public static function setup() {
 		if (
@@ -151,6 +154,9 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 			return;
 		}
 		$annotations = $rev->getSlot( AnnotationContent::SLOT_NAME )->getContent();
+		if ( !$annotations instanceof AnnotationContent ) {
+			throw new LogicException( "Expected AnnotationContent content type" );
+		}
 		if ( $annotations->isEmpty() ) {
 			return;
 		}
@@ -170,7 +176,7 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 							$count++;
 						}
 					}
-					$wp = WikiPage::factory( $rev->getPageAsLinkTarget() );
+					$wp = WikiPage::factory( Title::newFromLinkTarget( $rev->getPageAsLinkTarget() ) );
 					$sysUser = User::newSystemUser( 'InlineComments bot' );
 					$pageUpdater = $wp->newPageUpdater( $sysUser );
 					$prevRevision = $pageUpdater->grabParentRevision();
