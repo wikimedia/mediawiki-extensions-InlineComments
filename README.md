@@ -1,10 +1,15 @@
-== Installing ==
+InlineComments is a MediaWiki extension to allow users to highlight text on a page
+and add a comment to it. All directly from page view. Comments are stored in a separate
+slot, so they do not alter the wikitext while still being tied to the page and showing
+up on watchlists and recent changes.
+
+## Installing
 
 Copy the extension into your extensions directory in a directory named InlineComments.
 
 Add `wfLoadExtension( 'InlineComments' );` to the end of LocalSettings.php
 
-== Using ==
+## Using
 If we are a logged in user (or otherwise have the inlinecomments-add user right) you can select some text. A small
 icon will appear. You can add a comment by clicking the icon or typing ctrl+alt+m.
 
@@ -12,7 +17,7 @@ A dialog will appear to add your comment. Once you hit save, it will be shown to
 
 If you click on an already existing comment, tools appear to either resolve (delete) the comment or reply to it.
 
-== Configuration ==
+## Configuration
 
 You can set `$wgInlineCommentsAutoResolveComments = false;` in your LocalSettings.php to disable
 automatically removing comments that aren't attached to any text in the page.
@@ -20,7 +25,7 @@ automatically removing comments that aren't attached to any text in the page.
 You can adjust who can make inline comments by adjusting what user groups have the inlinecomments-add
 user right using the $wgGroupPermissions variable. The default is logged in users only.
 
-== Uninstalling ==
+## Uninstalling
 
 You can uninstall the extension by removing `wfLoadExtension( 'InlineComments' );` from LocalSettings.php
 
