@@ -140,6 +140,10 @@
 			{
 				// We have to go up a level in tree
 				curNode = curNode.parentNode.nextSibling;
+				while ( curNode && curNode.contains( range.endContainer ) ) {
+					// descend into tree if we are at end.
+					curNode = curNode.firstChild;
+				}
 			} else {
 				curNode = curNode.nextSibling;
 				while ( curNode && curNode.contains( range.endContainer ) ) {
