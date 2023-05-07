@@ -110,6 +110,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 						$this->resetAnnotation( $key );
 						$annotation['skipCount']--;
 						$annotation['state'] = self::LOOKING_PRE;
+						$this->maybeTransition( $key );
 					} else {
 						$annotation['state'] = self::DONE;
 					}
