@@ -34,12 +34,18 @@ class ConvertComments extends Maintenance {
 		$contentModelStore = MediaWikiServices::getInstance()->getContentModelStore();
 		// Don't use constants so this still works after uninstall.
 		$commentsId = $slotRoleStore->acquireId( 'inlinecomments' );
+		$newId = null;
 		switch ( $this->getOption( 'format' ) ) {
 			case 'json':
 				$newId = $contentModelStore->acquireId( CONTENT_MODEL_JSON );
 				break;
 			case 'fallback':
-				$newId = $contentModelStore->acquireId( CONTENT_MODEL_UNKNOWN );
+				if ( defined( 'CONTENT_MODEL_UNKNOWN' ) ) {
+					// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
+					$newId = $contentModelStore->acquireId( CONTENT_MODEL_UNKNOWN );
+				} else {
+					$this->fatalError( "fallback only supported MW 1.36+" );
+				}
 				break;
 			case 'comments':
 				$newId = $contentModelStore->acquireId( 'annotation+json' );
@@ -59,6 +65,7 @@ class ConvertComments extends Maintenance {
 			'content_id'
 		];
 		$conds = [ 'slot_content_id = content_id' ];
+		$newConds = $conds;
 		$options = [
 			'LIMIT' => $this->getBatchSize(),
 			'ORDER BY' => 'slot_revision_id asc, slot_role_id asc'
@@ -96,11 +103,24 @@ class ConvertComments extends Maintenance {
 			}
 			$this->output( '.' );
 			if ( $edited ) {
-				$this->waitForReplication();
+				$this->waitForReplicationCompat();
 			}
 			$res = $dbw->select( $tables, $fields, $newConds, __METHOD__, $options );
 		}
 		$this->output( "\n Updated $count out of $total rows. $skipped rows were already correct.\n" );
+	}
+
+	/**
+	 * compat hack for 1.35
+	 */
+	private function waitForReplicationCompat() {
+		if ( method_exists( $this, 'waitForReplication' ) ) {
+			// @phan-suppress-next-line PhanUndeclaredMethod
+			$this->waitForReplication();
+			return;
+		}
+		// 1.35
+		MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->waitForReplication();
 	}
 }
 

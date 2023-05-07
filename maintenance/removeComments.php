@@ -65,7 +65,7 @@ class RemoveComments extends Maintenance {
 			}
 			$this->output( '.' );
 			if ( $edited ) {
-				$this->waitForReplication();
+				$this->waitForReplicationCompat();
 			}
 			$res = $dbr->select( $tables, $fields, $conds, __METHOD__, $options, $join );
 		}
@@ -77,7 +77,8 @@ class RemoveComments extends Maintenance {
 	private function deleteComments( $pageId ) {
 		$title = Title::newFromId( $pageId, Title::READ_LATEST );
 		$wp = WikiPage::factory( $title );
-		$user = User::newSystemUser( User::MAINTENANCE_SCRIPT_USER, [ 'steal' => true ] );
+		// Replace with User::MAINTENANCE_SCRIPT_USER when we drop support for 1.35
+		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		$pageUpdater = $wp->newPageUpdater( $user );
 		$prevRevision = $pageUpdater->grabParentRevision();
 		if ( !$prevRevision ) {
@@ -94,6 +95,19 @@ class RemoveComments extends Maintenance {
 		}
 
 		$this->output( "Done page $pageId: " . $title->getPrefixedText() . ".\n" );
+	}
+
+	/**
+	 * compat hack for 1.35
+	 */
+	private function waitForReplicationCompat() {
+		if ( method_exists( $this, 'waitForReplication' ) ) {
+			// @phan-suppress-next-line PhanUndeclaredMethod
+			$this->waitForReplication();
+			return;
+		}
+		// 1.35
+		MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->waitForReplication();
 	}
 
 }
