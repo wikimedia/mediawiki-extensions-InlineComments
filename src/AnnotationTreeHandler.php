@@ -54,6 +54,10 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 		$this->annotations[$key]['endElement'] = null;
 		$this->annotations[$key]['preRemaining'] = $this->annotations[$key]['pre'];
 		$this->annotations[$key]['bodyRemaining'] = $this->annotations[$key]['body'];
+		if ( !isset( $this->annotations[$key]['skipCount'] ) ) {
+			// skipCount introduced later, old comments might not have it.
+			$this->annotations[$key]['skipCount'] = 0;
+		}
 		$topElems = $this->annotations[$key]['topElements'] ?? [];
 		foreach ( $topElems as $elem ) {
 			// TODO: Potentially there may be circurmstances where this is called too late.
@@ -102,7 +106,13 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 				/* fallthrough */
 			case self::LOOKING_BODY:
 				if ( $annotation['bodyRemaining'] === '' ) {
-					$annotation['state'] = self::DONE;
+					if ( $annotation['skipCount'] ) {
+						$this->resetAnnotation( $key );
+						$annotation['skipCount']--;
+						$annotation['state'] = self::LOOKING_PRE;
+					} else {
+						$annotation['state'] = self::DONE;
+					}
 				}
 				break;
 		}
@@ -149,17 +159,19 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 								// we are at a sibling node and need to reopen
 								// the span tag
 								$annotation['state'] = self::LOOKING_BODY;
-								if ( $ref->userData->snData === null ) {
-									$ref->userData->snData = [];
+								if ( !$annotation['skipCount'] ) {
+									if ( $ref->userData->snData === null ) {
+										$ref->userData->snData = [];
+									}
+									$ref->userData->snData['annotations'][] = [
+										$key,
+										$i - $start,
+										count( $ref->userData->children ),
+										AnnotationFormatter::START
+									];
+									$annotation['startElement'] = $ref;
+									$annotation['topElements'][] = $ref;
 								}
-								$ref->userData->snData['annotations'][] = [
-									$key,
-									$i - $start,
-									count( $ref->userData->children ),
-									AnnotationFormatter::START
-								];
-								$annotation['startElement'] = $ref;
-								$annotation['topElements'][] = $ref;
 							}
 							$annotation['bodyRemaining'] = substr(
 								$annotation['bodyRemaining'],
@@ -175,13 +187,15 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 						if ( strlen( $annotation['bodyRemaining'] ) !== 0 ) {
 							break;
 						} else {
-							$ref->userData->snData['annotations'][] = [
-								$key,
-								$i - $start + 1,
-								count( $ref->userData->children ),
-								AnnotationFormatter::END
-							];
-							$annotation['endElement'] = $ref;
+							if ( !$annotation['skipCount'] ) {
+								$ref->userData->snData['annotations'][] = [
+									$key,
+									$i - $start + 1,
+									count( $ref->userData->children ),
+									AnnotationFormatter::END
+								];
+								$annotation['endElement'] = $ref;
+							}
 							$this->maybeTransition( $key );
 						}
 						break;
@@ -209,6 +223,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 		foreach ( $this->annotations as $key => &$annotation ) {
 			if (
 				$annotation['state'] === self::LOOKING_BODY &&
+				!$annotation['skipCount'] &&
 				in_array( $element, $annotation['topElements'] )
 			) {
 				$annotation['state'] = self::LOOKING_SIBLING_RESTART;

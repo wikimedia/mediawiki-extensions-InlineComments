@@ -104,6 +104,12 @@ class AnnotationContent extends JsonContent {
 						}
 					}
 					break;
+				case 'skipCount':
+					// skipCount not required parameter for back-compat.
+					if ( !is_int( $value ) || $value < 0 ) {
+						return false;
+					}
+					break;
 				default:
 					return false;
 			}

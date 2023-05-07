@@ -55,7 +55,8 @@ class ApiAddAnnotation extends ApiBase {
 				]
 			],
 			'id' => (string)mt_rand(),
-			'containerAttribs' => []
+			'containerAttribs' => [],
+			'skipCount' => $data['skipcount']
 		];
 
 		if ( isset( $data['containerid'] ) && $data['containerid'] !== '' ) {
@@ -160,7 +161,7 @@ class ApiAddAnnotation extends ApiBase {
 				ParamValidator::PARAM_TYPE => 'string',
 			],
 			'pageid' => [
-				ParamValidator::PARAM_TYPE => 'string',
+				ParamValidator::PARAM_TYPE => 'integer',
 			],
 			'pre' => [
 				ParamValidator::PARAM_TYPE => 'string',
@@ -183,6 +184,10 @@ class ApiAddAnnotation extends ApiBase {
 			'containerclass' => [
 				ParamValidator::PARAM_TYPE => 'string',
 			],
+			'skipcount' => [
+				ParamValidator::PARAM_TYPE => 'integer',
+				ParamValidator::PARAM_REQUIRED => true,
+			]
 		];
 	}
 }

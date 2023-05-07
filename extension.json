@@ -107,7 +107,8 @@
 				"inlinecomments-addcomment-tooltip",
 				"inlinecomments-addcomment-save",
 				"inlinecomments-addcomment-cancel",
-				"inlinecomments-placeholder"
+				"inlinecomments-placeholder",
+				"inlinecomments-error-notext"
 			]
 		}
 	},

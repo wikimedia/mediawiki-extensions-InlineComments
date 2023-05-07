@@ -16,6 +16,7 @@
 	"apihelp-inlinecomments-add-param-comment": "{{doc-apihelp-param|inlinecomments-add|comment}}",
 	"apihelp-inlinecomments-add-param-containerid": "{{doc-apihelp-param|inlinecomments-add|containerid}}",
 	"apihelp-inlinecomments-add-param-containerclass": "{{doc-apihelp-param|inlinecomments-add|containerclass}}",
+	"apihelp-inlinecomments-add-param-skipcount": "{{doc-apihelp-param|inlinecomments-add|skipcount}}",
 	"inlinecomments-invaliditem": "Api error if annotation being added is not valid",
 	"action-inlinecomments-add": "Message for inlinecomments action",
 	"right-inlinecomments-add": "Message for inlinecomments user right",
@@ -39,5 +40,6 @@
 	"apihelp-inlinecomments-resolve-param-title": "{{doc-apihelp-param|inlinecomments-resolve|title}}",
 	"apihelp-inlinecomments-resolve-param-pageid": "{{doc-apihelp-param|inlinecomments-resolve|pageid}}",
 	"apihelp-inlinecomments-resolve-param-id": "{{doc-apihelp-param|inlinecomments-resolve|id}}",
-	"inlinecomments-editsummary-autoresolve": "Edit summary for automatic comment removal after text gets removed. $1 is number of comments resolved, $2 is user who made edit triggering this"
+	"inlinecomments-editsummary-autoresolve": "Edit summary for automatic comment removal after text gets removed. $1 is number of comments resolved, $2 is user who made edit triggering this",
+	"inlinecomments-error-notext": "Warning shown to the user, if during save of an inline comment, the javascript cannot find the annotated text. It is likely that the wrong text will be highlighted, or possibly the annotation might not match anything and be automatically removed. The message advises the user to reload the page to see what the result is."
 }

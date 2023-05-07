@@ -172,5 +172,25 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.2&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.2 (page does not exist)">talk</a>)</span></div></aside></div>',
 			'Prefix appears twice'
 		];
+		yield [
+			'<div class="mw-parser-output"><ul><li>Foo</li><li>Foo</li><li>Foo</li></div>',
+			[
+				[
+					'id' => 'abc',
+					'pre' => 'F',
+					'body' => 'oo',
+					'container' => 'li',
+					'comments' => [ [
+						'comment' => 'Hello',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.1'
+					] ],
+					'skipCount' => 1
+				]
+			],
+			'<div class="mw-parser-output"><ul><li>Foo</li><li>F<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">oo</span></li><li>Foo</li></ul></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'Skip first'
+		];
 	}
 }

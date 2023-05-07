@@ -202,6 +202,54 @@
 		}
 		return textContent;
 	}
+
+	/**
+	 * See how many times this text is in document, so we select the right one
+	 */
+	var getSkipCount = function( info, containerNode ) {
+		var selector = '#mw-content-text > .mw-parser-output ' + CSS.escape( info.container );
+		if ( info.containerid ) {
+			selector += '#' + CSS.escape( info.containerid )
+		}
+		if ( info.containerclass ) {
+			for ( let i = 0; i < info.containerclass.length; i++ ) {
+				selector += '.' + CSS.escape( info.containerclass[i] );
+			}
+		}
+		var elms = document.querySelectorAll( selector );
+		var count = -1;
+		containers: for ( let i = 0; i < elms.length; i++ ) {
+			var curNode;
+			var iterator = document.createNodeIterator( elms[i], NodeFilter.SHOW_TEXT );
+			var origText = info.pre + info.body;
+			var textToFind = info.pre + info.body;
+			while((curNode = iterator.nextNode())) {
+				for ( let j = 0; j < curNode.data.length; j++ ) {
+					if ( curNode.data[j] === textToFind[0] ) {
+						textToFind = textToFind.substring(1);
+						if ( textToFind.length === 0 ) {
+							count++;
+							if ( containerNode.contains( curNode ) ) {
+								break containers;
+							} else {
+								continue containers;
+							}
+						}
+					} else {
+						textToFind = origText;
+					}
+				}
+			}
+		}
+		if ( count < 0 ) {
+			// We didn't find it. Some sort of error. Warn user.
+			mw.notify( mw.msg( 'inlinecomments-error-notext' ), { type: 'error' } );
+			// Still try to save and hope for the best.
+			return 0;
+		}
+		return count;
+	}
+
 	var saveToServer = function( asideElm, containerNode, pre, body, comment ) {
 		if (containerNode.nodeType !== Node.ELEMENT_NODE ) {
 			containerNode = containerNode.parentElement;
@@ -233,6 +281,8 @@
 		if ( containerNode.hasAttribute( 'class' ) ) {
 			data['containerclass'] = containerNode.className;
 		}
+
+		data['skipcount'] = getSkipCount( data, containerNode );
 
 		mw.loader.using( 'mediawiki.api', function () {
 			var api = new mw.Api();
