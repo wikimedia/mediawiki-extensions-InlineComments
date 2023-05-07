@@ -125,17 +125,7 @@ class AnnotationFormatter extends HtmlFormatter {
 			}
 			switch ( $item[self::POSITION] ) {
 				case self::START:
-					$newContents .= Html::openElement(
-						'span',
-						[
-							'class' => [
-								'mw-annotation-highlight',
-								'mw-annotation-' . $this->annotations[$item[0]]['id']
-							],
-							'title' => $this->annotations[$item[0]]['comments'][0]['comment'],
-							'data-mw-highlight-id' => $this->annotations[$item[0]]['id'],
-						]
-					);
+					$newContents .= $this->openSpan( $item[self::KEY] );
 					break;
 				case self::END:
 					$newContents .= Html::closeElement( 'span' );
@@ -149,6 +139,26 @@ class AnnotationFormatter extends HtmlFormatter {
 		}
 		$newContents .= parent::characters( $parent, $text, $curIndex, $start + $length - $curIndex );
 		return $newContents;
+	}
+
+	/**
+	 * Make an opening span for a specific annotation key
+	 *
+	 * @param int $key Key into annotations array
+	 * @return string html span element
+	 */
+	private function openSpan( $key ) {
+		return Html::openElement(
+			'span',
+			[
+				'class' => [
+					'mw-annotation-highlight',
+					'mw-annotation-' . $this->annotations[$key]['id']
+				],
+				'title' => $this->annotations[$key]['comments'][0]['comment'],
+				'data-mw-highlight-id' => $this->annotations[$key]['id'],
+			]
+		);
 	}
 
 	/**
@@ -168,14 +178,47 @@ class AnnotationFormatter extends HtmlFormatter {
 
 		$data = $node->snData['annotations'];
 		$spanEnds = '';
+		$spanBegins = '';
+		$elmBegins = '';
 		foreach ( $data as $item ) {
 			if ( $item[self::POSITION] === self::SIBLING_END ) {
 				// We have to close a tag so it can be
 				// reopened inside the next sibling element.
 				$spanEnds .= '</span>';
 			}
+
+			if ( $item[self::POSITION] === self::END ) {
+				// One of the text children of this element end the span.
+				// If we did not start the span here, we should
+				// end and restart it, to prevent mis-nesting.
+				// TODO: This should be moved to AnnotationTreeFormatter.
+				if ( !$this->hasStartForKey( $node, $item[self::KEY] ) ) {
+					$elmBegins = '</span>';
+					$spanBegins = $this->openSpan( $item[self::KEY] );
+				}
+			}
 		}
-		return parent::element( $parent, $node, $contents . $spanEnds );
+		return $elmBegins . parent::element( $parent, $node, $spanBegins . $contents . $spanEnds );
+	}
+
+	/**
+	 * Check if a node has the start of an annotation.
+	 *
+	 * @param SerializerNode $node
+	 * @param int $key Key into $this->annotations
+	 * @return bool
+	 */
+	private function hasStartForKey( $node, $key ) {
+		$data = $node->snData['annotations'];
+		foreach ( $data as $item ) {
+			if (
+				$item[self::KEY] === $key &&
+				$item[self::POSITION] === self::START
+			) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
