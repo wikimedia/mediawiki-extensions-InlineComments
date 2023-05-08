@@ -90,8 +90,7 @@ class AnnotationFormatter extends HtmlFormatter {
 		return Html::rawElement(
 			'div',
 			[ 'class' => 'mw-inlinecomment-author' ],
-			Linker::userLink( $userId, $username ) .
-			Linker::userToolLinks( $userId, $username, false, Linker::TOOL_LINKS_NOBLOCK )
+			Linker::userLink( $userId, $username )
 		);
 	}
 
