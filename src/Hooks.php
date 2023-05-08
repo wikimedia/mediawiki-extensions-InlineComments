@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\InlineComments;
 use CommentStoreComment;
 use Config;
 use DeferredUpdates;
+use Language;
 use LogicException;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Permissions\PermissionManager;
@@ -21,6 +22,8 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 	private AnnotationMarker $annotationMarker;
 	/** @var PermissionManager */
 	private $permissionManager;
+	/** @var Language */
+	private $contentLanguage;
 	/** @var Config */
 	private $config;
 	/** @var bool Variable to guard against indef loop when removing comments */
@@ -30,17 +33,20 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 	 * @param AnnotationFetcher $annotationFetcher
 	 * @param AnnotationMarker $annotationMarker
 	 * @param PermissionManager $permissionManager
+	 * @param Language $contentLanguage
 	 * @param Config $config
 	 */
 	public function __construct(
 		AnnotationFetcher $annotationFetcher,
 		AnnotationMarker $annotationMarker,
 		PermissionManager $permissionManager,
+		Language $contentLanguage,
 		Config $config
 	) {
 		$this->annotationFetcher = $annotationFetcher;
 		$this->annotationMarker = $annotationMarker;
 		$this->permissionManager = $permissionManager;
+		$this->contentLanguage = $contentLanguage;
 		$this->config = $config;
 	}
 
@@ -81,7 +87,12 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 
 		$html = $out->getHtml();
 		$out->clearHtml();
-		$result = $this->annotationMarker->markUp( $html, $annotations );
+		$result = $this->annotationMarker->markUp(
+			$html,
+			$annotations,
+			$out->getLanguage(),
+			$out->getUser()
+		);
 		$out->addHtml( $result );
 
 		$out->addJsConfigVars( 'wgInlineCommentsCanEdit', $canEditComments );
@@ -171,7 +182,13 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 				$rev = $renderedRevision->getRevision();
 				// Do this deferred, because parsing can take a lot of time.
 				$html = $renderedRevision->getRevisionParserOutput()->getText();
-				[ , $unused ] = $this->annotationMarker->markUpAndGetUnused( $html, $annotations );
+				$sysUser = User::newSystemUser( 'InlineComments bot' );
+				[ , $unused ] = $this->annotationMarker->markUpAndGetUnused(
+					$html,
+					$annotations,
+					$this->contentLanguage,
+					$sysUser
+				);
 				if ( in_array( true, $unused ) ) {
 					$count = 0;
 					foreach ( $unused as $key => $value ) {
@@ -181,7 +198,6 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 						}
 					}
 					$wp = WikiPage::factory( Title::newFromLinkTarget( $rev->getPageAsLinkTarget() ) );
-					$sysUser = User::newSystemUser( 'InlineComments bot' );
 					$pageUpdater = $wp->newPageUpdater( $sysUser );
 					$prevRevision = $pageUpdater->grabParentRevision();
 					if (

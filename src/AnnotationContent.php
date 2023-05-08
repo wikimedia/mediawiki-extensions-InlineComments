@@ -5,6 +5,7 @@ use FormatJson;
 use JsonContent;
 use LogicException;
 use User;
+use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class AnnotationContent extends JsonContent {
 	public const CONTENT_MODEL = 'annotation+json';
@@ -98,7 +99,16 @@ class AnnotationContent extends JsonContent {
 							!isset( $commentVal['actorId'] ) ||
 							!is_int( $commentVal['actorId'] ) ||
 							$commentVal['actorId'] <= 0 ||
-							!is_string( $commentVal['comment'] )
+							!is_string( $commentVal['comment'] ) ||
+							// Backwards compatibility: timestamp is not
+							// required, but if set must be valid as TS_MW
+							(
+								isset( $commentVal['timestamp'] )
+								&& ConvertibleTimestamp::convert(
+									TS_MW,
+									$commentVal['timestamp']
+								) === false
+							)
 						) {
 							return false;
 						}
@@ -210,7 +220,8 @@ class AnnotationContent extends JsonContent {
 					'comment' => $comment,
 					'userId' => $user->getId(),
 					'username' => $user->getName(),
-					'actorId' => $user->getActorId( wfGetDB( DB_PRIMARY ) )
+					'actorId' => $user->getActorId( wfGetDB( DB_PRIMARY ) ),
+					'timestamp' => wfTimestampNow(),
 				];
 				break;
 			}

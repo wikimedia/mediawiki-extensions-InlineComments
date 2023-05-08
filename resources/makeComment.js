@@ -296,6 +296,7 @@
 					return;
 				}
 				// TODO this should look more like it does on the server.
+				// (username should be a link, timestamp should be included)
 				var p = document.createElement( 'p' );
 				p.textContent = comment;
 				if ( mw.config.get( 'wgUserName' ) !== null ) {

@@ -51,7 +51,8 @@ class ApiAddAnnotation extends ApiBase {
 					'comment' => $data['comment'],
 					'actorId' => $user->getActorId( wfGetDB( DB_PRIMARY ) ),
 					'userId' => $user->getId(),
-					'username' => $user->getName()
+					'username' => $user->getName(),
+					'timestamp' => wfTimestampNow(),
 				]
 			],
 			'id' => (string)mt_rand(),

@@ -29,6 +29,7 @@
 				"InlineComments:AnnotationFetcher",
 				"InlineComments:AnnotationMarker",
 				"PermissionManager",
+				"ContentLanguage",
 				"MainConfig"
 			]
 		},

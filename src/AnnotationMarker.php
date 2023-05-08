@@ -3,11 +3,13 @@ namespace MediaWiki\Extension\InlineComments;
 
 // Namespace got renamed to be prefixed with Wikimedia!
 use Config;
+use Language;
 use RemexHtml\HTMLData;
 use RemexHtml\Serializer\Serializer;
 use RemexHtml\Tokenizer\Tokenizer;
 use RemexHtml\TreeBuilder\Dispatcher;
 use RemexHtml\TreeBuilder\TreeBuilder;
+use User;
 
 // Based on MediaWiki\Html\HtmlHelper
 
@@ -29,10 +31,22 @@ class AnnotationMarker {
 	 *
 	 * @param string $html Input html
 	 * @param AnnotationContent $annotationContent The annotations to add
+	 * @param Language $reqLanguage for formatting timestamps
+	 * @param User $reqUser for formatting timestamps
 	 * @return string HTML with annotations and asides added
 	 */
-	public function markUp( string $html, AnnotationContent $annotationContent ) {
-		return $this->markUpAndGetUnused( $html, $annotationContent )[0];
+	public function markUp(
+		string $html,
+		AnnotationContent $annotationContent,
+		Language $reqLanguage,
+		User $reqUser
+	) {
+		return $this->markUpAndGetUnused(
+			$html,
+			$annotationContent,
+			$reqLanguage,
+			$reqUser
+		)[0];
 	}
 
 	/**
@@ -40,9 +54,16 @@ class AnnotationMarker {
 	 *
 	 * @param string $html Input html
 	 * @param AnnotationContent $annotationsContent The annotations to add
+	 * @param Language $reqLanguage for formatting timestamps
+	 * @param User $reqUser for formatting timestamps
 	 * @return array HTML with annotations and asides added, plus array of annotations not used.
 	 */
-	public function markUpAndGetUnused( string $html, AnnotationContent $annotationsContent ) {
+	public function markUpAndGetUnused(
+		string $html,
+		AnnotationContent $annotationsContent,
+		Language $reqLanguage,
+		User $reqUser
+	) {
 		$annotations = $annotationsContent->getData()->getValue();
 		// TODO: We may want to set the performance optimisation options.
 
@@ -58,7 +79,13 @@ class AnnotationMarker {
 			};
 		}
 
-		$annotationFormatter = new AnnotationFormatter( [], $annotations, $getUnusedAnnotations );
+		$annotationFormatter = new AnnotationFormatter(
+			[],
+			$annotations,
+			$getUnusedAnnotations,
+			$reqLanguage,
+			$reqUser
+		);
 		$serializer = new Serializer( $annotationFormatter );
 		$alist = new AnnotationTreeHandler( $serializer, $annotations );
 		$treeBuilder = new TreeBuilder( $alist );
