@@ -4,6 +4,7 @@
 	}
 
 	#main {
+		position: relative;
 		padding-right: calc( max(2.5rem, 300px ) ) !important;
 	}
 }
