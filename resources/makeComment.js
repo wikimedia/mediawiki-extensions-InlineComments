@@ -14,7 +14,7 @@
 		}
 	} );
 
-	
+
 	var icon = new OO.ui.IconWidget( {
 		icon: 'speechBubbleAdd',
 		title: mw.msg( 'inlinecomments-addcomment-tooltip' )
@@ -127,7 +127,7 @@
 			console.log( "Unexpected start node type " + range.startContainer.nodeType );
 		}
 
-		
+
 
 		// Middle nodes
 		// We know that endContainer !== startContainer because we used surroundContents in that case.
@@ -211,13 +211,15 @@
 	 * See how many times this text is in document, so we select the right one
 	 */
 	var getSkipCount = function( info, containerNode ) {
-		var selector = '#mw-content-text > .mw-parser-output ' + CSS.escape( info.container );
+		var selector = '#mw-content-text > .mw-parser-output ' + CSS.escape( info.container ),
+			containerClasses = [];
 		if ( info.containerid ) {
 			selector += '#' + CSS.escape( info.containerid )
 		}
 		if ( info.containerclass ) {
-			for ( let i = 0; i < info.containerclass.length; i++ ) {
-				selector += '.' + CSS.escape( info.containerclass[i] );
+			containerClasses = info.containerclass.split(' ');
+			for ( let i = 0; i < containerClasses.length; i++ ) {
+				selector += '.' + CSS.escape( containerClasses[i] );
 			}
 		}
 		var elms = document.querySelectorAll( selector );
