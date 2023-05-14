@@ -200,7 +200,12 @@ class AnnotationFormatter extends HtmlFormatter {
 	 * @inheritDoc
 	 */
 	public function element( SerializerNode $parent, SerializerNode $node, $contents ) {
-		if ( $node->name == 'div' && ( $node->attrs->getValues()['class'] ?? '' ) === 'mw-parser-output' ) {
+		if (
+			$node->name == 'div'
+			&& ( $node->attrs->getValues()['class'] ?? '' ) === 'mw-parser-output'
+			// Ensure the parent element has no `mw-parser-output` class
+			&& ( $parent->attrs->getValues()['class'] ?? '' ) !== 'mw-parser-output'
+		) {
 			return parent::element( $parent, $node, $contents ) . $this->getAsides();
 		}
 		if ( !( $node->snData['annotations'] ?? null ) ) {
