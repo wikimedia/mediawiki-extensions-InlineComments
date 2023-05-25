@@ -37,10 +37,13 @@
 
 	document.body.appendChild( iconContainer );
 	var checkForNewSelection = function () {
+		var parent = document.querySelector( '#mw-content-text > .mw-parser-output');
 		if (
 			getSelection().rangeCount >= 1 &&
 			getSelection().getRangeAt(0).collapsed === false &&
-			!document.getElementsByClassName( 've-init-target' ).length
+			!document.getElementsByClassName( 've-init-target' ).length &&
+			parent &&
+			parent.contains( getSelection().getRangeAt(0).commonAncestorContainer )
 		) {
 			var rect = getSelection().getRangeAt(0).getBoundingClientRect();
 			iconContainer.style.position = 'fixed';
