@@ -3,9 +3,10 @@
 	var addComment;
 
 	document.addEventListener( 'keydown', function (e) {
+		// Note - on mac option+m gives a micro for e.key but an e.code of KeyM.
 		if (
-			( e.key === 'M' || e.key === 'm'  ) &&
-			e.ctrlKey && e.altKey &&
+			( e.key === 'M' || e.key === 'm' || e.code === 'KeyM'  ) &&
+			( e.ctrlKey || e.metaKey ) && e.altKey &&
 			getSelection().rangeCount >= 1 &&
 			getSelection().getRangeAt(0).collapsed === false &&
 			!document.getElementsByClassName( 've-init-target' ).length
