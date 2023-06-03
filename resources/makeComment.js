@@ -185,11 +185,8 @@
 
 		// End node
  		if ( range.endContainer.nodeType === Node.ELEMENT_NODE ) {
-			// Not sure if this case is possible, but if it does happen
-			// we should have the whole node highlighted.
-			textContent += range.endContainer.textContent;
-			range.endContainer.classList.add( newClass );
-			range.endContainer.classList.add( 'mw-annotation-highlight' );
+			// We are right up to the end of an element, so don't have to do anything else.
+			// On firefox, this often happens when selecting headers.
 		} else if ( range.endContainer.nodeType === Node.TEXT_NODE ) {
 			let endParent = range.endContainer.parentNode;
 			let postText = document.createTextNode( range.endContainer.data.substring( range.endOffset ) );
@@ -215,15 +212,18 @@
 	 * See how many times this text is in document, so we select the right one
 	 */
 	var getSkipCount = function( info, containerNode ) {
-		var selector = '#mw-content-text > .mw-parser-output ' + CSS.escape( info.container ),
+		var selector = '#mw-content-text > .mw-parser-output',
 			containerClasses = [];
-		if ( info.containerid ) {
-			selector += '#' + CSS.escape( info.containerid )
-		}
-		if ( info.containerclass ) {
-			containerClasses = info.containerclass.split(' ');
-			for ( let i = 0; i < containerClasses.length; i++ ) {
-				selector += '.' + CSS.escape( containerClasses[i] );
+		if ( info.containerclass !== 'mw-parser-output' ) {
+			selector += ' ' + CSS.escape( info.container );
+			if ( info.containerid ) {
+				selector += '#' + CSS.escape( info.containerid )
+			}
+			if ( info.containerclass ) {
+				containerClasses = info.containerclass.split(' ');
+				for ( let i = 0; i < containerClasses.length; i++ ) {
+					selector += '.' + CSS.escape( containerClasses[i] );
+				}
 			}
 		}
 		var elms = document.querySelectorAll( selector );
