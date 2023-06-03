@@ -138,12 +138,25 @@
 		while ( true ) {
 			if (
 				curNode.nextSibling === null &&
-				curNode.parentNode &&
-				curNode.parentNode.nextSibling &&
-				range.commonAncestorContainer.contains( curNode.parentNode.nextSibling ) )
-			{
-				// We have to go up a level in tree
-				curNode = curNode.parentNode.nextSibling;
+				curNode.parentNode
+			) {
+				// We hit the end of this branch of the tree, so go up the tree
+				// and back down to next leaf.
+				while (
+					curNode.nextSibling === null &&
+					curNode.parentNode
+				) {
+					curNode = curNode.parentNode;
+				}
+				if ( !curNode.nextSibling ) {
+					// not expected to happen
+					break;
+				}
+				curNode = curNode.nextSibling;
+				if ( !range.commonAncestorContainer.contains( curNode ) ) {
+					// not expected to happen.
+					break;
+				}
 				while ( curNode && curNode.contains( range.endContainer ) ) {
 					// descend into tree if we are at end.
 					curNode = curNode.firstChild;
