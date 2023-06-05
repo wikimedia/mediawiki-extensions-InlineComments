@@ -2,6 +2,7 @@
 
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationMarker;
+use MediaWiki\MediaWikiServices;
 
 class AnnotationMarkerTest extends MediaWikiTestCase {
 
@@ -21,7 +22,9 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 		$content = $this->getAC( $annotations );
 		$config = new HashConfig( [ 'InlineCommentsAutoResolveComments' => true ] );
 		$marker = new AnnotationMarker( $config );
-		$res = $marker->markUp( $inputHtml, $content );
+		$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
+		$user = User::newFromName( '127.0.0.1', false );
+		$res = $marker->markUp( $inputHtml, $content, $lang, $user );
 		$this->assertEquals( $expectedOutput, $res, $info );
 	}
 
@@ -55,7 +58,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><div id="foo">b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><div id="foo">b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></aside></div>',
 			'simple'
 		];
 		yield [
@@ -74,7 +77,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><div>b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><div>b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></aside></div>',
 			'inside div'
 		];
 		yield [
@@ -93,7 +96,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><div>More text. b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><div>More text. b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></aside></div>',
 			'Not full prefix'
 		];
 		yield [
@@ -112,7 +115,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.2&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.2 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
 			'inside paragraph'
 		];
 		yield [
@@ -131,7 +134,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first p<b>a</b>ragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.2&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.2 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first p<b>a</b>ragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
 			'inside paragraph with formatting'
 		];
 		yield [
@@ -150,7 +153,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph.' . "\n" . '</span></p><p><span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">This</span> is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.2&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.2 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph.' . "\n" . '</span></p><p><span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">This</span> is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
 			'spanning paragraph'
 		];
 		yield [
@@ -169,7 +172,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.2&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.2 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
 			'Prefix appears twice'
 		];
 		yield [
@@ -189,7 +192,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'skipCount' => 1
 				]
 			],
-			'<div class="mw-parser-output"><ul><li>Foo</li><li>F<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">oo</span></li><li>Foo</li></ul></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><ul><li>Foo</li><li>F<span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">oo</span></li><li>Foo</li></ul></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></aside></div>',
 			'Skip first'
 		];
 		yield [
@@ -209,7 +212,7 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 					'skipCount' => 1
 				]
 			],
-			'<div class="mw-parser-output"><ul><li>Foo</li><li><span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">Foo</span></li><li>Foo</li></ul></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> <span class="mw-usertoollinks">(<a href="/w/index.php?title=User_talk:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-usertoollinks-talk" title="User talk:127.0.0.1 (page does not exist)">talk</a>)</span></div></aside></div>',
+			'<div class="mw-parser-output"><ul><li>Foo</li><li><span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">Foo</span></li><li>Foo</li></ul></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></aside></div>',
 			'Skip first no prefix'
 		];
 	}
