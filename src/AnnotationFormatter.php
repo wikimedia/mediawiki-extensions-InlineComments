@@ -136,7 +136,10 @@ class AnnotationFormatter extends HtmlFormatter {
 			return parent::characters( $parent, $text, $start, $length );
 		}
 
-		$childNumb = count( $parent->children );
+		$childNumb = $parent->snData['curLinkId'];
+		if ( $childNumb === null ) {
+			return;
+		}
 		$data = array_filter(
 			$parent->snData['annotations'],
 			static function ( $val ) use ( $childNumb ) {

@@ -215,5 +215,24 @@ class AnnotationMarkerTest extends MediaWikiTestCase {
 			'<div class="mw-parser-output"><ul><li>Foo</li><li><span class="mw-annotation-highlight mw-annotation-abc" title="Hello" data-mw-highlight-id="abc">Foo</span></li><li>Foo</li></ul></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></aside></div>',
 			'Skip first no prefix'
 		];
+		yield [
+			'<div class="mw-parser-output"><p><i>This is</i> first paragraph.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div>',
+			[
+				[
+					'id' => 'abc',
+					'pre' => 'Th',
+					'body' => "is is the sec",
+					'container' => 'p',
+					'comments' => [ [
+						'comment' => 'Hello Paragraph',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.2'
+					] ],
+				]
+			],
+			'<div class="mw-parser-output"><p><i>This is</i> first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
+			'Prefix appears twice with first prefix in nested elm'
+		];
 	}
 }

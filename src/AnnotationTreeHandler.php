@@ -3,9 +3,10 @@
 namespace MediaWiki\Extension\InlineComments;
 
 use LogicException;
+use RemexHtml\Serializer\Serializer;
 use RemexHtml\TreeBuilder\Element;
 use RemexHtml\TreeBuilder\RelayTreeHandler;
-use RemexHtml\TreeBuilder\TreeHandler;
+use RemexHtml\TreeBuilder\TreeBuilder;
 
 class AnnotationTreeHandler extends RelayTreeHandler {
 	private const INACTIVE = 1;
@@ -17,11 +18,20 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	/** @var array Annotations (as an array) */
 	private $annotations;
 
+	/** @var int How many annotations are in progress? */
+	private $annotationsInFlight = 0;
+
+	/** @var array stack of events to send */
+	private $pendingEvents = [];
+
+	/** @var int next available link id */
+	private $linkId = 1;
+
 	/**
-	 * @param TreeHandler $serializer Base serializer class that provides fallback
+	 * @param Serializer $serializer Base serializer class that provides fallback
 	 * @param array $annotations List of annotations to add
 	 */
-	public function __construct( TreeHandler $serializer, $annotations ) {
+	public function __construct( Serializer $serializer, $annotations ) {
 		parent::__construct( $serializer );
 		// Can access serializer via $this->nextHandler.
 		$this->annotations = $annotations;
@@ -49,6 +59,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 * @param int $key The key for the annotation to reset
 	 */
 	private function resetAnnotation( int $key ) {
+		$oldState = $this->annotations[$key]['state'] ?? null;
 		$this->annotations[$key]['state'] = self::INACTIVE;
 		$this->annotations[$key]['startElement'] = null;
 		$this->annotations[$key]['endElement'] = null;
@@ -71,6 +82,11 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 			}
 		}
 		$this->annotations[$key]['topElements'] = [];
+
+		if ( $oldState >= self::LOOKING_BODY && $this->annotations[$key]['skipCount'] === 0 ) {
+			// We're resetting something considered in flight
+			$this->decrAnnotationsInFlight();
+		}
 	}
 
 	/**
@@ -100,6 +116,9 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 				if ( $annotation['preRemaining'] === '' ) {
 					$annotation['state'] = self::LOOKING_BODY;
 					$annotation['bodyRemaining'] = $annotation['body'];
+					if ( $annotation['skipCount'] === 0 ) {
+						$this->incrAnnotationsInFlight();
+					}
 				} else {
 					break;
 				}
@@ -113,6 +132,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 						$this->maybeTransition( $key );
 					} else {
 						$annotation['state'] = self::DONE;
+						$this->decrAnnotationsInFlight();
 					}
 				}
 				break;
@@ -124,9 +144,13 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 */
 	public function characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength ) {
 		if ( !( $ref instanceof Element ) ) {
-			parent::characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength );
+			$this->sendCharacters(
+				[ $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength ],
+				null
+			);
 			return;
 		}
+		$this->linkId++;
 		for ( $i = $start; $i < $start + $length; $i++ ) {
 			foreach ( $this->annotations as $key => &$annotation ) {
 				switch ( $annotation['state'] ) {
@@ -167,7 +191,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 									$ref->userData->snData['annotations'][] = [
 										$key,
 										$i - $start,
-										count( $ref->userData->children ),
+										$this->linkId,
 										AnnotationFormatter::START
 									];
 									$annotation['startElement'] = $ref;
@@ -192,7 +216,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 								$ref->userData->snData['annotations'][] = [
 									$key,
 									$i - $start + 1,
-									count( $ref->userData->children ),
+									$this->linkId,
 									AnnotationFormatter::END
 								];
 								$annotation['endElement'] = $ref;
@@ -205,7 +229,10 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 				}
 			}
 		}
-		parent::characters( $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength );
+		$this->sendCharacters(
+			[ $preposition, $ref, $text, $start, $length, $sourceStart, $sourceLength ],
+			$this->linkId
+		);
 	}
 
 	/**
@@ -214,6 +241,9 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	public function insertElement( $preposition, $ref, Element $element, $void, $sourceStart, $sourceLength ) {
 		$this->getMatchingContainer( $element );
 		parent::insertElement( $preposition, $ref, $element, $void, $sourceStart, $sourceLength );
+		if ( $preposition === TreeBuilder::UNDER ) {
+			$this->rememberPlacement( $ref, $element );
+		}
 	}
 
 	/**
@@ -231,6 +261,12 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 				$element->userData->snData['annotations'][] =
 					[ $key, -1, -1, AnnotationFormatter::SIBLING_END ];
 			}
+		}
+
+		if ( $this->annotationsInFlight === 0 ) {
+			// This is treated as a hint that we are done manipulating this tag.
+			// Only send if we actually are done with the tag.
+			parent::endTag( $element, $sourceStart, $sourceLength );
 		}
 	}
 
@@ -268,6 +304,109 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 			$this->markActive( $key );
 			$newList[] = $key;
 		}
+	}
+
+	/**
+	 * We are in middle of processing an annotation, so halt sending events
+	 *
+	 * We consider annotations that have progressed to the LOOKING_BODY stage as in flight.
+	 */
+	private function incrAnnotationsInFlight() {
+		$this->annotationsInFlight++;
+	}
+
+	/**
+	 * No longer processing, resume sending events if nothing else pending.
+	 */
+	private function decrAnnotationsInFlight() {
+		$this->annotationsInFlight--;
+		if ( $this->annotationsInFlight === 0 ) {
+			$this->flushEvents();
+		}
+		if ( $this->annotationsInFlight < 0 ) {
+			throw new LogicException( "Counter negative" );
+		}
+	}
+
+	/**
+	 * Call parent class or queue for calling later
+	 *
+	 * This allows us to store pending calls, in case we might
+	 * change our mind about an annotation matching later
+	 *
+	 * @param array $args Arguments to method call
+	 * @param int|null $linkId
+	 */
+	private function sendCharacters( array $args, $linkId ) {
+		if ( $this->annotationsInFlight === 0 ) {
+			$this->setLinkId( $args[0], $args[1], $linkId );
+			// @phan-suppress-next-line PhanParamTooFewUnpack
+			parent::characters( ...$args );
+		} else {
+			$this->pendingEvents[] = [ $args, $linkId ];
+		}
+	}
+
+	/**
+	 * Set the current link id for most recently emitted comments
+	 *
+	 * @todo This is a bit hacky, think up a better way of communicating this info
+	 *
+	 * @param int $preposition One of the TreeBuilder constants
+	 * @param Element $element The element the annotations are attached to
+	 * @param int|null $linkId Which link id we are currently processing
+	 */
+	private function setLinkId( $preposition, Element $element, $linkId ) {
+		// Hacky. AnnotationFormatter needs to know
+		// which child we are processing to find the
+		// right annotation. Originally this used the child number,
+		// but that turned out to not work when things were out of order.
+		if ( $preposition === TreeBuilder::ROOT ) {
+			return;
+		}
+		$elm = $preposition === TreeBuilder::UNDER ?
+			$element->userData :
+			// @phan-suppress-next-line PhanUndeclaredMethod
+			$this->nextHandler->getParentNode( $element->userData );
+		// Only bother with this if there are annotations in play.
+		if ( isset( $elm->snData ) ) {
+			$elm->snData['curLinkId'] = $linkId;
+		}
+	}
+
+	/**
+	 * Ensure that out of order character calls are inserted in right place
+	 *
+	 * If a new element is inserted, change any pending UNDER calls to
+	 * be BEFORE the new element, so order is maintained
+	 *
+	 * @suppress PhanTypeArraySuspiciousNullable
+	 * @param Element $parent Parent element
+	 * @param Element $new The new child of $parent
+	 */
+	private function rememberPlacement( Element $parent, Element $new ) {
+		foreach ( $this->pendingEvents as &$event ) {
+			if (
+				$event[0][0] === TreeBuilder::UNDER &&
+				$event[0][1]->uid === $parent->uid
+			) {
+				$event[0][0] = TreeBuilder::BEFORE;
+				$event[0][1] = $new;
+			}
+		}
+	}
+
+	/**
+	 * Send all pending character events
+	 * @suppress PhanTypeArraySuspiciousNullable
+	 */
+	private function flushEvents() {
+		foreach ( $this->pendingEvents as [ $event, $linkId ] ) {
+			$this->setLinkId( $event[0], $event[1], $linkId );
+			// @phan-suppress-next-line PhanParamTooFewUnpack
+			parent::characters( ...$event );
+		}
+		$this->pendingEvents = [];
 	}
 
 	/**
