@@ -99,6 +99,7 @@ class AnnotationContent extends JsonContent {
 							!isset( $commentVal['actorId'] ) ||
 							!is_int( $commentVal['actorId'] ) ||
 							$commentVal['actorId'] <= 0 ||
+							!isset( $commentVal['comment'] ) ||
 							!is_string( $commentVal['comment'] ) ||
 							// Backwards compatibility: timestamp is not
 							// required, but if set must be valid as TS_MW
