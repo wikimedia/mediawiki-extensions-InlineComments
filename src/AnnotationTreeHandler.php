@@ -3,10 +3,10 @@
 namespace MediaWiki\Extension\InlineComments;
 
 use LogicException;
-use RemexHtml\Serializer\Serializer;
-use RemexHtml\TreeBuilder\Element;
-use RemexHtml\TreeBuilder\RelayTreeHandler;
-use RemexHtml\TreeBuilder\TreeBuilder;
+use Wikimedia\RemexHtml\Serializer\Serializer;
+use Wikimedia\RemexHtml\TreeBuilder\Element;
+use Wikimedia\RemexHtml\TreeBuilder\RelayTreeHandler;
+use Wikimedia\RemexHtml\TreeBuilder\TreeBuilder;
 
 class AnnotationTreeHandler extends RelayTreeHandler {
 	private const INACTIVE = 1;

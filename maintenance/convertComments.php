@@ -40,12 +40,7 @@ class ConvertComments extends Maintenance {
 				$newId = $contentModelStore->acquireId( CONTENT_MODEL_JSON );
 				break;
 			case 'fallback':
-				if ( defined( 'CONTENT_MODEL_UNKNOWN' ) ) {
-					// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
-					$newId = $contentModelStore->acquireId( CONTENT_MODEL_UNKNOWN );
-				} else {
-					$this->fatalError( "fallback only supported MW 1.36+" );
-				}
+				$newId = $contentModelStore->acquireId( CONTENT_MODEL_UNKNOWN );
 				break;
 			case 'comments':
 				$newId = $contentModelStore->acquireId( 'annotation+json' );
@@ -103,24 +98,11 @@ class ConvertComments extends Maintenance {
 			}
 			$this->output( '.' );
 			if ( $edited ) {
-				$this->waitForReplicationCompat();
+				$this->waitForReplication();
 			}
 			$res = $dbw->select( $tables, $fields, $newConds, __METHOD__, $options );
 		}
 		$this->output( "\n Updated $count out of $total rows. $skipped rows were already correct.\n" );
-	}
-
-	/**
-	 * compat hack for 1.35
-	 */
-	private function waitForReplicationCompat() {
-		if ( method_exists( $this, 'waitForReplication' ) ) {
-			// @phan-suppress-next-line PhanUndeclaredMethod
-			$this->waitForReplication();
-			return;
-		}
-		// 1.35
-		MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->waitForReplication();
 	}
 }
 

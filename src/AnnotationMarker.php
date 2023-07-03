@@ -4,12 +4,12 @@ namespace MediaWiki\Extension\InlineComments;
 // Namespace got renamed to be prefixed with Wikimedia!
 use Config;
 use Language;
-use RemexHtml\HTMLData;
-use RemexHtml\Serializer\Serializer;
-use RemexHtml\Tokenizer\Tokenizer;
-use RemexHtml\TreeBuilder\Dispatcher;
-use RemexHtml\TreeBuilder\TreeBuilder;
 use User;
+use Wikimedia\RemexHtml\HTMLData;
+use Wikimedia\RemexHtml\Serializer\Serializer;
+use Wikimedia\RemexHtml\Tokenizer\Tokenizer;
+use Wikimedia\RemexHtml\TreeBuilder\Dispatcher;
+use Wikimedia\RemexHtml\TreeBuilder\TreeBuilder;
 
 // Based on MediaWiki\Html\HtmlHelper
 

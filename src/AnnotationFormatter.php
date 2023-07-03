@@ -5,9 +5,9 @@ use Html;
 use Language;
 use Linker;
 use LogicException;
-use RemexHtml\Serializer\HtmlFormatter;
-use RemexHtml\Serializer\SerializerNode;
 use User;
+use Wikimedia\RemexHtml\Serializer\HtmlFormatter;
+use Wikimedia\RemexHtml\Serializer\SerializerNode;
 
 // Based on MediaWiki\Html\HtmlHelper
 

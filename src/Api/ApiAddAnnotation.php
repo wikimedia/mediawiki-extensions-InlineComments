@@ -36,7 +36,6 @@ class ApiAddAnnotation extends ApiBase {
 		if ( !$title || $title->getNamespace() < 0 ) {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
-		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		$this->checkTitleUserPermissions( $title, 'inlinecomments-add' );
 
 		$user = $this->getUser();
@@ -72,7 +71,6 @@ class ApiAddAnnotation extends ApiBase {
 			$this->dieWithError( 'inlinecomments-invaliditem' );
 		}
 
-		// @phan-suppress-next-line PhanTypeMismatchArgumentNullable
 		$this->addItemToTitle( $title, $item );
 
 		$result = $this->getResult();
