@@ -65,7 +65,7 @@ class RemoveComments extends Maintenance {
 			}
 			$this->output( '.' );
 			if ( $edited ) {
-				$this->waitForReplicationCompat();
+				$this->waitForReplication();
 			}
 			$res = $dbr->select( $tables, $fields, $conds, __METHOD__, $options, $join );
 		}
@@ -96,20 +96,6 @@ class RemoveComments extends Maintenance {
 
 		$this->output( "Done page $pageId: " . $title->getPrefixedText() . ".\n" );
 	}
-
-	/**
-	 * compat hack for 1.35
-	 */
-	private function waitForReplicationCompat() {
-		if ( method_exists( $this, 'waitForReplication' ) ) {
-			// @phan-suppress-next-line PhanUndeclaredMethod
-			$this->waitForReplication();
-			return;
-		}
-		// 1.35
-		MediaWikiServices::getInstance()->getDBLoadBalancerFactory()->waitForReplication();
-	}
-
 }
 
 $maintClass = RemoveComments::class;

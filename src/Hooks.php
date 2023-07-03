@@ -101,60 +101,6 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 	}
 
 	/**
-	 * Setup function.
-	 *
-	 * Make forwards compatible with 1.39
-	 * @suppress PhanUndeclaredClassReference
-	 */
-	public static function setup() {
-		if (
-			!class_exists( \RemexHtml\HTMLData::class ) &&
-			class_exists( \Wikimedia\RemexHtml\HTMLData::class )
-		) {
-			class_alias(
-				\Wikimedia\RemexHtml\Serializer\HtmlFormatter::class,
-				\RemexHtml\Serializer\HtmlFormatter::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\Serializer\SerializerNode::class,
-				\RemexHtml\Serializer\SerializerNode::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\Serializer\Serializer::class,
-				\RemexHtml\Serializer\Serializer::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\Tokenizer\Tokenizer::class,
-				\RemexHtml\Tokenizer\Tokenizer::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\TreeBuilder\Dispatcher::class,
-				\RemexHtml\TreeBuilder\Dispatcher::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\TreeBuilder\TreeBuilder::class,
-				\RemexHtml\TreeBuilder\TreeBuilder::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\TreeBuilder\Element::class,
-				\RemexHtml\TreeBuilder\Element::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\TreeBuilder\RelayTreeHandler::class,
-				\RemexHtml\TreeBuilder\RelayTreeHandler::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\TreeBuilder\TreeHandler::class,
-				\RemexHtml\TreeBuilder\TreeHandler::class
-			);
-			class_alias(
-				\Wikimedia\RemexHtml\HTMLData::class,
-				\RemexHtml\HTMLData::class
-			);
-		}
-	}
-
-	/**
 	 * @inheritDoc
 	 */
 	public function onMultiContentSave( $renderedRevision, $user, $summary, $flags,

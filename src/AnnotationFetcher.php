@@ -1,6 +1,7 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
+use LogicException;
 use MediaWiki\Revision\RevisionLookup;
 
 class AnnotationFetcher {
@@ -28,7 +29,10 @@ class AnnotationFetcher {
 		}
 		$revision = $this->revLookup->getRevisionById( $revId );
 		if ( $revision->hasSlot( AnnotationContent::SLOT_NAME ) ) {
-			return $revision->getContent( AnnotationContent::SLOT_NAME );
+			$content = $revision->getContent( AnnotationContent::SLOT_NAME );
+			if ( !$content instanceof AnnotationContent ) {
+				throw new LogicException( "Expected AnnotationContent slot to have annotation content" );
+			}
 		}
 
 		return null;

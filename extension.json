@@ -141,6 +141,5 @@
 			}
 		}
 	},
-	"callback": "MediaWiki\\Extension\\InlineComments\\Hooks::setup",
 	"manifest_version": 2
 }
