@@ -4,7 +4,7 @@ use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationMarker;
 use MediaWiki\MediaWikiServices;
 
-class AnnotationMarkerTest extends MediaWikiTestCase {
+class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 
 	public function setUp(): void {
 		parent::setUp();
