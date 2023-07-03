@@ -8,22 +8,26 @@ use Language;
 use LogicException;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationContentHandler;
+use MediaWiki\Page\WikiPageFactory;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
-use WikiPage;
 
 class ApiAddAnnotation extends ApiBase {
 
 	/** @var Language */
 	private $contentLang;
+	/** @var WikiPageFactory */
+	private $wikiPageFactory;
 
 	/**
 	 * @param \ApiMain $parent parent module
 	 * @param string $name module name
 	 * @param Language $lang Language (Expected to be the content language)
+	 * @param WikiPageFactory $wpf
 	 */
-	public function __construct( $parent, $name, Language $lang ) {
+	public function __construct( $parent, $name, Language $lang, WikiPageFactory $wpf ) {
 		$this->contentLang = $lang;
+		$this->wikiPageFactory = $wpf;
 		parent::__construct( $parent, $name );
 	}
 
@@ -91,9 +95,7 @@ class ApiAddAnnotation extends ApiBase {
 	 * @param array $item Item to add
 	 */
 	private function addItemToTitle( Title $title, array $item ) {
-		// TODO: When support for 1.35 is dropped, replace with dependecy
-		// injected WikiPageFactory.
-		$wp = WikiPage::factory( $title );
+		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 
 		$prevRevision = $pageUpdater->grabParentRevision();

@@ -30,7 +30,8 @@
 				"InlineComments:AnnotationMarker",
 				"PermissionManager",
 				"ContentLanguage",
-				"MainConfig"
+				"MainConfig",
+				"WikiPageFactory"
 			]
 		},
 		"service": {
@@ -41,14 +42,21 @@
 		"inlinecomments-add": {
 			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiAddAnnotation",
 			"services": [
-				"ContentLanguage"
+				"ContentLanguage",
+				"WikiPageFactory"
 			]
 		},
 		"inlinecomments-resolve": {
-			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiResolveAnnotation"
+			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiResolveAnnotation",
+			"services": [
+				"WikiPageFactory"
+			]
 		},
 		"inlinecomments-addreply": {
-			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiAddReply"
+			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiAddReply",
+			"services": [
+				"WikiPageFactory"
+			]
 		}
 	},
 	"ServiceWiringFiles": [

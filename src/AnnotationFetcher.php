@@ -30,9 +30,10 @@ class AnnotationFetcher {
 		$revision = $this->revLookup->getRevisionById( $revId );
 		if ( $revision->hasSlot( AnnotationContent::SLOT_NAME ) ) {
 			$content = $revision->getContent( AnnotationContent::SLOT_NAME );
-			if ( !$content instanceof AnnotationContent ) {
+			if ( $content && !$content instanceof AnnotationContent ) {
 				throw new LogicException( "Expected AnnotationContent slot to have annotation content" );
 			}
+			return $content;
 		}
 
 		return null;
