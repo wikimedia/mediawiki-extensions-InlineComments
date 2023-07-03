@@ -7,12 +7,12 @@ use DeferredUpdates;
 use Language;
 use LogicException;
 use MediaWiki\Hook\BeforePageDisplayHook;
+use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Storage\Hook\MultiContentSaveHook;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
 use Title;
 use User;
-use WikiPage;
 
 class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReservedNamesHook {
 
@@ -26,6 +26,8 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 	private $contentLanguage;
 	/** @var Config */
 	private $config;
+	/** @var WikiPageFactory */
+	private $wikiPageFactory;
 	/** @var bool Variable to guard against indef loop when removing comments */
 	private static $loopCheck = false;
 
@@ -35,19 +37,22 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 	 * @param PermissionManager $permissionManager
 	 * @param Language $contentLanguage
 	 * @param Config $config
+	 * @param WikiPageFactory $wikiPageFactory
 	 */
 	public function __construct(
 		AnnotationFetcher $annotationFetcher,
 		AnnotationMarker $annotationMarker,
 		PermissionManager $permissionManager,
 		Language $contentLanguage,
-		Config $config
+		Config $config,
+		WikiPageFactory $wikiPageFactory
 	) {
 		$this->annotationFetcher = $annotationFetcher;
 		$this->annotationMarker = $annotationMarker;
 		$this->permissionManager = $permissionManager;
 		$this->contentLanguage = $contentLanguage;
 		$this->config = $config;
+		$this->wikiPageFactory = $wikiPageFactory;
 	}
 
 	/**
@@ -143,7 +148,8 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 							$count++;
 						}
 					}
-					$wp = WikiPage::factory( Title::newFromLinkTarget( $rev->getPageAsLinkTarget() ) );
+					$title = Title::newFromLinkTarget( $rev->getPageAsLinkTarget() );
+					$wp = $this->wikiPageFactory->newFromTitle( $title );
 					$pageUpdater = $wp->newPageUpdater( $sysUser );
 					$prevRevision = $pageUpdater->grabParentRevision();
 					if (

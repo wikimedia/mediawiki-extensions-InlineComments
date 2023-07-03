@@ -13,9 +13,11 @@ use Maintenance;
 use MediaWiki\MediaWikiServices;
 use Title;
 use User;
-use WikiPage;
 
 class RemoveComments extends Maintenance {
+
+	/** @var \MediaWiki\Page\WikiPageFactory */
+	private $wikiPageFactory;
 
 	public function __construct() {
 		parent::__construct();
@@ -25,6 +27,7 @@ class RemoveComments extends Maintenance {
 			" It does not affect old revisions of pages or deleted pages"
 		);
 		$this->setBatchSize( 100 );
+		$this->wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
 	}
 
 	public function execute() {
@@ -76,7 +79,7 @@ class RemoveComments extends Maintenance {
 	 */
 	private function deleteComments( $pageId ) {
 		$title = Title::newFromId( $pageId, Title::READ_LATEST );
-		$wp = WikiPage::factory( $title );
+		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		// Replace with User::MAINTENANCE_SCRIPT_USER when we drop support for 1.35
 		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
 		$pageUpdater = $wp->newPageUpdater( $user );

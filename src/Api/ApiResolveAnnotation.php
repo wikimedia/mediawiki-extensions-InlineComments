@@ -7,11 +7,24 @@ use CommentStoreComment;
 use LogicException;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationContentHandler;
+use MediaWiki\Page\WikiPageFactory;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
-use WikiPage;
 
 class ApiResolveAnnotation extends ApiBase {
+
+	/** @var WikiPageFactory */
+	private $wikiPageFactory;
+
+	/**
+	 * @param \ApiMain $parent parent module
+	 * @param string $name module name
+	 * @param WikiPageFactory $wpf
+	 */
+	public function __construct( $parent, $name, WikiPageFactory $wpf ) {
+		$this->wikiPageFactory = $wpf;
+		parent::__construct( $parent, $name );
+	}
 
 	/**
 	 * @inheritDoc
@@ -45,9 +58,7 @@ class ApiResolveAnnotation extends ApiBase {
 	 * @param string $id Id of annotation to remove
 	 */
 	private function removeItemFromTitle( Title $title, $id ) {
-		// TODO: When support for 1.35 is dropped, replace with dependecy
-		// injected WikiPageFactory.
-		$wp = WikiPage::factory( $title );
+		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 
 		$prevRevision = $pageUpdater->grabParentRevision();
