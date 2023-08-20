@@ -6,6 +6,8 @@
 		this.opts.annotationClassPrefix = 'mw-annotation-';
 		this.opts.selectedClass = this.opts.selectedClass  || 'mw-inlinecomment-selected';
 		this.opts.selectedAnnotationClass = this.opts.selectedAnnotationClass  || 'mw-annotation-selected';
+		this.opts.offsetReference = this.opts.offsetReference ||
+			document.querySelector( '#mw-content-text #mw-inlinecomment-annotations' )?.offsetParent;
 
 		this.items = [];
 
@@ -18,9 +20,7 @@
 			let preferredOffset = 0;
 			let offsetTiebreaker = 0;
 			if ( annotations.length >= 1 ) {
-				// Todo, should check what offsetParent is, and combine if appropriate.
-				// In case someone uses position css in page body.
-				preferredOffset = annotations[0].offsetTop;
+				preferredOffset = this.getOffset( annotations[0] );
 				offsetTiebreaker = annotations[0].offsetLeft;
 			}
 
@@ -28,8 +28,7 @@
 				preferredOffset: preferredOffset,
 				offsetTiebreaker: offsetTiebreaker,
 				element: notes[i],
-
-			}
+			};
 
 			let id = notes[i].id;
 			let that = this;
@@ -47,7 +46,7 @@
 
 		this.sortItems();
 		this.renderUnselected();
-	}
+	};
 
 	SidenoteManager.prototype = {
 		renderUnselected: function () {
@@ -263,6 +262,22 @@
 			replyButton.$element.click( replyFunc );
 			$( div ).append( replyButton.$element, resolveButton.$element );
 			aside.appendChild( div );
+		},
+		/**
+		 * Get the vertical offset from the container element
+		 *
+		 * For positioned elements and tables, we have to check recursively
+		 */
+		getOffset: function ( elm ) {
+			var offset = 0, cur = elm;
+			do {
+				offset += cur.offsetTop;
+				cur = cur.offsetParent;
+			} while (
+				cur &&
+				cur !== this.opts.offsetReference
+			);
+			return offset;
 		}
 	};
 	mw.inlineComments = mw.inlineComments || {};
