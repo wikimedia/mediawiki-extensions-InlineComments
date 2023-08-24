@@ -59,20 +59,18 @@
 	// There are edge cases this doesn't catch, e.g. selecting via keyboard.
 	document.addEventListener( 'pointerup', checkForNewSelection );
 
-	// Try and get an offset for the selection
-	// FIXME doesn't work if article body contains nested positioned elements.
 	var getOffset = function ( range ) {
-		item = range.startContainer;
+		var item = range.startContainer;
 		if ( item.offsetTop ) {
-			return item.offsetTop;
+			return mw.inlineComments.manager.getOffset( item );
 		}
 		if ( item.nextElementSibling ) {
-			return item.nextElementSibling.offsetTop;
+			return mw.inlineComments.manager.getOffset( item.nextElementSibling );
 		}
 		if ( item.parentElement ) {
-			return item.parentElement.offsetTop;
+			return mw.inlineComments.manager.getOffset( item.parentElement );
 		}
-		return range.commonAncestorContainer.offsetTop;
+		return mw.inlineComments.manager.getOffset( range.commonAncestorContainer );
 	}
 
 	var highlightRange = function ( asideId, range ) {
@@ -83,7 +81,7 @@
 			if ( this.classList.contains( newClass ) ) {
 				// If we don't have the class, that means the user cancelled.
 				event.stopPropagation();
-				mw.inlineComments.manager.select( asideId, this.offsetTop );
+				mw.inlineComments.manager.select( asideId, mw.inlineComments.manager.getOffset( this ) );
 			}
 		};
 		var textContent = '';

@@ -7,12 +7,11 @@ $( function () {
 
 	var elms = document.querySelectorAll( '#mw-content-text .mw-annotation-highlight' );
 	for ( var i = 0; i < elms.length; i++ ) {
-		// TODO handle relatively positioned elements.
-		let elmOffset = elms[i].offsetTop;
+		let elmOffset = sidenoteManager.getOffset( elms[i] );
 		if ( !elms[i].dataset.mwHighlightId ) {
 			continue;
 		}
-		let asideId = 'mw-inlinecomment-aside-' + elms[i].dataset.mwHighlightId
+		let asideId = 'mw-inlinecomment-aside-' + elms[i].dataset.mwHighlightId;
 
 		elms[i].addEventListener(
 			'click',
