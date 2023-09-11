@@ -1,6 +1,6 @@
 ( function() {
 
-	var addComment;
+	var addComment, veActive = false;
 
 	document.addEventListener( 'keydown', function (e) {
 		// Note - on mac option+m gives a micro for e.key but an e.code of KeyM.
@@ -9,11 +9,14 @@
 			( e.ctrlKey || e.metaKey ) && e.altKey &&
 			getSelection().rangeCount >= 1 &&
 			getSelection().getRangeAt(0).collapsed === false &&
-			!document.getElementsByClassName( 've-init-target' ).length
+			!veActive
 		) {
 			addComment();
 		}
 	} );
+
+	mw.hook( 've.activationComplete' ).add( function () { veActive = true } );
+	mw.hook( 've.deactivationComplete' ).add( function () { veActive = false } );
 
 
 	var icon = new OO.ui.IconWidget( {
@@ -42,7 +45,7 @@
 		if (
 			getSelection().rangeCount >= 1 &&
 			getSelection().getRangeAt(0).collapsed === false &&
-			!document.getElementsByClassName( 've-init-target' ).length &&
+			!veActive &&
 			parent &&
 			parent.contains( getSelection().getRangeAt(0).commonAncestorContainer )
 		) {
