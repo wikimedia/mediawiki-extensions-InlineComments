@@ -6,15 +6,24 @@ use Config;
 use DeferredUpdates;
 use Language;
 use LogicException;
+use MediaWiki\Api\Hook\ApiParseMakeOutputPageHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
+use MediaWiki\Hook\OutputPageBeforeHTMLHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Storage\Hook\MultiContentSaveHook;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
+use RequestContext;
 use Title;
 use User;
 
-class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReservedNamesHook {
+class Hooks implements
+	BeforePageDisplayHook,
+	MultiContentSaveHook,
+	UserGetReservedNamesHook,
+	ApiParseMakeOutputPageHook,
+	OutputPageBeforeHTMLHook
+{
 
 	/** @var AnnotationFetcher */
 	private AnnotationFetcher $annotationFetcher;
@@ -103,6 +112,59 @@ class Hooks implements BeforePageDisplayHook, MultiContentSaveHook, UserGetReser
 		$out->addJsConfigVars( 'wgInlineCommentsCanEdit', $canEditComments );
 		$out->addModules( 'ext.inlineComments.sidenotes' );
 		$out->addModuleStyles( 'ext.inlineComments.sidenotes.styles' );
+	}
+
+	/**
+	 * @note This is a bit of a hack so that visual editor will add our module
+	 * after save if it doesn't do a reload.
+	 * @inheritDoc
+	 */
+	public function onApiParseMakeOutputPage( $module, $output ) {
+		$params = $module->extractRequestParams();
+		// Try to get original parameters.
+		$origAction = RequestContext::getMain()->getRequest()->getVal( 'action' );
+		if ( isset( $params['oldid'] ) && $origAction === 'visualeditoredit' ) {
+			// This is not set by default in API but we need it.
+			$output->setRevisionId( $params['oldid'] );
+			$output->addHeadItem( 'InlineCommentsAPIParse', '' );
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function onOutputPageBeforeHTML( $out, &$text ) {
+		if ( !$out->hasHeadItem( 'InlineCommentsAPIParse' ) ) {
+			return;
+		}
+
+		if ( strpos( $text, '<div class="mw-parser-output">' ) === false ) {
+			return;
+		}
+		$title = $out->getTitle();
+		if ( !$title || $title->getNamespace() < 0 || !$title->exists() ) {
+			return;
+		}
+
+		$canEditComments = $this->permissionManager->userCan(
+			'inlinecomments-add',
+			$out->getUser(),
+			$out->getTitle(),
+			PermissionManager::RIGOR_QUICK
+		);
+		if ( $canEditComments ) {
+			// If we loaded ?veaction=edit directly (not clicking edit tab)
+			// ensure we can edit comments after saving.
+			$out->addModules( 'ext.inlineComments.makeComment' );
+			$out->addJsConfigVars( 'wgInlineCommentsCanEdit', true );
+		}
+		$annotations = $this->annotationFetcher->getAnnotations( (int)$out->getRevisionId() );
+		if ( !$annotations || $annotations->isEmpty() ) {
+			// Don't bother if the page is unannotated.
+			return;
+		}
+
+		$out->addModules( [ 'ext.inlineComments.forceReload' ] );
 	}
 
 	/**
