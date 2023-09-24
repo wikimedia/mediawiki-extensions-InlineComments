@@ -140,6 +140,49 @@ class AnnotationFormatter extends HtmlFormatter {
 		if ( $childNumb === null ) {
 			return;
 		}
+
+		// Try and figure out what annotations were opened in a
+		// previous text node and have not been closed yet.
+		$pendingEnds = [];
+		$pendingStarts = [];
+		$endingAnnotations = [];
+		foreach ( $parent->snData['annotations'] as $val ) {
+			if (
+				$val[self::POSITION] === self::END &&
+				$val[self::CHILD] < $childNumb
+			) {
+				$pendingEnds[$val[self::KEY]] = true;
+			} elseif (
+				$val[self::POSITION] === self::END
+			) {
+				$endingAnnotations[] = $val[self::KEY];
+			} elseif (
+				$val[self::POSITION] === self::START
+			) {
+				$pendingStarts[$val[self::KEY]] = true;
+			}
+		}
+		$pendingAnnotationsStart = array_filter(
+			$parent->snData['annotations'],
+			static function ( $val ) use ( $childNumb, $pendingEnds ) {
+				return $val[self::POSITION] === self::START &&
+					$val[self::CHILD] < $childNumb &&
+					!isset( $pendingEnds[$val[self::KEY]] );
+			}
+		);
+		usort( $pendingAnnotationsStart, static function ( $a, $b ) {
+			if ( $a[self::CHILD] !== $b[self::CHILD] ) {
+				return $a[self::CHILD] - $b[self::CHILD];
+			}
+			return $a[self::OFFSET] - $b[self::OFFSET];
+		} );
+		$currentOpenStack = array_map(
+			static function ( $val ) {
+				return $val[self::KEY];
+			},
+			$pendingAnnotationsStart
+		);
+		// Data for this particular text node.
 		$data = array_filter(
 			$parent->snData['annotations'],
 			static function ( $val ) use ( $childNumb ) {
@@ -149,6 +192,13 @@ class AnnotationFormatter extends HtmlFormatter {
 		usort( $data, static function ( $a, $b ) {
 			return $a[self::OFFSET] - $b[self::OFFSET];
 		} );
+		// We also have to add to the beginning any that are closed
+		// here, but started elsewhere.
+		foreach ( $endingAnnotations as $key ) {
+			if ( !isset( $pendingStarts[$key] ) ) {
+				array_push( $currentOpenStack, $key );
+			}
+		}
 		$curIndex = $start;
 		$newContents = '';
 		foreach ( $data as $item ) {
@@ -160,9 +210,32 @@ class AnnotationFormatter extends HtmlFormatter {
 			switch ( $item[self::POSITION] ) {
 				case self::START:
 					$newContents .= $this->openSpan( $item[self::KEY] );
+					$currentOpenStack[] = $item[self::KEY];
 					break;
 				case self::END:
-					$newContents .= Html::closeElement( 'span' );
+					// Ensure we nest everything properly with multiple overlapping
+					// spans.
+					$reopen = '';
+					$tmpStack = [];
+					if ( count( $currentOpenStack ) === 0 ) {
+						// Just in case something goes wrong. Should not happen.
+						wfDebugLog( 'InlineComments', "stack mismatch" );
+						// Try and fail safely and just close the span
+						$newContents .= Html::closeElement( 'span' ) . '<!-- mismatch -->';
+					}
+					for ( $i = count( $currentOpenStack ) - 1; $i >= 0; $i-- ) {
+						$cur = array_pop( $currentOpenStack );
+						$newContents .= Html::closeElement( 'span' );
+						if ( $cur === $item[self::KEY] ) {
+							break;
+						}
+						// We want to re-open this span
+						$tmpStack[] = $cur;
+					}
+					for ( $i = count( $tmpStack ) - 1; $i >= 0; $i-- ) {
+						$currentOpenStack[] = $tmpStack[$i];
+						$newContents .= $this->openSpan( $tmpStack[$i] );
+					}
 					break;
 				// It should be impossible for sibling end to have valid child offset.
 				case self::SIBLING_END:
