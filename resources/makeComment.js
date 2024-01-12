@@ -339,6 +339,7 @@
 	var getForm = function( aside, containerNode, preText, bodyText ) {
 		var textbox = new OO.ui.MultilineTextInputWidget( {
 			value: '',
+			autosize: true,
 			placeholder: mw.msg( 'inlinecomments-placeholder' )
 		} );
 		var save = new OO.ui.ButtonInputWidget( {

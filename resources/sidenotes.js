@@ -202,6 +202,7 @@
 
 			var textbox = new OO.ui.MultilineTextInputWidget( {
 				value: '',
+				autosize: true,
 				placeholder: mw.msg( 'inlinecomments-placeholder' )
 			} );
 			var saveButton = new OO.ui.ButtonInputWidget( {
