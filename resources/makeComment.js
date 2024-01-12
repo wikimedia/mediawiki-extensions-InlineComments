@@ -353,8 +353,8 @@
 		var div = document.createElement( 'div' );
 		div.className = 'mw-inlinecomments-editor';
 		saveButton.$element.click( function () {
-			save.setDisabled( true );
-			cancel.setDisabled( true );
+			saveButton.setDisabled( true );
+			cancelButton.setDisabled( true );
 			saveToServer( aside, containerNode, preText, bodyText, textbox.getValue() );
 		} );
 		cancelButton.$element.click( function () {
