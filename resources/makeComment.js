@@ -342,25 +342,25 @@
 			autosize: true,
 			placeholder: mw.msg( 'inlinecomments-placeholder' )
 		} );
-		var save = new OO.ui.ButtonInputWidget( {
+		var saveButton = new OO.ui.ButtonInputWidget( {
 			label: mw.msg( 'inlinecomments-addcomment-save' ),
 			flags: [ 'primary', 'progressive' ]
 		} );
-		var cancel = new OO.ui.ButtonInputWidget( {
+		var cancelButton = new OO.ui.ButtonInputWidget( {
 			label: mw.msg( 'inlinecomments-addcomment-cancel' ),
 			flags: [ 'destructive' ]
 		} );
 		var div = document.createElement( 'div' );
 		div.className = 'mw-inlinecomments-editor';
-		save.$element.click( function () {
+		saveButton.$element.click( function () {
 			save.setDisabled( true );
 			cancel.setDisabled( true );
 			saveToServer( aside, containerNode, preText, bodyText, textbox.getValue() );
 		} );
-		cancel.$element.click( function () {
+		cancelButton.$element.click( function () {
 			mw.inlineComments.manager.remove( aside.id );
 		} );
-		$( div ).append( textbox.$element, save.$element, cancel.$element );
+		$( div ).append( textbox.$element, saveButton.$element, cancelButton.$element );
 		return div;
 	}
 

@@ -189,8 +189,8 @@
 		addTools: function ( aside ) {
 			var that = this;
 			var asideId = aside.id.replace( this.opts.idRegex, '' );
-			var div = document.createElement( 'div' );
-			div.className = 'mw-inlinecomment-tools';
+			var toolsDiv = document.createElement( 'div' );
+			toolsDiv.className = 'mw-inlinecomment-tools';
 			var replyButton = new OO.ui.ButtonInputWidget( {
 				label: mw.msg( 'inlinecomments-addcomment-reply' ),
 				flags: [ 'progressive' ]
@@ -222,7 +222,7 @@
 						comment: text
 					};
 					api.postWithToken( 'csrf', data ).then( function () {
-						div.remove();
+						toolsDiv.remove();
 						var p = document.createElement( 'p' );
 						p.textContent = text;
 						aside.appendChild( p );
@@ -240,7 +240,7 @@
 			var replyFunc = function () {
 				saveButton.$element.click( saveFunc );
 				// TODO maybe a cancel button.
-				div.replaceChildren( textbox.$element[0], saveButton.$element[0] );
+				toolsDiv.replaceChildren( textbox.$element[0], saveButton.$element[0] );
 			}
 			var resolveFunc = function () {
 				resolveButton.setDisabled( true );
@@ -261,8 +261,8 @@
 
 			resolveButton.$element.click( resolveFunc );
 			replyButton.$element.click( replyFunc );
-			$( div ).append( replyButton.$element, resolveButton.$element );
-			aside.appendChild( div );
+			$( toolsDiv ).append( replyButton.$element, resolveButton.$element );
+			aside.appendChild( toolsDiv );
 		},
 		/**
 		 * Get the vertical offset from the container element
