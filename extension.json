@@ -23,7 +23,9 @@
 		"BeforePageDisplay": "main",
 		"MediaWikiServices": "service",
 		"MultiContentSave": "main",
-		"UserGetReservedNames": "main"
+		"UserGetReservedNames": "main",
+		"ApiParseMakeOutputPage": "main",
+		"OutputPageBeforeHTML": "main"
 	},
 	"HookHandlers": {
 		"main": {
@@ -72,6 +74,11 @@
 		}
 	},
 	"ResourceModules": {
+		"ext.inlineComments.forceReload": {
+			"scripts": [
+				"forceReload.js"
+			]
+		},
 		"ext.inlineComments.sidenotes": {
 			"scripts": [
 				"sidenotes.js",
