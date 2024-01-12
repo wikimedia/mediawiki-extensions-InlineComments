@@ -46,7 +46,7 @@
 }
 
 .mw-inlinecomment-author:before {
-	content: 'â€” ';
+	content: '— ';
 }
 
 .mw-inlinecomment-author {
