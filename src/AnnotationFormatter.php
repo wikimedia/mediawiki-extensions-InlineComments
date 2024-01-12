@@ -205,9 +205,9 @@ class AnnotationFormatter extends HtmlFormatter {
 	public function element( SerializerNode $parent, SerializerNode $node, $contents ) {
 		if (
 			$node->name == 'div'
-			&& ( $node->attrs->getValues()['class'] ?? '' ) === 'mw-parser-output'
+			&& in_array( 'mw-parser-output', explode( ' ', ( $node->attrs->getValues()['class'] ?? '' ) ) )
 			// Ensure the parent element has no `mw-parser-output` class
-			&& ( $parent->attrs->getValues()['class'] ?? '' ) !== 'mw-parser-output'
+			&& !in_array( 'mw-parser-output', explode( ' ', ( $parent->attrs->getValues()['class'] ?? '' ) ) )
 		) {
 			return parent::element( $parent, $node, $contents ) . $this->getAsides();
 		}
