@@ -196,6 +196,26 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 			'Skip first'
 		];
 		yield [
+			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>This <i>i</i><b>s</b> <i>t</i>he second.' . "\n" . '</p></div>',
+			[
+				[
+					'id' => 'abc',
+					'pre' => 'Th',
+					'body' => "is is the sec",
+					'container' => 'p',
+					'comments' => [ [
+						'comment' => 'Hello Paragraph',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.2'
+					] ],
+				]
+			],
+			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is <i>i</i><b>s</b> <i>t</i>he sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
+			'Highlight spans multiple child elements'
+		];
+
+		yield [
 			'<div class="mw-parser-output"><ul><li>Foo</li><li>Foo</li><li>Foo</li></div>',
 			[
 				[
@@ -284,6 +304,37 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 			],
 			'<div class="mw-parser-output"><p>Begin. <span class="mw-annotation-highlight mw-annotation-first" title="f" data-mw-highlight-id="first">First <span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second">overlap</span></span><span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second"> second.</span> End</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-first" class="mw-inlinecomment-aside"><p>f</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside><aside id="mw-inlinecomment-aside-second" class="mw-inlinecomment-aside"><p>s</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.3" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.3"><bdi>127.0.0.3</bdi></a></div></aside></div>',
 			'Overlapped comments properly nest span tags'
+		];
+		yield [
+			'<div class="mw-parser-output"><p>Begin. First o<i>v</i><b><ins>e</ins></b>r<i>l</i>ap second. End</p></div>',
+			[
+				[
+					'id' => 'first',
+					'pre' => 'Begin. ',
+					'body' => "First overlap",
+					'container' => 'p',
+					'comments' => [ [
+						'comment' => 'f',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.2'
+					] ],
+				],
+				[
+					'id' => 'second',
+					'pre' => 'Begin. First ',
+					'body' => "overlap second.",
+					'container' => 'p',
+					'comments' => [ [
+						'comment' => 's',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.3'
+					] ],
+				]
+			],
+			'<div class="mw-parser-output"><p>Begin. <span class="mw-annotation-highlight mw-annotation-first" title="f" data-mw-highlight-id="first">First <span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second">o<i>v</i><b><ins>e</ins></b>r<i>l</i>ap</span></span><span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second"> second.</span> End</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-first" class="mw-inlinecomment-aside"><p>f</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside><aside id="mw-inlinecomment-aside-second" class="mw-inlinecomment-aside"><p>s</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.3" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.3"><bdi>127.0.0.3</bdi></a></div></aside></div>',
+			'Overlapped comments properly nest span tags with children'
 		];
 	}
 }

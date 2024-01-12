@@ -14,6 +14,9 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	private const LOOKING_BODY = 3;
 	private const LOOKING_SIBLING_RESTART = 4;
 	private const DONE = 5;
+	// Event types
+	private const CHARACTER = 0;
+	private const ELEMENT = 1;
 
 	/** @var array Annotations (as an array) */
 	private $annotations;
@@ -240,9 +243,21 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 */
 	public function insertElement( $preposition, $ref, Element $element, $void, $sourceStart, $sourceLength ) {
 		$this->getMatchingContainer( $element );
-		parent::insertElement( $preposition, $ref, $element, $void, $sourceStart, $sourceLength );
-		if ( $preposition === TreeBuilder::UNDER ) {
-			$this->rememberPlacement( $ref, $element );
+		$event = [ $preposition, $ref, $element, $void, $sourceStart, $sourceLength ];
+		if ( $this->annotationsInFlight === 0 ) {
+			parent::insertElement( ...$event );
+		} else {
+			if ( $preposition === TreeBuilder::UNDER ) {
+				// Remex doesn't allow us to insert character data
+				// before an element with any siblings (i.e. not lastChild)
+				// so as a hack we insert it somewhere else and then reparent
+				// so we only ever have to insert a last child.
+				$modifiedEvent = $event;
+				$modifiedEvent[0] = TreeBuilder::ROOT;
+				$modifiedEvent[1] = null;
+				parent::insertElement( ...$modifiedEvent );
+				$this->pendingEvents[] = [ self::ELEMENT, $event, null ];
+			}
 		}
 	}
 
@@ -339,11 +354,11 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 */
 	private function sendCharacters( array $args, $linkId ) {
 		if ( $this->annotationsInFlight === 0 ) {
-			$this->setLinkId( $args[0], $args[1], $linkId );
+			$this->setLinkId( $args[0] /* preposition */, $args[1] /* ref */, $linkId );
 			// @phan-suppress-next-line PhanParamTooFewUnpack
 			parent::characters( ...$args );
 		} else {
-			$this->pendingEvents[] = [ $args, $linkId ];
+			$this->pendingEvents[] = [ self::CHARACTER, $args, $linkId ];
 		}
 	}
 
@@ -375,36 +390,19 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	}
 
 	/**
-	 * Ensure that out of order character calls are inserted in right place
-	 *
-	 * If a new element is inserted, change any pending UNDER calls to
-	 * be BEFORE the new element, so order is maintained
-	 *
-	 * @suppress PhanTypeArraySuspiciousNullable
-	 * @param Element $parent Parent element
-	 * @param Element $new The new child of $parent
-	 */
-	private function rememberPlacement( Element $parent, Element $new ) {
-		foreach ( $this->pendingEvents as &$event ) {
-			if (
-				$event[0][0] === TreeBuilder::UNDER &&
-				$event[0][1]->uid === $parent->uid
-			) {
-				$event[0][0] = TreeBuilder::BEFORE;
-				$event[0][1] = $new;
-			}
-		}
-	}
-
-	/**
 	 * Send all pending character events
 	 * @suppress PhanTypeArraySuspiciousNullable
 	 */
 	private function flushEvents() {
-		foreach ( $this->pendingEvents as [ $event, $linkId ] ) {
-			$this->setLinkId( $event[0], $event[1], $linkId );
-			// @phan-suppress-next-line PhanParamTooFewUnpack
-			parent::characters( ...$event );
+		foreach ( $this->pendingEvents as [ $type, $event, $linkId ] ) {
+			if ( $type === self::CHARACTER ) {
+				$this->setLinkId( $event[0], $event[1], $linkId );
+				// @phan-suppress-next-line PhanParamTooFewUnpack
+				parent::characters( ...$event );
+			} elseif ( $type === self::ELEMENT ) {
+				// @phan-suppress-next-line PhanParamTooFewUnpack
+				parent::insertElement( ...$event );
+			}
 		}
 		$this->pendingEvents = [];
 	}
