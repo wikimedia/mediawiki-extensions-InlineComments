@@ -234,5 +234,56 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 			'<div class="mw-parser-output"><p><i>This is</i> first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
 			'Prefix appears twice with first prefix in nested elm'
 		];
+		yield [
+			'<div class="mw-parser-output"><p>This is <i>first</i> paragraph.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div>',
+			[
+				[
+					'id' => 'abc',
+					'pre' => 'Th',
+					'body' => "is is first",
+					'container' => 'p',
+					'comments' => [ [
+						'comment' => 'Hello Paragraph',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.2'
+					] ],
+				]
+			],
+			'<div class="mw-parser-output"><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is </span><i><span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first</span></i> paragraph.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside></div>',
+			'annotation ends in child element'
+		];
+
+		yield [
+			'<div class="mw-parser-output"><p>Begin. First overlap second. End</p></div>',
+			[
+				[
+					'id' => 'first',
+					'pre' => 'Begin. ',
+					'body' => "First overlap",
+					'container' => 'p',
+					'comments' => [ [
+						'comment' => 'f',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.2'
+					] ],
+				],
+				[
+					'id' => 'second',
+					'pre' => 'Begin. First ',
+					'body' => "overlap second.",
+					'container' => 'p',
+					'comments' => [ [
+						'comment' => 's',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.3'
+					] ],
+				]
+			],
+			'<div class="mw-parser-output"><p>Begin. <span class="mw-annotation-highlight mw-annotation-first" title="f" data-mw-highlight-id="first">First <span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second">overlap</span></span><span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second"> second.</span> End</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-first" class="mw-inlinecomment-aside"><p>f</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></aside><aside id="mw-inlinecomment-aside-second" class="mw-inlinecomment-aside"><p>s</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.3" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.3"><bdi>127.0.0.3</bdi></a></div></aside></div>',
+			'Overlapped comments properly nest span tags'
+		];
 	}
 }

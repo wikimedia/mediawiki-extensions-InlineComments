@@ -58,11 +58,15 @@
 	display: block;
 }
 
-#mw-content-text .mw-annotation-highlight:hover {
+#mw-content-text .mw-annotation-highlight:hover,
+#mw-content-text .mw-annotation-highlight:hover .mw-annotation-highlight
+{
 	background-color: var( --sidenoteAnchorColorHover, rgba( 247, 207, 105, 0.7137254902 ) );
 }
 
-#mw-content-text .mw-annotation-highlight.mw-annotation-selected {
+#mw-content-text .mw-annotation-highlight.mw-annotation-selected,
+#mw-content-text .mw-annotation-highlight.mw-annotation-selected .mw-annotation-highlight
+{
 	background-color: var( --sidenoteAnchorColorSelected, #f5c955 );
 }
 
