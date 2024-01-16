@@ -209,6 +209,10 @@
 				label: mw.msg( 'inlinecomments-addcomment-save' ),
 				flags: [ 'primary', 'progressive' ]
 			} );
+			var cancelButton = new OO.ui.ButtonInputWidget( {
+				label: mw.msg( 'inlinecomments-addcomment-cancel' ),
+				flags: [ 'destructive' ]
+			} );
 
 			var saveFunc = function () {
 				saveButton.setDisabled( true );
@@ -237,10 +241,16 @@
 					} );
 				} );
 			};
+			var cancelFunc = function () {
+				textbox.setValue('');
+				toolsDiv.replaceChildren( replyButton.$element[0], resolveButton.$element[0] );
+			};
 			var replyFunc = function () {
-				saveButton.$element.click( saveFunc );
-				// TODO maybe a cancel button.
-				toolsDiv.replaceChildren( textbox.$element[0], saveButton.$element[0] );
+				// We call unbind() to avoid these functions getting called multiple times,
+				// if the buttons were cancelled and re-added.
+				saveButton.$element.unbind('click').click( saveFunc );
+				cancelButton.$element.unbind('click').click( cancelFunc );
+				toolsDiv.replaceChildren( textbox.$element[0], saveButton.$element[0], cancelButton.$element[0] );
 			}
 			var resolveFunc = function () {
 				resolveButton.setDisabled( true );
@@ -260,7 +270,7 @@
 			}
 
 			resolveButton.$element.click( resolveFunc );
-			replyButton.$element.click( replyFunc );
+			replyButton.$element.unbind('click').click( replyFunc );
 			$( toolsDiv ).append( replyButton.$element, resolveButton.$element );
 			aside.appendChild( toolsDiv );
 		},

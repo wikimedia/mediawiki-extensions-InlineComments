@@ -88,6 +88,7 @@
 				"inlinecomments-addcomment-reply",
 				"inlinecomments-addcomment-resolve",
 				"inlinecomments-addcomment-save",
+				"inlinecomments-addcomment-cancel",
 				"inlinecomments-placeholder"
 			],
 			"dependencies": [
