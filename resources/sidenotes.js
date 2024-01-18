@@ -246,6 +246,11 @@
 				toolsDiv.replaceChildren( replyButton.$element[0], resolveButton.$element[0] );
 			};
 			var replyFunc = function () {
+				// Disable "Save" button until text is added.
+				saveButton.setDisabled( true );
+				textbox.$element.keyup( function () {
+					saveButton.setDisabled( textbox.getValue().trim() == '' );
+				} );
 				// We call unbind() to avoid these functions getting called multiple times,
 				// if the buttons were cancelled and re-added.
 				saveButton.$element.unbind('click').click( saveFunc );

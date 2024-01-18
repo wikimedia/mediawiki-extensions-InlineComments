@@ -352,6 +352,13 @@
 		} );
 		var div = document.createElement( 'div' );
 		div.className = 'mw-inlinecomments-editor';
+
+		// Disable "Save" button until text is added.
+		saveButton.setDisabled( true );
+		textbox.$element.keyup( function () {
+			saveButton.setDisabled( textbox.getValue().trim() == '' );
+		} );
+
 		saveButton.$element.click( function () {
 			saveButton.setDisabled( true );
 			cancelButton.setDisabled( true );
