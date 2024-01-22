@@ -16,7 +16,7 @@
 	"apihelp-inlinecomments-add-param-comment": "Text of comment being added.",
 	"apihelp-inlinecomments-add-param-containerid": "ID attribute of common ancestor.",
 	"apihelp-inlinecomments-add-param-containerclass": "Class attribute of common ancestor.",
-	"apihelp-inlinecomments-add-param-skipcount": "Skip the first n pieces of text that matche this.",
+	"apihelp-inlinecomments-add-param-skipcount": "Skip the first n pieces of text that match this.",
 	"inlinecomments-invaliditem": "Invalid item",
 	"action-inlinecomments-add": "add inline comments",
 	"right-inlinecomments-add": "Add inline comments",
