@@ -59,12 +59,14 @@
 	display: none;
 }
 
+.mw-inlinecomment-new .mw-inlinecomment-tools,
 .mw-inlinecomment-selected .mw-inlinecomment-tools {
 	display: block;
 	margin: 14px 0px 12px 0;
 	padding: 7px 5px;
 }
 
+.mw-inlinecomment-new .mw-inlinecomment-tools textarea,
 .mw-inlinecomment-selected .mw-inlinecomment-tools textarea {
 	margin-bottom: 15px;
 }

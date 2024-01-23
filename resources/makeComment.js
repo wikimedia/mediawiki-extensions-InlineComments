@@ -391,13 +391,16 @@
 		}
 		mw.loader.using( [ 'ext.inlineComments.sidenotes', 'ext.inlineComments.sidenotes.styles' ], function () {
 			var aside = document.createElement( 'aside' );
-			aside.className = 'mw-inlinecomment-aside';
-			aside.id = 'mw-inlinecomment-aside-' + Math.random();
+			aside.className = 'mw-inlinecomment-aside mw-inlinecomment-new';
+			aside.id = 'mw-inlinecomment-aside-' + Math.random();;
+			var toolsDiv = document.createElement( 'div' );
+			toolsDiv.className = 'mw-inlinecomment-tools';
+			aside.appendChild( toolsDiv );
 			var preText = range.startContainer.textContent.substring( 0, range.startOffset );
 			// Calling focus will unselect text, so highlight now.
 			var bodyText = highlightRange( aside.id, range );
 			var containerNode = range.commonAncestorContainer;
-			aside.appendChild( getForm( aside, containerNode, preText, bodyText ) );
+			toolsDiv.appendChild( getForm( aside, containerNode, preText, bodyText ) );
 			sidenoteContainer.appendChild( aside );
 
 			mw.inlineComments.manager.add( aside, getOffset( range ) );
