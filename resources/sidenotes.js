@@ -218,7 +218,7 @@
 				saveButton.setDisabled( true );
 				mw.loader.using( 'mediawiki.api', function () {
 					var api = new mw.Api();
-					var text = textbox.getValue();
+					var text = textbox.getValue().trim();
 					var data = {
 						title: mw.config.get( 'wgPageName' ),
 						id: asideId,
@@ -228,7 +228,9 @@
 					api.postWithToken( 'csrf', data ).then( function () {
 						toolsDiv.remove();
 						var p = document.createElement( 'p' );
-						p.textContent = text;
+						// .innerText ensures that newlines are replaced with <br />,
+						// but all HTML is escaped.
+						p.innerText = text;
 						aside.appendChild( p );
 						if ( mw.config.get( 'wgUserName' ) !== null ) {
 							var author = document.createElement( 'div' );

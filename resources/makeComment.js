@@ -318,7 +318,9 @@
 				// TODO this should look more like it does on the server.
 				// (username should be a link, timestamp should be included)
 				var p = document.createElement( 'p' );
-				p.textContent = comment;
+				// .innerText ensures that newlines are replaced with <br />,
+				// but all HTML is escaped.
+				p.innerText = comment;
 				if ( mw.config.get( 'wgUserName' ) !== null ) {
 					// username will be null if anon.
 					var author = document.createElement( 'div' );
@@ -362,7 +364,7 @@
 		saveButton.$element.click( function () {
 			saveButton.setDisabled( true );
 			cancelButton.setDisabled( true );
-			saveToServer( aside, containerNode, preText, bodyText, textbox.getValue() );
+			saveToServer( aside, containerNode, preText, bodyText, textbox.getValue().trim() );
 		} );
 		cancelButton.$element.click( function () {
 			mw.inlineComments.manager.remove( aside.id );

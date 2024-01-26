@@ -80,8 +80,9 @@ class AnnotationFormatter extends HtmlFormatter {
 				// User handling seems likely to be a forwards compatibility risk.
 				$userId = $comment['userId'];
 				$username = $comment['username'];
-				// TODO: Do we want any formatting in comments? Newlines to <br>?
-				$asideContent .= Html::element( 'p', [], $comment['comment'] );
+				// We apply minimal formatting on the comment text - just handle newlines.
+				$commentText = str_replace( "\n", '<br>', htmlspecialchars( $comment['comment'] ) );
+				$asideContent .= Html::rawElement( 'p', [], $commentText );
 				// Backwards compatibility: timestamp might not have been set
 				if ( isset( $comment['timestamp'] ) ) {
 					$timestamp = ' ' . $this->reqLanguage->userTimeAndDate(
