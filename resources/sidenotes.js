@@ -162,6 +162,16 @@
 			};
 			element.style.position = 'absolute';
 			this.select( element.id, offset );
+
+			// Allow this new sidenote to be clickable.
+			let that = this;
+			element.addEventListener(
+				'click',
+				function (event) {
+					event.stopPropagation();
+					that.select( this.id, offset );
+				}
+			);
 		},
 		remove: function ( id ) {
 			// For now, we assume no highlight in document yet.
