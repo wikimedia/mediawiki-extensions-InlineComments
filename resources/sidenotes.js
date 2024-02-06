@@ -236,18 +236,20 @@
 						comment: text
 					};
 					api.postWithToken( 'csrf', data ).then( function () {
-						toolsDiv.remove();
+						textbox.setValue('');
+						var textDiv = $( aside ).find('.mw-inlinecomment-text')[0];
 						var p = document.createElement( 'p' );
 						// .innerText ensures that newlines are replaced with <br />,
 						// but all HTML is escaped.
 						p.innerText = text;
-						aside.appendChild( p );
+						textDiv.appendChild( p );
 						if ( mw.config.get( 'wgUserName' ) !== null ) {
 							var author = document.createElement( 'div' );
 							author.className = 'mw-inlinecomment-author';
 							author.textContent = mw.config.get( 'wgUserName' );
-							aside.appendChild( author );
+							textDiv.appendChild( author );
 						}
+						toolsDiv.replaceChildren( replyButton.$element[0], resolveButton.$element[0] );
 					} ).fail( function ( code, data ) {
 						mw.notify( api.getErrorMessage( data ), { type: 'error' } );
 					} );
@@ -267,7 +269,10 @@
 				// if the buttons were cancelled and re-added.
 				saveButton.$element.unbind('click').click( saveFunc );
 				cancelButton.$element.unbind('click').click( cancelFunc );
-				toolsDiv.replaceChildren( textbox.$element[0], saveButton.$element[0], cancelButton.$element[0] );
+				var buttonsDiv = document.createElement( 'div' );
+				buttonsDiv.className = 'mw-inlinecomment-buttons';
+				buttonsDiv.replaceChildren(  saveButton.$element[0], cancelButton.$element[0] );
+				toolsDiv.replaceChildren( textbox.$element[0], buttonsDiv );
 			}
 			var resolveFunc = function () {
 				resolveButton.setDisabled( true );

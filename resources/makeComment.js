@@ -315,6 +315,33 @@
 					mw.notify( 'Unknown error', { type: 'error'} );
 					return;
 				}
+
+				// Now that we have saved the comment, we have
+				// an actual ID for it - change the temporary
+				// ID to the real ID in the DOM, for both the
+				// aside and the highlighted span, and then
+				// (re-)connect the two together.
+				var prevAsideId = asideElm.id.replace( mw.inlineComments.manager.opts.idRegex, '' );
+				var newAsideId = res['inlinecomments-add'].id;
+				asideElm.id = "mw-inlinecomment-aside-" + newAsideId;
+				var prevClassName =  mw.inlineComments.manager.opts.annotationClassPrefix + prevAsideId
+				var $highlightedSpan = $( 'span.' + $.escapeSelector( prevClassName ) );
+				$highlightedSpan
+					.attr('data-mw-highlight-id', newAsideId)
+					.removeClass(prevClassName)
+					.addClass(mw.inlineComments.manager.opts.annotationClassPrefix + newAsideId);
+
+				$highlightedSpan[0].addEventListener( 'click', function( event ) {
+					event.stopPropagation();
+					mw.inlineComments.manager.select( asideElm.id, mw.inlineComments.manager.getOffset( this ) );
+				}, true );
+
+				// Also remove the comment-creation interface -
+				// no longer needed.
+				$(asideElm).find('.mw-inlinecomment-inittools').remove();
+
+				var textDiv = document.createElement( 'div' );
+				textDiv.className = 'mw-inlinecomment-text';
 				// TODO this should look more like it does on the server.
 				// (username should be a link, timestamp should be included)
 				var p = document.createElement( 'p' );
@@ -326,10 +353,14 @@
 					var author = document.createElement( 'div' );
 					author.className = 'mw-inlinecomment-author';
 					author.textContent = mw.config.get( 'wgUserName' );
-					asideElm.replaceChildren( p, author );
+					textDiv.append( p, author );
 				} else {
-					asideElm.replaceChildren( p );
+					textDiv.append( p );
 				}
+				asideElm.prepend(textDiv);
+
+				var asideElmOffset = mw.inlineComments.manager.getOffset( asideElm );
+				mw.inlineComments.manager.addTools( asideElm, asideElmOffset );
 
 			} ).fail( function ( code, data ) {
 				mw.notify( api.getErrorMessage( data ), { type: 'error' } );
@@ -369,7 +400,10 @@
 		cancelButton.$element.click( function () {
 			mw.inlineComments.manager.remove( aside.id );
 		} );
-		$( div ).append( textbox.$element, saveButton.$element, cancelButton.$element );
+		var buttonsDiv = document.createElement( 'div' );
+		buttonsDiv.className = 'mw-inlinecomment-buttons';
+		buttonsDiv.replaceChildren( saveButton.$element[0], cancelButton.$element[0] );
+		div.replaceChildren( textbox.$element[0], buttonsDiv );
 		return div;
 	}
 
@@ -393,16 +427,20 @@
 		}
 		mw.loader.using( [ 'ext.inlineComments.sidenotes', 'ext.inlineComments.sidenotes.styles' ], function () {
 			var aside = document.createElement( 'aside' );
-			aside.className = 'mw-inlinecomment-aside mw-inlinecomment-new';
-			aside.id = 'mw-inlinecomment-aside-' + Math.random();;
-			var toolsDiv = document.createElement( 'div' );
-			toolsDiv.className = 'mw-inlinecomment-tools';
-			aside.appendChild( toolsDiv );
+			aside.className = 'mw-inlinecomment-aside';
+			aside.id = 'mw-inlinecomment-aside-' + Math.random();
+			// "init tools" refers to the interface for creating
+			// an initial comment; once the comment is saved, this
+			// div gets replaced with the interface for replying
+			// and deleting, with the class name "-tools".
+			var initToolsDiv = document.createElement( 'div' );
+			initToolsDiv.className = 'mw-inlinecomment-inittools';
 			var preText = range.startContainer.textContent.substring( 0, range.startOffset );
 			// Calling focus will unselect text, so highlight now.
 			var bodyText = highlightRange( aside.id, range );
 			var containerNode = range.commonAncestorContainer;
-			toolsDiv.appendChild( getForm( aside, containerNode, preText, bodyText ) );
+			initToolsDiv.appendChild( getForm( aside, containerNode, preText, bodyText ) );
+			aside.appendChild( initToolsDiv );
 			sidenoteContainer.appendChild( aside );
 
 			mw.inlineComments.manager.add( aside, getOffset( range ) );

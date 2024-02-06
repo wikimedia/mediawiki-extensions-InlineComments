@@ -98,13 +98,18 @@ class AnnotationFormatter extends HtmlFormatter {
 					$timestamp
 				);
 			}
+			$textDiv = Html::rawElement(
+				'div',
+				[ 'class' => 'mw-inlinecomment-text' ],
+				$asideContent
+			);
 			$res .= Html::rawElement(
 				'aside',
 				[
 					'id' => 'mw-inlinecomment-aside-' . $annotation['id'],
 					'class' => 'mw-inlinecomment-aside',
 				],
-				$asideContent
+				$textDiv
 			);
 		}
 		return $res . '</div>';
