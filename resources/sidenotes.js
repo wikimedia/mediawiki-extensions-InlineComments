@@ -215,17 +215,17 @@
 				autosize: true,
 				placeholder: mw.msg( 'inlinecomments-placeholder' )
 			} );
-			var saveButton = new OO.ui.ButtonInputWidget( {
+			var saveReplyButton = new OO.ui.ButtonInputWidget( {
 				label: mw.msg( 'inlinecomments-addcomment-save' ),
 				flags: [ 'primary', 'progressive' ]
 			} );
-			var cancelButton = new OO.ui.ButtonInputWidget( {
+			var cancelReplyButton = new OO.ui.ButtonInputWidget( {
 				label: mw.msg( 'inlinecomments-addcomment-cancel' ),
 				flags: [ 'destructive' ]
 			} );
 
-			var saveFunc = function () {
-				saveButton.setDisabled( true );
+			var saveReplyFunc = function () {
+				saveReplyButton.setDisabled( true );
 				mw.loader.using( 'mediawiki.api', function () {
 					var api = new mw.Api();
 					var text = textbox.getValue().trim();
@@ -255,23 +255,23 @@
 					} );
 				} );
 			};
-			var cancelFunc = function () {
+			var cancelReplyFunc = function () {
 				textbox.setValue('');
 				toolsDiv.replaceChildren( replyButton.$element[0], resolveButton.$element[0] );
 			};
 			var replyFunc = function () {
 				// Disable "Save" button until text is added.
-				saveButton.setDisabled( true );
+				saveReplyButton.setDisabled( true );
 				textbox.$element.keyup( function () {
-					saveButton.setDisabled( textbox.getValue().trim() == '' );
+					saveReplyButton.setDisabled( textbox.getValue().trim() == '' );
 				} );
 				// We call unbind() to avoid these functions getting called multiple times,
 				// if the buttons were cancelled and re-added.
-				saveButton.$element.unbind('click').click( saveFunc );
-				cancelButton.$element.unbind('click').click( cancelFunc );
+				saveReplyButton.$element.unbind('click').click( saveReplyFunc );
+				cancelReplyButton.$element.unbind('click').click( cancelReplyFunc );
 				var buttonsDiv = document.createElement( 'div' );
 				buttonsDiv.className = 'mw-inlinecomment-buttons';
-				buttonsDiv.replaceChildren(  saveButton.$element[0], cancelButton.$element[0] );
+				buttonsDiv.replaceChildren(  saveReplyButton.$element[0], cancelReplyButton.$element[0] );
 				toolsDiv.replaceChildren( textbox.$element[0], buttonsDiv );
 			}
 			var resolveFunc = function () {
