@@ -9,6 +9,7 @@ if ( $IP === false ) {
 require_once "$IP/maintenance/Maintenance.php";
 
 use CommentStoreComment;
+use IDBAccessObject;
 use Maintenance;
 use MediaWiki\MediaWikiServices;
 use Title;
@@ -78,7 +79,13 @@ class RemoveComments extends Maintenance {
 	 * @param int $pageId the id of page to delete comments from
 	 */
 	private function deleteComments( $pageId ) {
-		$title = Title::newFromId( $pageId, Title::READ_LATEST );
+		if ( class_exists( 'MediaWiki\Title\Title' ) ) {
+			// MW 1.40+
+			$title = \MediaWiki\Title\Title::newFromID( $pageId, IDBAccessObject::READ_LATEST );
+		} else {
+			$title = Title::newFromID( $pageId, IDBAccessObject::READ_LATEST );
+		}
+
 		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		// Replace with User::MAINTENANCE_SCRIPT_USER when we drop support for 1.35
 		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
