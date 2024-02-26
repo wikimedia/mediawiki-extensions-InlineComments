@@ -1,8 +1,9 @@
 {
 	"name": "InlineComments",
-	"version": "0.1",
+	"version": "0.2",
 	"author": [
-		"WikiTeq"
+		"WikiTeq",
+		"Yaron Koren"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:InlineComments",
 	"descriptionmsg": "inlinecomments-desc",
