@@ -3,7 +3,8 @@
 	"version": "0.2",
 	"author": [
 		"WikiTeq",
-		"Yaron Koren"
+		"Yaron Koren",
+		"Brian Wolff"
 	],
 	"url": "https://www.mediawiki.org/wiki/Extension:InlineComments",
 	"descriptionmsg": "inlinecomments-desc",
