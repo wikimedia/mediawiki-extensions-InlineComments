@@ -20,6 +20,8 @@
 	"inlinecomments-invaliditem": "Api error if annotation being added is not valid",
 	"action-inlinecomments-add": "Message for inlinecomments action",
 	"right-inlinecomments-add": "Message for inlinecomments user right",
+	"right-inlinecomments-view": "Message for inlinecomments-view user right",
+	"action-inlinecomments-view": "Message for inlinecomments-view action",
 	"inlinecomments-editsummary-add": "Edit summary when you add an annotation. $1 is the first bit of the added comment",
 	"inlinecomments-editsummary-resolve": "Edit summary when you mark a comment resolved",
 	"inlinecomments-editsummary-addreply": "Edit summary when you reply to a comment",

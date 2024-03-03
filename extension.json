@@ -142,12 +142,16 @@
 		"remoteExtPath": "InlineComments/resources"
 	},
 	"AvailableRights": [
-		"inlinecomments-add"
+		"inlinecomments-add",
+		"inlinecomments-view"
 	],
 	"ContentHandlers": {
 		"annotation+json": "MediaWiki\\Extension\\InlineComments\\AnnotationContentHandler"
 	},
 	"GroupPermissions": {
+		"*": {
+			"inlinecomments-view": true
+		},
 		"user": {
 			"inlinecomments-add": true
 		}

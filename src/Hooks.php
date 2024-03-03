@@ -79,12 +79,23 @@ class Hooks implements
 			// and instead show the previous annotations on page preview.
 			return;
 		}
+		// Check if the user has the 'inlinecomments-view' permission
+		$canViewComments = $this->permissionManager->userCan(
+			'inlinecomments-view',
+			$out->getUser(),
+			$out->getTitle(),
+			PermissionManager::RIGOR_FULL
+		);
+		// Check if the user has the 'inlinecomments-add' permission
 		$canEditComments = $this->permissionManager->userCan(
 			'inlinecomments-add',
 			$out->getUser(),
 			$out->getTitle(),
 			PermissionManager::RIGOR_QUICK
 		);
+		if ( !$canViewComments ) {
+			return; // Exit early if user can't view comments
+		}
 		if (
 			$out->getRequest()->getVal( 'action', 'view' ) === 'view' &&
 			$out->isRevisionCurrent() &&
@@ -146,12 +157,23 @@ class Hooks implements
 			return;
 		}
 
+		// Check if the user has the 'inlinecomments-view' permission
+		$canViewComments = $this->permissionManager->userCan(
+			'inlinecomments-view',
+			$out->getUser(),
+			$out->getTitle(),
+			PermissionManager::RIGOR_FULL
+		);
+		// Check if the user has the 'inlinecomments-add' permission
 		$canEditComments = $this->permissionManager->userCan(
 			'inlinecomments-add',
 			$out->getUser(),
 			$out->getTitle(),
 			PermissionManager::RIGOR_QUICK
 		);
+		if ( !$canViewComments ) {
+			return; // Exit early if user can't view comments
+		}
 		if ( $canEditComments ) {
 			// If we loaded ?veaction=edit directly (not clicking edit tab)
 			// ensure we can edit comments after saving.

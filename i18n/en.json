@@ -20,6 +20,8 @@
 	"inlinecomments-invaliditem": "Invalid item",
 	"action-inlinecomments-add": "add inline comments",
 	"right-inlinecomments-add": "Add inline comments",
+	"right-inlinecomments-view": "View inline comments",
+	"action-inlinecomments-view": "view inline comments",
 	"inlinecomments-editsummary-add": "Added comment \"$1\"",
 	"inlinecomments-editsummary-resolve": "Marked comment resolved",
 	"inlinecomments-editsummary-addreply": "Replied to comment",
