@@ -37,6 +37,7 @@ class ApiAddAnnotation extends ApiBase {
 	public function execute() {
 		$data = $this->extractRequestParams();
 		$title = $this->getTitleFromTitleOrPageId( $data );
+		$timestamp = wfTimestampNow();
 		if ( !$title || $title->getNamespace() < 0 ) {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
@@ -55,7 +56,7 @@ class ApiAddAnnotation extends ApiBase {
 					'actorId' => $user->getActorId( wfGetDB( DB_PRIMARY ) ),
 					'userId' => $user->getId(),
 					'username' => $user->getName(),
-					'timestamp' => wfTimestampNow(),
+					'timestamp' => $timestamp,
 				]
 			],
 			'id' => (string)mt_rand(),
@@ -83,7 +84,8 @@ class ApiAddAnnotation extends ApiBase {
 			$this->getModuleName(),
 			[
 				'success' => true,
-				'id' => $item['id']
+				'id' => $item['id'],
+				'timestamp' => $this->getCurrentTimestamp( $timestamp ),
 			]
 		);
 	}
@@ -137,6 +139,17 @@ class ApiAddAnnotation extends ApiBase {
 		if ( !$pageUpdater->wasSuccessful() ) {
 			$this->dieWithError( 'inlinecomments-saveerror' );
 		}
+	}
+
+	/**
+	 * Retrieves and formats the current timestamp
+	 *
+	 * @param string $timestamp The timestamp to format
+	 * @return string Formatted current timestamp
+	 */
+	private function getCurrentTimestamp( $timestamp ) {
+		$formattedTimestamp = $this->contentLang->userTimeAndDate( $timestamp, $this->getUser() );
+		return ' ' . $formattedTimestamp;
 	}
 
 	/**

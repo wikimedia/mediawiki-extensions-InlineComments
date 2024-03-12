@@ -315,6 +315,7 @@
 					mw.notify( 'Unknown error', { type: 'error'} );
 					return;
 				}
+				var timestamp = res['inlinecomments-add'].timestamp;
 
 				// Now that we have saved the comment, we have
 				// an actual ID for it - change the temporary
@@ -352,7 +353,7 @@
 					// username will be null if anon.
 					var author = document.createElement( 'div' );
 					author.className = 'mw-inlinecomment-author';
-					author.textContent = mw.config.get( 'wgUserName' );
+					author.textContent = mw.config.get( 'wgUserName' ) + timestamp;
 					textDiv.append( p, author );
 				} else {
 					textDiv.append( p );
