@@ -32,6 +32,7 @@ class ApiAddReply extends ApiBase {
 	public function execute() {
 		$data = $this->extractRequestParams();
 		$title = $this->getTitleFromTitleOrPageId( $data );
+		$timestamp = wfTimestampNow();
 		if ( !$title || $title->getNamespace() < 0 ) {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
@@ -47,6 +48,7 @@ class ApiAddReply extends ApiBase {
 			$this->getModuleName(),
 			[
 				'success' => true,
+				'timestamp' => $this->getCurrentTimestamp( $timestamp ),
 			]
 		);
 	}
@@ -103,6 +105,19 @@ class ApiAddReply extends ApiBase {
 	 */
 	public function needsToken() {
 		return 'csrf';
+	}
+
+	/**
+	 * Retrieves and formats the current timestamp
+	 *
+	 * @param string $timestamp The timestamp to format
+	 * @return string Formatted current timestamp
+	 */
+	private function getCurrentTimestamp( $timestamp ) {
+		$user = $this->getUser();
+		$language = $this->getLanguage();
+		$formattedTimestamp = $language->userTimeAndDate( $timestamp, $user );
+		return ' ' . $formattedTimestamp;
 	}
 
 	/**

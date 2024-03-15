@@ -235,7 +235,8 @@
 						action: 'inlinecomments-addreply',
 						comment: text
 					};
-					api.postWithToken( 'csrf', data ).then( function () {
+					api.postWithToken( 'csrf', data ).then( function (res) {
+						var timestamp = res['inlinecomments-addreply'].timestamp;
 						textbox.setValue('');
 						var textDiv = $( aside ).find('.mw-inlinecomment-text')[0];
 						var p = document.createElement( 'p' );
@@ -246,7 +247,7 @@
 						if ( mw.config.get( 'wgUserName' ) !== null ) {
 							var author = document.createElement( 'div' );
 							author.className = 'mw-inlinecomment-author';
-							author.textContent = mw.config.get( 'wgUserName' );
+							author.textContent = mw.config.get( 'wgUserName' ) + timestamp;
 							textDiv.appendChild( author );
 						}
 						toolsDiv.replaceChildren( replyButton.$element[0], resolveButton.$element[0] );
