@@ -19,7 +19,7 @@ If you click on an already existing comment, tools appear to either resolve (del
 
 ## Configuration
 
-You can set `$wgInlineCommentsAutoResolveComments = false;` in your LocalSettings.php to disable
+You can set `$wgInlineCommentsAutoDeleteComments = false;` in your LocalSettings.php to disable
 automatically removing comments that aren't attached to any text in the page.
 
 You can adjust who can make inline comments by adjusting what user groups have the inlinecomments-add

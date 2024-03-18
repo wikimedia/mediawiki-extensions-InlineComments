@@ -68,7 +68,7 @@ class AnnotationMarker {
 		// TODO: We may want to set the performance optimisation options.
 
 		$alist = null;
-		if ( $this->config->get( 'InlineCommentsAutoResolveComments' ) ) {
+		if ( $this->config->get( 'InlineCommentsAutoDeleteComments' ) ) {
 			$getUnusedAnnotations = static function () use ( &$alist ) {
 				// @phan-suppress-next-line PhanNonClassMethodCall
 				return $alist->getUnusedAnnotations();

@@ -20,7 +20,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 	 */
 	public function testMarkUp( string $inputHtml, array $annotations, string $expectedOutput, string $info ) {
 		$content = $this->getAC( $annotations );
-		$config = new HashConfig( [ 'InlineCommentsAutoResolveComments' => true ] );
+		$config = new HashConfig( [ 'InlineCommentsAutoDeleteComments' => true ] );
 		$marker = new AnnotationMarker( $config );
 		$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
 		$user = User::newFromName( '127.0.0.1', false );

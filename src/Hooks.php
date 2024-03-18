@@ -195,7 +195,7 @@ class Hooks implements
 	public function onMultiContentSave( $renderedRevision, $user, $summary, $flags,
 		$status
 		) {
-		if ( !$this->config->get( 'InlineCommentsAutoResolveComments' ) || self::$loopCheck ) {
+		if ( !$this->config->get( 'InlineCommentsAutoDeleteComments' ) || self::$loopCheck ) {
 			return;
 		}
 

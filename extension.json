@@ -70,9 +70,9 @@
 		"src/ServiceWiring.php"
 	],
 	"config": {
-		"InlineCommentsAutoResolveComments": {
+		"InlineCommentsAutoDeleteComments": {
 			"value": true,
-			"description": "Automatically resolve and do not show comments if the text being commented on has been removed"
+			"description": "Automatically delete comments if the text they are commenting on was removed or can no longer be found"
 		}
 	},
 	"ResourceModules": {
