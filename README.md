@@ -15,7 +15,8 @@ icon will appear. You can add a comment by clicking the icon or typing ctrl+alt+
 
 A dialog will appear to add your comment. Once you hit save, it will be shown to other users.
 
-If you click on an already existing comment, tools appear to either resolve (delete) the comment or reply to it.
+If you click on an already existing comment or discussion, tools appear to either close
+(delete) the discussion or reply to it.
 
 ## Configuration
 

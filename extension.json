@@ -53,8 +53,8 @@
 				"WikiPageFactory"
 			]
 		},
-		"inlinecomments-resolve": {
-			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiResolveAnnotation",
+		"inlinecomments-close": {
+			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiCloseDiscussion",
 			"services": [
 				"WikiPageFactory"
 			]
@@ -88,7 +88,7 @@
 			],
 			"messages": [
 				"inlinecomments-addcomment-reply",
-				"inlinecomments-addcomment-resolve",
+				"inlinecomments-addcomment-close",
 				"inlinecomments-addcomment-save",
 				"inlinecomments-addcomment-cancel",
 				"inlinecomments-placeholder"

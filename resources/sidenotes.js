@@ -195,7 +195,7 @@
 			}
 			this.renderUnselected();
 		},
-		// Add reply and resolve buttons to an aside
+		// Add "Reply" and "Close discussion" buttons to an aside.
 		addTools: function ( aside ) {
 			var that = this;
 			var asideId = aside.id.replace( this.opts.idRegex, '' );
@@ -205,8 +205,8 @@
 				label: mw.msg( 'inlinecomments-addcomment-reply' ),
 				flags: [ 'progressive' ]
 			} );
-			var resolveButton = new OO.ui.ButtonInputWidget( {
-				label: mw.msg( 'inlinecomments-addcomment-resolve' ),
+			var closeDiscussionButton = new OO.ui.ButtonInputWidget( {
+				label: mw.msg( 'inlinecomments-addcomment-close' ),
 				flags: [ 'desctructive' ]
 			} );
 
@@ -250,7 +250,7 @@
 							author.textContent = mw.config.get( 'wgUserName' ) + timestamp;
 							textDiv.appendChild( author );
 						}
-						toolsDiv.replaceChildren( replyButton.$element[0], resolveButton.$element[0] );
+						toolsDiv.replaceChildren( replyButton.$element[0], closeDiscussionButton.$element[0] );
 					} ).fail( function ( code, data ) {
 						mw.notify( api.getErrorMessage( data ), { type: 'error' } );
 					} );
@@ -258,7 +258,7 @@
 			};
 			var cancelReplyFunc = function () {
 				textbox.setValue('');
-				toolsDiv.replaceChildren( replyButton.$element[0], resolveButton.$element[0] );
+				toolsDiv.replaceChildren( replyButton.$element[0], closeDiscussionButton.$element[0] );
 			};
 			var replyFunc = function () {
 				// Disable "Save" button until text is added.
@@ -275,14 +275,14 @@
 				buttonsDiv.replaceChildren(  saveReplyButton.$element[0], cancelReplyButton.$element[0] );
 				toolsDiv.replaceChildren( textbox.$element[0], buttonsDiv );
 			}
-			var resolveFunc = function () {
-				resolveButton.setDisabled( true );
+			var closeDiscussionFunc = function () {
+				closeDiscussionButton.setDisabled( true );
 				mw.loader.using( 'mediawiki.api', function () {
 					var api = new mw.Api();
 					var data = {
 						title: mw.config.get( 'wgPageName' ),
 						id: asideId,
-						action: 'inlinecomments-resolve'
+						action: 'inlinecomments-close'
 					}
 					api.postWithToken( 'csrf', data ).then( function () {
 						that.remove( aside.id );
@@ -292,9 +292,9 @@
 				} );
 			}
 
-			resolveButton.$element.click( resolveFunc );
+			closeDiscussionButton.$element.click( closeDiscussionFunc );
 			replyButton.$element.unbind('click').click( replyFunc );
-			$( toolsDiv ).append( replyButton.$element, resolveButton.$element );
+			$( toolsDiv ).append( replyButton.$element, closeDiscussionButton.$element );
 			aside.appendChild( toolsDiv );
 		},
 		/**

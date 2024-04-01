@@ -245,7 +245,7 @@ class Hooks implements
 					}
 					$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $annotations );
 					$summary = CommentStoreComment::newUnsavedComment(
-						wfMessage( 'inlinecomments-editsummary-autoresolve' )
+						wfMessage( 'inlinecomments-editsummary-autoclose' )
 							->numParams( $count )
 							->params( $user->getName() )
 							->inContentLanguage()

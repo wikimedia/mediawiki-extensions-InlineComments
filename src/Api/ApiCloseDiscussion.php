@@ -11,7 +11,7 @@ use MediaWiki\Page\WikiPageFactory;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
 
-class ApiResolveAnnotation extends ApiBase {
+class ApiCloseDiscussion extends ApiBase {
 
 	/** @var WikiPageFactory */
 	private $wikiPageFactory;
@@ -85,7 +85,7 @@ class ApiResolveAnnotation extends ApiBase {
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		$summary = CommentStoreComment::newUnsavedComment(
-			$this->msg( 'inlinecomments-editsummary-resolve' )
+			$this->msg( 'inlinecomments-editsummary-close' )
 				->inContentLanguage()
 		);
 		// TODO: If someone edits the page between when we ran grabRevision()
