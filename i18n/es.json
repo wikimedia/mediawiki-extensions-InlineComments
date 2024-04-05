@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eulalio"
+		]
+	},
+	"inlinecomments-desc": "Permitir agregar comentarios a una página",
+	"inlinecomments-addcomment-tooltip": "Comentar el texto resaltado [ctrl+alt+m]",
+	"inlinecomments-addcomment-cancel": "Cancelar",
+	"apihelp-inlinecomments-add-summary": "Añade un nuevo comentario en línea.",
+	"apihelp-inlinecomments-add-param-body": "Texto para seleccionar.",
+	"apihelp-inlinecomments-add-param-skipcount": "Omita los primeros n fragmentos de texto que coincidan con esto.",
+	"action-inlinecomments-add": "agregar comentarios en línea",
+	"right-inlinecomments-add": "Agregar comentarios en línea",
+	"right-inlinecomments-view": "Ver comentarios en línea",
+	"inlinecomments-editsummary-addreply": "Respondió al comentario",
+	"inlinecomments-addcomment-reply": "Responder",
+	"inlinecomments-placeholder": "Introduce tu comentario.",
+	"inlinecomments-missingpage": "No pudo editar comentarios ya que la página no existe.",
+	"inlinecomments-noitembyid": "No se puede cerrar la discusión porque no existe.",
+	"inlinecomments-addcomment-noitembyid": "No puedo responder al comentario porque no existe.",
+	"apihelp-inlinecomments-addreply-param-title": "Título de la página a la que se añade una respuesta. Usa esto o el nombre de página, pero no ambos.",
+	"apihelp-inlinecomments-addreply-param-pageid": "ID de la página a la que agregar una respuesta. Utilice este o el título, pero no ambos.",
+	"apihelp-inlinecomments-addreply-param-id": "ID del comentario al que estás respondiendo",
+	"apihelp-inlinecomments-addreply-param-comment": "El texto de tu respuesta.",
+	"apihelp-inlinecomments-addreply-summary": "Agregar una respuesta a un comentario en línea",
+	"apihelp-inlinecomments-close-summary": "Cerrar la discusión eliminándola de la página.",
+	"apihelp-inlinecomments-close-param-pageid": "ID de la página en la que cerrar la discusión. Utilice este o el título, pero no ambos.",
+	"inlinecomments-editsummary-autoclose": "Cerrando automáticamente {{PLURAL:$1|una discusión después de que el texto al que estaba vinculado fuera eliminado por discusiones de $2|$1 después de que el texto al que estaban vinculados lo eliminara $2}}."
+}

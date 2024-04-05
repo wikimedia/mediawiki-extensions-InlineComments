@@ -1,0 +1,16 @@
+{
+	"@metadata": {
+		"authors": [
+			"Milicevic01"
+		]
+	},
+	"inlinecomments-desc": "Омогућава додавање коментара на страницу",
+	"inlinecomments-addcomment-save": "Сачувај",
+	"inlinecomments-addcomment-cancel": "Откажи",
+	"right-inlinecomments-add": "додавање коментара инлајн",
+	"inlinecomments-editsummary-close": "Затворена дискусија",
+	"inlinecomments-editsummary-addreply": "Одговор на коментар",
+	"inlinecomments-addcomment-reply": "Одговори",
+	"inlinecomments-addcomment-close": "Затвори дискусију",
+	"inlinecomments-placeholder": "Унесите Ваш коментар."
+}
