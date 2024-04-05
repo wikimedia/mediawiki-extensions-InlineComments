@@ -221,7 +221,7 @@ class AnnotationContent extends JsonContent {
 					'comment' => $comment,
 					'userId' => $user->getId(),
 					'username' => $user->getName(),
-					'actorId' => $user->getActorId( wfGetDB( DB_PRIMARY ) ),
+					'actorId' => $user->getActorId(),
 					'timestamp' => wfTimestampNow(),
 				];
 				break;
