@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"B3rnas"
+		]
+	},
+	"inlinecomments-desc": "Permitir adicionar comentários a uma página",
+	"inlinecomments-addcomment-tooltip": "Comentar o texto realçado [ctrl+alt+m]",
+	"apihelp-inlinecomments-add-summary": "Adiciona um novo comentário em linha.",
+	"apihelp-inlinecomments-add-param-title": "Título da página à qual pretende acrescentar um comentário. Utilize este ou pageid, mas não ambos.",
+	"apihelp-inlinecomments-add-param-pageid": "ID da página à qual adicionar um comentário. Utilize este ou o título, mas não ambos.",
+	"apihelp-inlinecomments-add-param-container": "Nome do elemento que é o antepassado comum do texto selecionado.",
+	"apihelp-inlinecomments-add-param-comment": "Texto do comentário sendo adicionado.",
+	"apihelp-inlinecomments-add-param-containerid": "Atributo ID do antepassado comum.",
+	"apihelp-inlinecomments-add-param-containerclass": "Atributo de classe de um antepassado comum.",
+	"right-inlinecomments-add": "Agregar comentários em linha",
+	"inlinecomments-editsummary-addreply": "Respondeu ao comentário",
+	"inlinecomments-addcomment-reply": "Responder",
+	"inlinecomments-placeholder": "Escreva o seu comentário.",
+	"inlinecomments-noitembyid": "Não é possível encerrar a discussão porque ela não existe.",
+	"inlinecomments-addcomment-noitembyid": "Não é possível responder ao comentário porque ele não existe.",
+	"apihelp-inlinecomments-addreply-param-title": "Título da página a que pretende adicionar uma resposta. Utilize este ou pageid, mas não ambos.",
+	"apihelp-inlinecomments-addreply-param-pageid": "ID da página à qual pretende adicionar uma resposta. Utilize isto ou o título, mas não ambos.",
+	"apihelp-inlinecomments-addreply-param-comment": "O texto da sua resposta",
+	"apihelp-inlinecomments-close-param-pageid": "ID da página em que se encerra o debate. Utilize este ou o título, mas não ambos.",
+	"inlinecomments-editsummary-autoclose": "Encerramento automático de {{PLURAL:$1|uma discussão após o texto ao qual estava ligado ter sido removido por $2|$1 discussões após o texto ao qual estavam ligados ter sido removido por $2}}.",
+	"inlinecomments-error-notext": "Aviso: Erro ao encontrar o texto destacado. Recarregar a página para verificar se o texto correto foi anotado."
+}

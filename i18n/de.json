@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"TomatoCake"
+		]
 	},
 	"inlinecomments-desc": "Hinzufügen von Kommentaren zu einer Seite zulassen",
 	"inlinecomments-addcomment-tooltip": "Kommentiere den markierten Text [Strg+Alt+m]",
@@ -28,7 +30,7 @@
 	"inlinecomments-saveerror": "Fehler beim Speichern der Kommentare.",
 	"inlinecomments-noitembyid": "Diskussion kann nicht geschlossen werden, da sie nicht existiert.",
 	"inlinecomments-addcomment-noitembyid": "Auf den Kommentar kann nicht geantwortet werden, da er nicht existiert.",
-	"apihelp-inlinecomments-addreply-param-title": "Titel der Seite, auf die eine Antwort hinzugefügt werden soll. Verwende diese oder die Seiten-ID, aber nicht beide.",
+	"apihelp-inlinecomments-addreply-param-title": "Titel der Seite, auf die eine Antwort hinzugefügt werden soll. Verwende diesen oder die Seiten-ID, aber nicht beide.",
 	"apihelp-inlinecomments-addreply-param-pageid": "ID der Seite, zu der eine Antwort hinzugefügt werden soll. Verwende diese oder den Titel, aber nicht beide.",
 	"apihelp-inlinecomments-addreply-param-id": "ID des Kommentars, auf den du antwortest",
 	"apihelp-inlinecomments-addreply-param-comment": "Der Text deiner Antwort",
