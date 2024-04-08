@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eulalio"
+		]
+	},
+	"inlinecomments-desc": "Permitir agregar comentarios a una página",
+	"inlinecomments-addcomment-tooltip": "Comentar el texto resaltado [ctrl+alt+m]",
+	"inlinecomments-addcomment-cancel": "Cancelar",
+	"apihelp-inlinecomments-add-summary": "Añade un nuevo comentario en línea.",
+	"apihelp-inlinecomments-add-param-body": "Texto para seleccionar.",
+	"action-inlinecomments-add": "agregar comentarios en línea",
+	"right-inlinecomments-add": "Agregar comentarios en línea",
+	"inlinecomments-editsummary-addreply": "Respondió al comentario",
+	"inlinecomments-addcomment-reply": "Responder",
+	"inlinecomments-placeholder": "Introduce tu comentario.",
+	"inlinecomments-missingpage": "No pudo editar comentarios ya que la página no existe.",
+	"inlinecomments-addcomment-noitembyid": "No puedo responder al comentario porque no existe.",
+	"apihelp-inlinecomments-addreply-param-comment": "El texto de tu respuesta.",
+	"apihelp-inlinecomments-addreply-summary": "Agregar una respuesta a un comentario en línea"
+}
