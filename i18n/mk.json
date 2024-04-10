@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"Bjankuloski06"
+		]
+	},
+	"inlinecomments-desc": "Овозможува додавање на коментари во страница",
+	"inlinecomments-addcomment-tooltip": "Коментирајте на истакнатиот текст [Ctrl+Alt+m]",
+	"inlinecomments-addcomment-save": "Зачувај",
+	"inlinecomments-addcomment-cancel": "Откажи",
+	"apihelp-inlinecomments-add-summary": "Додај нов внатрередов коментар.",
+	"apihelp-inlinecomments-add-param-pre": "Текст пред избраниот текст.",
+	"apihelp-inlinecomments-add-param-body": "Текст за избирање.",
+	"apihelp-inlinecomments-add-param-container": "Назив на елементот што е заеднички предок на избраниот текст.",
+	"apihelp-inlinecomments-add-param-comment": "Текст на коментарот што се додава.",
+	"apihelp-inlinecomments-add-param-containerid": "Атрибутот за назнака на заедничкиот предок.",
+	"apihelp-inlinecomments-add-param-containerclass": "Атрибутот за класа на заедничкиот предок.",
+	"inlinecomments-invaliditem": "Неважечка ставка",
+	"action-inlinecomments-add": "додавање на внатрередови коментари",
+	"right-inlinecomments-add": "Додавање на внатрередови коментари",
+	"inlinecomments-editsummary-add": "Додаден коментарот „$1“",
+	"inlinecomments-editsummary-addreply": "Одговор на коментар",
+	"inlinecomments-addcomment-reply": "Одговори",
+	"inlinecomments-placeholder": "Внесете го коментарот.",
+	"inlinecomments-missingpage": "Не можам да уредувам коментари бидејќи страницата не постои.",
+	"inlinecomments-saveerror": "Грешка при зачувувањето на коментарите.",
+	"inlinecomments-addcomment-noitembyid": "Не можам да одговорам на коментарот бидејќи истиот не постои.",
+	"apihelp-inlinecomments-addreply-param-comment": "Текстот на вашиот одговор",
+	"apihelp-inlinecomments-addreply-summary": "Додај одговор во внатрередов коментар",
+	"inlinecomments-error-notext": "Предупредување: Грешка при наоѓањето на истакнатиот текст. Превчитајте ја страницата за да потврдите дека текстот е прибележан."
+}

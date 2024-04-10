@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Volvox"
+		]
+	},
+	"inlinecomments-addcomment-save": "Späicheren",
+	"inlinecomments-addcomment-cancel": "Ofbriechen",
+	"apihelp-inlinecomments-add-param-body": "Text fir auszewielen.",
+	"apihelp-inlinecomments-add-param-comment": "Text vum Kommentar fir derbäizesetzen.",
+	"inlinecomments-editsummary-add": "Kommentar „$1“ derbäigesat",
+	"inlinecomments-addcomment-reply": "Äntweren",
+	"inlinecomments-placeholder": "Gitt Äre Kommentar an.",
+	"inlinecomments-saveerror": "Feeler beim Späichere vum Kommentar.",
+	"inlinecomments-addcomment-noitembyid": "Op de Kommentar kann net geänwert ginn, well en net existéiert.",
+	"apihelp-inlinecomments-addreply-param-comment": "Den Text vun Ärer Äntwert"
+}

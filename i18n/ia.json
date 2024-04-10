@@ -1,0 +1,31 @@
+{
+	"@metadata": {
+		"authors": [
+			"McDutchie"
+		]
+	},
+	"inlinecomments-desc": "Permitte adder commentos a un pagina",
+	"inlinecomments-addcomment-tooltip": "Commentar le texto marcate [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "Salveguardar",
+	"inlinecomments-addcomment-cancel": "Cancellar",
+	"apihelp-inlinecomments-add-summary": "Adder un nove commento integrate.",
+	"apihelp-inlinecomments-add-param-pre": "Texto ante le texto seligite.",
+	"apihelp-inlinecomments-add-param-body": "Le texto a seliger.",
+	"apihelp-inlinecomments-add-param-container": "Nomine del elemento que es le ancestre commun del texto seligite.",
+	"apihelp-inlinecomments-add-param-comment": "Texto del commento a adder.",
+	"apihelp-inlinecomments-add-param-containerid": "Attributo ID del ancestre commun.",
+	"apihelp-inlinecomments-add-param-containerclass": "Attributo classe del ancestre commun.",
+	"inlinecomments-invaliditem": "Elemento non valide",
+	"action-inlinecomments-add": "adder commentos integrate",
+	"right-inlinecomments-add": "Adder commentos integrate",
+	"inlinecomments-editsummary-add": "Commento “$1” addite",
+	"inlinecomments-editsummary-addreply": "Respondite al commento",
+	"inlinecomments-addcomment-reply": "Responder",
+	"inlinecomments-placeholder": "Insere tu commento.",
+	"inlinecomments-missingpage": "Non poteva modificar commentos perque le pagina non existe.",
+	"inlinecomments-saveerror": "Error salveguardante commentos.",
+	"inlinecomments-addcomment-noitembyid": "Non pote responder al commento perque illo non existe.",
+	"apihelp-inlinecomments-addreply-param-comment": "Le texto de tu responsa",
+	"apihelp-inlinecomments-addreply-summary": "Adder un responsa a un commento integrate",
+	"inlinecomments-error-notext": "Attention: Impossibile trovar texto marcate. Recarga le pagina pro verificar que le texto correcte ha essite annotate."
+}

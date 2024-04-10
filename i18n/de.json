@@ -1,0 +1,28 @@
+{
+	"@metadata": {
+		"authors": [
+			"TomatoCake"
+		]
+	},
+	"inlinecomments-desc": "Hinzufügen von Kommentaren zu einer Seite zulassen",
+	"inlinecomments-addcomment-tooltip": "Kommentiere den markierten Text [Strg+Alt+m]",
+	"inlinecomments-addcomment-save": "Speichern",
+	"inlinecomments-addcomment-cancel": "Abbrechen",
+	"apihelp-inlinecomments-add-summary": "Füge einen neuen Inline-Kommentar hinzu.",
+	"apihelp-inlinecomments-add-param-pre": "Text vor dem ausgewählten Text.",
+	"apihelp-inlinecomments-add-param-body": "Text zum Auswählen.",
+	"apihelp-inlinecomments-add-param-container": "Name des Elements, das der gemeinsame Vorgänger des ausgewählten Textes ist.",
+	"apihelp-inlinecomments-add-param-comment": "Text des Kommentars, der hinzugefügt wird.",
+	"apihelp-inlinecomments-add-param-containerid": "ID-Attribut des gemeinsamen Vorfahren.",
+	"apihelp-inlinecomments-add-param-containerclass": "Klassenattribut des gemeinsamen Vorfahren.",
+	"inlinecomments-editsummary-add": "Kommentar „$1“ hinzugefügt",
+	"inlinecomments-editsummary-addreply": "Auf Kommentar geantwortet",
+	"inlinecomments-addcomment-reply": "Antworten",
+	"inlinecomments-placeholder": "Gib deinen Kommentar ein.",
+	"inlinecomments-missingpage": "Kommentare konnten nicht bearbeitet werden, da die Seite nicht existiert.",
+	"inlinecomments-saveerror": "Fehler beim Speichern der Kommentare.",
+	"inlinecomments-addcomment-noitembyid": "Auf den Kommentar kann nicht geantwortet werden, da er nicht existiert.",
+	"apihelp-inlinecomments-addreply-param-comment": "Der Text deiner Antwort",
+	"apihelp-inlinecomments-addreply-summary": "Füge eine Antwort auf einen Inline-Kommentar hinzu",
+	"inlinecomments-error-notext": "Warnung: Beim Suchen des markierten Textes ist ein Fehler aufgetreten. Lade die Seite neu, um zu prüfen, ob der richtige Text annotiert wurde."
+}

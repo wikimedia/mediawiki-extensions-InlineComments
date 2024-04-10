@@ -1,0 +1,21 @@
+{
+	"@metadata": {
+		"authors": [
+			"B3rnas"
+		]
+	},
+	"inlinecomments-desc": "Permitir adicionar comentários a uma página",
+	"inlinecomments-addcomment-tooltip": "Comentar o texto realçado [ctrl+alt+m]",
+	"apihelp-inlinecomments-add-summary": "Adiciona um novo comentário em linha.",
+	"apihelp-inlinecomments-add-param-container": "Nome do elemento que é o antepassado comum do texto selecionado.",
+	"apihelp-inlinecomments-add-param-comment": "Texto do comentário sendo adicionado.",
+	"apihelp-inlinecomments-add-param-containerid": "Atributo ID do antepassado comum.",
+	"apihelp-inlinecomments-add-param-containerclass": "Atributo de classe de um antepassado comum.",
+	"right-inlinecomments-add": "Agregar comentários em linha",
+	"inlinecomments-editsummary-addreply": "Respondeu ao comentário",
+	"inlinecomments-addcomment-reply": "Responder",
+	"inlinecomments-placeholder": "Escreva o seu comentário.",
+	"inlinecomments-addcomment-noitembyid": "Não é possível responder ao comentário porque ele não existe.",
+	"apihelp-inlinecomments-addreply-param-comment": "O texto da sua resposta",
+	"inlinecomments-error-notext": "Aviso: Erro ao encontrar o texto destacado. Recarregar a página para verificar se o texto correto foi anotado."
+}

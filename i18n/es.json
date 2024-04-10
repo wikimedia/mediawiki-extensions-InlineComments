@@ -1,0 +1,32 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eulalio",
+			"McDutchie"
+		]
+	},
+	"inlinecomments-desc": "Permitir agregar comentarios a una página",
+	"inlinecomments-addcomment-tooltip": "Comentar el texto resaltado [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "Guardar",
+	"inlinecomments-addcomment-cancel": "Cancelar",
+	"apihelp-inlinecomments-add-summary": "Añade un nuevo comentario en línea.",
+	"apihelp-inlinecomments-add-param-pre": "Texto antes del texto seleccionado.",
+	"apihelp-inlinecomments-add-param-body": "Texto para seleccionar.",
+	"apihelp-inlinecomments-add-param-container": "Nombre del elemento que es el ancestro común del texto seleccionado.",
+	"apihelp-inlinecomments-add-param-comment": "Se agrega el texto del comentario.",
+	"apihelp-inlinecomments-add-param-containerid": "Atributo de identificación del ancestro común.",
+	"apihelp-inlinecomments-add-param-containerclass": "Atributo de clase del ancestro común.",
+	"inlinecomments-invaliditem": "Elemento no válido",
+	"action-inlinecomments-add": "agregar comentarios en línea",
+	"right-inlinecomments-add": "Agregar comentarios en línea",
+	"inlinecomments-editsummary-add": "Se agregó el comentario \" $1 \"",
+	"inlinecomments-editsummary-addreply": "Respondió al comentario",
+	"inlinecomments-addcomment-reply": "Responder",
+	"inlinecomments-placeholder": "Introduce tu comentario.",
+	"inlinecomments-missingpage": "No pudo editar comentarios ya que la página no existe.",
+	"inlinecomments-saveerror": "Error al guardar comentarios.",
+	"inlinecomments-addcomment-noitembyid": "No puedo responder al comentario porque no existe.",
+	"apihelp-inlinecomments-addreply-param-comment": "El texto de tu respuesta.",
+	"apihelp-inlinecomments-addreply-summary": "Agregar una respuesta a un comentario en línea",
+	"inlinecomments-error-notext": "Atención: Error al buscar el texto resaltado. Recargue la página para verificar que se anotó el texto correcto."
+}
