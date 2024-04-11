@@ -1,0 +1,13 @@
+{
+	"@metadata": {
+		"authors": [
+			"Jon Harald Søby"
+		]
+	},
+	"inlinecomments-desc": "Gjør det mulig å legge til kommentarer på en side",
+	"inlinecomments-addcomment-tooltip": "Kommenter den markerte teksten [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "Lagre",
+	"inlinecomments-addcomment-cancel": "Avbryt",
+	"inlinecomments-editsummary-add": "La til kommentaren «$1»",
+	"inlinecomments-addcomment-close": "Lukk diskusjon"
+}

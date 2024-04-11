@@ -1,0 +1,23 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"inlinecomments-desc": "אפשרות להוסיף הערות לדף",
+	"inlinecomments-addcomment-tooltip": "להגיב על הטקסט המסומן [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "שמירה",
+	"inlinecomments-addcomment-cancel": "ביטול",
+	"inlinecomments-editsummary-addreply": "השיב להערה",
+	"inlinecomments-addcomment-reply": "להשיב",
+	"inlinecomments-addcomment-close": "סגירת דיון",
+	"inlinecomments-placeholder": "נא להין את התגובה שלך.",
+	"inlinecomments-missingpage": "לא היה אפשר לערוך תגובות מכיוון שהדף אינו קיים.",
+	"inlinecomments-saveerror": "שגיאה בשמירה התגובות.",
+	"inlinecomments-noitembyid": "לא ניתן לסגור דיון כי הוא לא קיים.",
+	"inlinecomments-addcomment-noitembyid": "לא ניתן להשיב לתגובה כי היא לא קיימת.",
+	"apihelp-inlinecomments-addreply-param-title": "כותרת הדף להוספת תשובה. יש להשתמש בזה או ב־pageid אבל לא בשניהם.",
+	"apihelp-inlinecomments-addreply-param-pageid": "מזהה הדף להוספת תשובה. יש להשתמש בזה או ב־title, אבל לא בשניהם.",
+	"apihelp-inlinecomments-addreply-param-id": "מזהה התגובה שהתשובה מיועדת אליה",
+	"apihelp-inlinecomments-addreply-param-comment": "הטקסט של תשובתך"
+}
