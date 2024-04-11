@@ -54,6 +54,8 @@
 			for ( var i = 0; i < this.items.length; i++ ) {
 				var item = this.items[i];
 
+				// Remove class before measuing height as class changes height.
+				item.element.classList.remove( this.opts.selectedClass );
 				if ( item.preferredOffset > curOffset ) {
 					curOffset = item.preferredOffset;
 				}
@@ -61,7 +63,6 @@
 				item.element.style.top = curOffset + 'px';
 				curOffset += item.element.offsetHeight;
 				curOffset += this.opts.padding;
-				item.element.classList.remove( this.opts.selectedClass );
 			}
 			this.deselectAnnotation();
 		},
@@ -104,21 +105,21 @@
 				// If we run out of room, unclear if it is best to have them
 				// zoom off the page, stack on top of each other, or be put at
 				// bottom of page.
+				this.items[i].element.classList.remove( this.opts.selectedClass );
 				curOffset -= this.items[i].element.offsetHeight + this.opts.padding;
 				if ( curOffset > this.items[i].preferredOffset ) {
 					curOffset = this.items[i].preferredOffset;
 				}
 				this.items[i].element.style.top = curOffset + 'px';
-				this.items[i].element.classList.remove( this.opts.selectedClass );
 			}
 
 			curOffset = offset + this.items[itemIndex].element.offsetHeight + this.opts.padding;
 			for ( var i = itemIndex+1; i < this.items.length; i++ ) {
+				this.items[i].element.classList.remove( this.opts.selectedClass );
 				if ( curOffset < this.items[i].preferredOffset ) {
 					curOffset = this.items[i].preferredOffset;
 				}
 				this.items[i].element.style.top = curOffset + 'px';
-				this.items[i].element.classList.remove( this.opts.selectedClass );
 
 				curOffset += this.items[i].element.offsetHeight + this.opts.padding;
 			}
