@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"TomatoCake"
+		]
 	},
 	"inlinecomments-desc": "Hinzufügen von Kommentaren zu einer Seite zulassen",
 	"inlinecomments-addcomment-tooltip": "Kommentiere den markierten Text [Strg+Alt+m]",
@@ -13,6 +15,8 @@
 	"apihelp-inlinecomments-add-param-comment": "Text des Kommentars, der hinzugefügt wird.",
 	"apihelp-inlinecomments-add-param-containerid": "ID-Attribut des gemeinsamen Vorfahren.",
 	"apihelp-inlinecomments-add-param-containerclass": "Klassenattribut des gemeinsamen Vorfahren.",
+	"action-inlinecomments-add": "Inline-Kommentare anzuzeigen",
+	"right-inlinecomments-add": "Inline-Kommentare anzeigen",
 	"inlinecomments-editsummary-add": "Kommentar „$1“ hinzugefügt",
 	"inlinecomments-editsummary-addreply": "Auf Kommentar geantwortet",
 	"inlinecomments-addcomment-reply": "Antworten",
