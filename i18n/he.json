@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"Amire80"
+		]
+	},
+	"inlinecomments-desc": "אפשרות להוסיף הערות לדף",
+	"inlinecomments-addcomment-tooltip": "להגיב על הטקסט המסומן [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "שמירה",
+	"inlinecomments-addcomment-cancel": "ביטול",
+	"apihelp-inlinecomments-add-summary": "הוסף תגובה מוטבעת חדשה.",
+	"apihelp-inlinecomments-add-param-pre": "הטקסט לפני הטקסט שנבחר.",
+	"apihelp-inlinecomments-add-param-body": "טקסט לבחירה.",
+	"apihelp-inlinecomments-add-param-container": "שם הרכיב שהוא ההורה המשותף של הטקסט שנבחר.",
+	"apihelp-inlinecomments-add-param-comment": "טקסט התגובה המתווספת.",
+	"inlinecomments-invaliditem": "פריט בלתי־תקין",
+	"action-inlinecomments-add": "להוסיף תגובות מוטבעות",
+	"right-inlinecomments-add": "הוספת תגובות מוטבעות",
+	"inlinecomments-editsummary-add": "נוספה התגובה \"$1\"",
+	"inlinecomments-editsummary-addreply": "השיב להערה",
+	"inlinecomments-addcomment-reply": "להשיב",
+	"inlinecomments-placeholder": "נא להין את התגובה שלך.",
+	"inlinecomments-missingpage": "לא היה אפשר לערוך תגובות מכיוון שהדף אינו קיים.",
+	"inlinecomments-saveerror": "שגיאה בשמירה התגובות.",
+	"inlinecomments-addcomment-noitembyid": "לא ניתן להשיב לתגובה כי היא לא קיימת.",
+	"apihelp-inlinecomments-addreply-param-comment": "הטקסט של תשובתך",
+	"apihelp-inlinecomments-addreply-summary": "הוספת תשובה לתגובה מוטבעת",
+	"inlinecomments-error-notext": "אזהרה: שגיאה במציאת טקסט מסומן. נא לרענן את הדף כדי לוודא שהטקסט הנכון הוא שהוער."
+}
