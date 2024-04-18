@@ -18,6 +18,8 @@
 	"apihelp-inlinecomments-add-param-containerid": "ID-Attribut des gemeinsamen Vorfahren.",
 	"apihelp-inlinecomments-add-param-containerclass": "Klassenattribut des gemeinsamen Vorfahren.",
 	"apihelp-inlinecomments-add-param-skipcount": "Überspringe die ersten n Textteile, die damit übereinstimmen.",
+	"action-inlinecomments-add": "Inline-Kommentare hinzuzufügen",
+	"right-inlinecomments-add": "Inline-Kommentare hinzufügen",
 	"right-inlinecomments-view": "Inline-Kommentare anzeigen",
 	"action-inlinecomments-view": "Inline-Kommentare anzuzeigen",
 	"inlinecomments-editsummary-add": "Kommentar „$1“ hinzugefügt",
