@@ -76,7 +76,7 @@ class ConvertComments extends Maintenance {
 				$total++;
 				if ( (int)$row->slot_role_id === $commentsId ) {
 					if ( (int)$row->content_model !== $newId ) {
-					$edited = true;
+						$edited = true;
 						$dbw->update(
 							'content',
 							[ 'content_model' => $newId ],
