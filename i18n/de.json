@@ -38,7 +38,7 @@
 	"apihelp-inlinecomments-addreply-param-comment": "Der Text deiner Antwort",
 	"apihelp-inlinecomments-addreply-summary": "Füge eine Antwort auf einen Inline-Kommentar hinzu",
 	"apihelp-inlinecomments-close-summary": "Schließe die Diskussion, indem du sie von der Seite entfernst",
-	"apihelp-inlinecomments-close-param-title": "Titel der Seite, auf der die Diskussion geschlossen werden soll. Verwende diese oder <var>pageid</var>, aber nicht beide.",
+	"apihelp-inlinecomments-close-param-title": "Titel der Seite, auf der die Diskussion geschlossen werden soll. Verwende diesen oder <var>pageid</var>, aber nicht beide.",
 	"apihelp-inlinecomments-close-param-pageid": "ID der Seite, auf der die Diskussion geschlossen werden soll. Verwende diese oder <var>title</var>, aber nicht beide.",
 	"apihelp-inlinecomments-close-param-id": "ID des Kommentars oder der Diskussion, die du schließt",
 	"inlinecomments-editsummary-autoclose": "Automatisches Schließen {{PLURAL:$1|einer Diskussion, nachdem der damit verknüpfte Text von $2 entfernt wurde|von $1 Diskussionen, nachdem der damit verknüpfte Text von $2 entfernt wurde}}.",

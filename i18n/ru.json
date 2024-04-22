@@ -1,0 +1,17 @@
+{
+	"@metadata": {
+		"authors": [
+			"Dirruw'o",
+			"Kareyac"
+		]
+	},
+	"apihelp-inlinecomments-add-param-title": "Идентификатор страницы, на которую нужно добавлить ответ. Используйте это <var>название</var>, но не оба.",
+	"apihelp-inlinecomments-add-param-pageid": "Идентификатор страницы, на которую нужно добавлить ответ. Используйте это <var>название</var>, но не оба.",
+	"apihelp-inlinecomments-add-param-containerid": "Атрибут <code>id</code> общего предка.",
+	"inlinecomments-addcomment-reply": "Ответить",
+	"apihelp-inlinecomments-addreply-param-title": "Идентификатор страницы, на которую нужно добавлить ответ. Используйте это <var>название</var>, но не оба.",
+	"apihelp-inlinecomments-addreply-param-pageid": "Идентификатор страницы, на которую нужно добавлить ответ. Используйте это <var>название</var>, но не оба.",
+	"apihelp-inlinecomments-close-param-title": "Название страницы, на которой можно закрыть обсуждение. Используйте этот или <var>pageid</var> , но не оба сразу.",
+	"apihelp-inlinecomments-close-param-pageid": "Название страницы, на которой можно закрыть обсуждение. Используйте этот или <var>pageid</var> , но не оба сразу.",
+	"inlinecomments-editsummary-autoclose": "Автоматическое закрытие {{PLURAL:$1| обсуждение после того, как $2 удалил текст, на который оно было связано | Обсуждения $1 после того, как текст, на который они были связаны, был удален пользователем $2 }}."
+}
