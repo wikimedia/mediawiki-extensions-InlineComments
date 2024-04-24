@@ -1,0 +1,14 @@
+{
+	"@metadata": {
+		"authors": [
+			"Cgmbo"
+		]
+	},
+	"inlinecomments-addcomment-save": "Bumba",
+	"inlinecomments-addcomment-cancel": "Katula",
+	"apihelp-inlinecomments-add-param-body": "Mambu ya nge fwete pona.",
+	"inlinecomments-addcomment-reply": "Mvutu",
+	"inlinecomments-placeholder": "Sonika komantere na nge.",
+	"inlinecomments-addcomment-noitembyid": "Lenda pesa ve mvutu na komantere sambu yo kele ve.",
+	"apihelp-inlinecomments-addreply-param-comment": "Mambu ya nge fwete pesa mvutu"
+}
