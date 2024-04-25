@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Ykhwong"
+		]
+	},
+	"inlinecomments-addcomment-save": "저장",
+	"inlinecomments-addcomment-cancel": "취소",
+	"inlinecomments-addcomment-reply": "답변",
+	"inlinecomments-addcomment-close": "토론 닫기"
+}
