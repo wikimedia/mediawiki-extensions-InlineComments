@@ -87,8 +87,7 @@ class RemoveComments extends Maintenance {
 		}
 
 		$wp = $this->wikiPageFactory->newFromTitle( $title );
-		// Replace with User::MAINTENANCE_SCRIPT_USER when we drop support for 1.35
-		$user = User::newSystemUser( 'Maintenance script', [ 'steal' => true ] );
+		$user = User::newSystemUser( User::MAINTENANCE_SCRIPT_USER, [ 'steal' => true ] );
 		$pageUpdater = $wp->newPageUpdater( $user );
 		$prevRevision = $pageUpdater->grabParentRevision();
 		if ( !$prevRevision ) {
