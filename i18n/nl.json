@@ -1,9 +1,48 @@
 {
 	"@metadata": {
 		"authors": [
-			"Mainframe98"
+			"Mainframe98",
+			"McDutchie"
 		]
 	},
+	"inlinecomments-desc": "Toestaan dat reacties aan een pagina worden toegevoegd",
+	"inlinecomments-addcomment-tooltip": "Op de gemarkeerde tekst reageren [ctrl+alt+m]",
 	"inlinecomments-addcomment-save": "Opslaan",
-	"inlinecomments-addcomment-cancel": "Annuleren"
+	"inlinecomments-addcomment-cancel": "Annuleren",
+	"apihelp-inlinecomments-add-summary": "Een nieuwe reactie in de tekst invoegen.",
+	"apihelp-inlinecomments-add-param-title": "Titel van de pagina om een reactie aan toe te voegen. Gebruik dit of <var>pageid</var>, maar niet allebei.",
+	"apihelp-inlinecomments-add-param-pageid": "ID van de pagina om een reactie aan toe te voegen. Gebruik dit of <var>title</var>, maar niet allebei.",
+	"apihelp-inlinecomments-add-param-pre": "Tekst vóór de geselecteerde tekst.",
+	"apihelp-inlinecomments-add-param-body": "Tekst om te selecteren.",
+	"apihelp-inlinecomments-add-param-container": "Naam van het element dat de gemeenschappelijke voorouder is van de geselecteerde tekst.",
+	"apihelp-inlinecomments-add-param-comment": "De tekst van de toe te voegen reactie.",
+	"apihelp-inlinecomments-add-param-containerid": "Het attribuut <code>id</code> van de gemeenschappelijke voorouder.",
+	"apihelp-inlinecomments-add-param-containerclass": "Het attribuut <code>class</code> van de gemeenschappelijke voorouder.",
+	"apihelp-inlinecomments-add-param-skipcount": "De eerste n stukjes tekst die hiermee overeenkomen overslaan.",
+	"inlinecomments-invaliditem": "Ongeldig element",
+	"action-inlinecomments-add": "reacties in de tekst in te voegen",
+	"right-inlinecomments-add": "Reacties in de tekst invoegen",
+	"action-inlinecomments-view": "in de tekst ingevoegde reacties te bekijken",
+	"right-inlinecomments-view": "In de tekst ingevoegde reacties bekijken",
+	"inlinecomments-editsummary-add": "Reactie “$1” toegevoegd",
+	"inlinecomments-editsummary-close": "Discussie gesloten",
+	"inlinecomments-editsummary-addreply": "Reactie beantwoord",
+	"inlinecomments-addcomment-reply": "Antwoorden",
+	"inlinecomments-addcomment-close": "Discussie sluiten",
+	"inlinecomments-placeholder": "Voer uw reactie in.",
+	"inlinecomments-missingpage": "Kan reacties niet bewerken omdat de pagina niet bestaat.",
+	"inlinecomments-saveerror": "Fout bij opslaan van reacties.",
+	"inlinecomments-noitembyid": "De discussie kan niet worden gesloten omdat deze niet bestaat.",
+	"inlinecomments-addcomment-noitembyid": "De reactie kan niet worden beantwoord omdat deze niet bestaat.",
+	"apihelp-inlinecomments-addreply-param-title": "Titel van de pagina om een antwoord aan toe te voegen. Gebruik dit of <var>pageid</var>, maar niet allebei.",
+	"apihelp-inlinecomments-addreply-param-pageid": "ID van de pagina om een antwoord aan toe te voegen. Gebruik dit of <var>title</var>, maar niet allebei.",
+	"apihelp-inlinecomments-addreply-param-id": "ID van de te beantwoorden reactie",
+	"apihelp-inlinecomments-addreply-param-comment": "De tekst van uw antwoord",
+	"apihelp-inlinecomments-addreply-summary": "Een antwoord toevoegen aan een in de tekst ingevoegde reactie",
+	"apihelp-inlinecomments-close-summary": "De discussie sluiten door deze van de pagina te verwijderen",
+	"apihelp-inlinecomments-close-param-title": "Titel van de pagina waarop de discussie moet worden gesloten. Gebruik dit of <var>pageid</var>, maar niet allebei.",
+	"apihelp-inlinecomments-close-param-pageid": "ID van de pagina waarop de discussie moet worden gesloten. Gebruik dit of <var>title</var>, maar niet allebei.",
+	"apihelp-inlinecomments-close-param-id": "ID van de reactie of discussie die u sluit",
+	"inlinecomments-editsummary-autoclose": "Automatisch sluiten van {{PLURAL:$1|een discussie nadat de tekst waaraan deze was|$1 discussies nadat de tekst waaraan ze waren}} gekoppeld, door $2 is verwijderd.",
+	"inlinecomments-error-notext": "Waarschuwing: fout bij het terugvinden van de gemarkeerde tekst. Laad de pagina opnieuw om te controleren of de juiste tekst is geannoteerd."
 }
