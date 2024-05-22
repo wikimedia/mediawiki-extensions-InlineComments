@@ -1,0 +1,23 @@
+{
+	"@metadata": {
+		"authors": [
+			"Omotecho"
+		]
+	},
+	"inlinecomments-desc": "ページにコメントを追加できる機能",
+	"inlinecomments-addcomment-tooltip": "範囲指定した文字列にコメントを追加するには [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "保存",
+	"inlinecomments-addcomment-cancel": "中止",
+	"apihelp-inlinecomments-add-summary": "インラインで新規のコメントを追加。",
+	"apihelp-inlinecomments-add-param-pre": "選択した文字列の直前の文字。",
+	"apihelp-inlinecomments-add-param-body": "選択するテキスト。",
+	"apihelp-inlinecomments-add-param-comment": "追加するコメントの文字列。",
+	"inlinecomments-invaliditem": "項目が無効です",
+	"action-inlinecomments-add": "インライン コメントを追加する。",
+	"right-inlinecomments-add": "インラインコメントを追加する",
+	"inlinecomments-editsummary-add": "「$1」というコメントを追加しました",
+	"inlinecomments-editsummary-addreply": "コメントに返信",
+	"inlinecomments-addcomment-reply": "返信",
+	"inlinecomments-placeholder": "コメントを入力。",
+	"inlinecomments-error-notext": "警告：強調表示した文字列が見つかりません。ページを再読み込みして正しい文字にコメントしたかどうか確認してください。"
+}
