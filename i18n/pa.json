@@ -1,12 +1,16 @@
 {
 	"@metadata": {
 		"authors": [
-			"ਗੁਰਪ੍ਰੀਤ ਹੁੰਦਲ"
+			"ਗੁਰਪ੍ਰੀਤ ਹੁੰਦਲ",
+			"Cabal"
 		]
 	},
-	"inlinecomments-addcomment-save": "Save",
-	"inlinecomments-addcomment-cancel": "Cancel",
+	"inlinecomments-desc": "ਸਫ਼ੇ ਉੱਤੇ ਟਿੱਪਣੀਆਂ ਜੋੜਨ ਦੀ ਆਗਿਆ ਦਿਓ",
+	"inlinecomments-addcomment-save": "ਸਾਂਭੋ",
+	"inlinecomments-addcomment-cancel": "ਰੱਦ ਕਰੋ",
 	"inlinecomments-invaliditem": "ਅਵੈਧ ਸ਼ੈਹ",
 	"action-inlinecomments-add": "ਸਤਰ ਵਿਚ ਟਿੱਪਣੀਆਂ ਸ਼ਾਮਲ ਕਰੋ",
-	"right-inlinecomments-add": "ਸਤਰ ਵਿਚ ਟਿੱਪਣੀਆਂ ਸ਼ਾਮਲ ਕਰੋ"
+	"right-inlinecomments-add": "ਸਤਰ ਵਿਚ ਟਿੱਪਣੀਆਂ ਸ਼ਾਮਲ ਕਰੋ",
+	"inlinecomments-addcomment-reply": "ਜੁਆਬ ਦਿਓ",
+	"inlinecomments-addcomment-close": "ਗੱਲਬਾਤ ਬੰਦ ਕਰੋ"
 }
