@@ -50,7 +50,8 @@
 			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiAddAnnotation",
 			"services": [
 				"ContentLanguage",
-				"WikiPageFactory"
+				"WikiPageFactory",
+				"InlineComments:AnnotationUtils"
 			]
 		},
 		"inlinecomments-close": {
@@ -62,7 +63,9 @@
 		"inlinecomments-addreply": {
 			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiAddReply",
 			"services": [
-				"WikiPageFactory"
+				"ContentLanguage",
+				"WikiPageFactory",
+				"InlineComments:AnnotationUtils"
 			]
 		}
 	},

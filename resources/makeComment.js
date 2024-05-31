@@ -315,8 +315,7 @@
 					mw.notify( 'Unknown error', { type: 'error'} );
 					return;
 				}
-				var timestamp = res['inlinecomments-add'].timestamp;
-
+				const commentHTML = res['inlinecomments-add'].comment;
 				// Now that we have saved the comment, we have
 				// an actual ID for it - change the temporary
 				// ID to the real ID in the DOM, for both the
@@ -345,19 +344,9 @@
 				textDiv.className = 'mw-inlinecomment-text';
 				// TODO this should look more like it does on the server.
 				// (username should be a link, timestamp should be included)
-				var p = document.createElement( 'p' );
-				// .innerText ensures that newlines are replaced with <br />,
-				// but all HTML is escaped.
-				p.innerText = comment;
-				if ( mw.config.get( 'wgUserName' ) !== null ) {
-					// username will be null if anon.
-					var author = document.createElement( 'div' );
-					author.className = 'mw-inlinecomment-author';
-					author.textContent = mw.config.get( 'wgUserName' ) + timestamp;
-					textDiv.append( p, author );
-				} else {
-					textDiv.append( p );
-				}
+				const DOMs = $.parseHTML( commentHTML );
+				textDiv.appendChild( DOMs[0] );
+				textDiv.appendChild( DOMs[1] );
 				asideElm.prepend(textDiv);
 
 				var asideElmOffset = mw.inlineComments.manager.getOffset( asideElm );

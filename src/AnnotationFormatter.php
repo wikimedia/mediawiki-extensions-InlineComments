@@ -3,7 +3,6 @@ namespace MediaWiki\Extension\InlineComments;
 
 use Html;
 use Language;
-use Linker;
 use LogicException;
 use User;
 use Wikimedia\RemexHtml\Serializer\HtmlFormatter;
@@ -38,25 +37,31 @@ class AnnotationFormatter extends HtmlFormatter {
 	/** @var User for formatting timestamps */
 	private $reqUser;
 
+	/** @var AnnotationUtils */
+	private $utils;
+
 	/**
 	 * @param array $options Options for the html formatter base class
 	 * @param array $annotations
 	 * @param callable $annotationsToSkipCB Callback to give an array of annotations to not show
 	 * @param Language $reqLanguage
 	 * @param User $reqUser
+	 * @param AnnotationUtils $utils
 	 */
 	public function __construct(
 		$options,
 		$annotations,
 		callable $annotationsToSkipCB,
 		Language $reqLanguage,
-		User $reqUser
+		User $reqUser,
+		AnnotationUtils $utils
 	) {
 		parent::__construct( $options );
 		$this->annotations = $annotations;
 		$this->annotationsToSkipCB = $annotationsToSkipCB;
 		$this->reqLanguage = $reqLanguage;
 		$this->reqUser = $reqUser;
+		$this->utils = $utils;
 	}
 
 	/**
@@ -77,13 +82,7 @@ class AnnotationFormatter extends HtmlFormatter {
 			}
 			$asideContent = '';
 			foreach ( $annotation['comments'] as $comment ) {
-				// User handling seems likely to be a forwards compatibility risk.
-				$userId = $comment['userId'];
-				$username = $comment['username'];
-				// We apply minimal formatting on the comment text - just handle newlines.
 				$commentText = str_replace( "\n", '<br>', htmlspecialchars( $comment['comment'] ) );
-				$asideContent .= Html::rawElement( 'p', [], $commentText );
-				// Backwards compatibility: timestamp might not have been set
 				if ( isset( $comment['timestamp'] ) ) {
 					$timestamp = ' ' . $this->reqLanguage->userTimeAndDate(
 						$comment['timestamp'],
@@ -92,10 +91,11 @@ class AnnotationFormatter extends HtmlFormatter {
 				} else {
 					$timestamp = '';
 				}
-				$asideContent .= $this->formatAuthor(
-					$userId,
-					$username,
-					$timestamp
+				$asideContent .= $this->utils->renderComment(
+					$comment['userId'],
+					$comment['username'],
+					$timestamp,
+					$commentText
 				);
 			}
 			$textDiv = Html::rawElement(
@@ -113,23 +113,6 @@ class AnnotationFormatter extends HtmlFormatter {
 			);
 		}
 		return $res . '</div>';
-	}
-
-	/**
-	 * Format the author line for an annotation with the user and timestamp
-	 *
-	 * @todo MW is eventually moving to actor, we should be forward-compatible.
-	 * @param int $userId Will be 0 for unregistered users
-	 * @param string $username
-	 * @param string $timestamp
-	 * @return string HTML
-	 */
-	private function formatAuthor( $userId, $username, string $timestamp ) {
-		return Html::rawElement(
-			'div',
-			[ 'class' => 'mw-inlinecomment-author' ],
-			Linker::userLink( $userId, $username ) . $timestamp
-		);
 	}
 
 	/**

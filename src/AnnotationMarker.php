@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\InlineComments;
 // Namespace got renamed to be prefixed with Wikimedia!
 use Config;
 use Language;
+use MediaWiki\User\UserFactory;
 use User;
 use Wikimedia\RemexHtml\HTMLData;
 use Wikimedia\RemexHtml\Serializer\Serializer;
@@ -18,12 +19,18 @@ class AnnotationMarker {
 
 	/** @var Config */
 	private $config;
+	/** @var AnnotationUtils */
+	private $utils;
+	/** @var UserFactory */
+	private $userFactory;
 
 	/**
 	 * @param Config $config
 	 */
-	public function __construct( Config $config ) {
+	public function __construct( Config $config, UserFactory $userFactory ) {
 		$this->config = $config;
+		$this->utils = new AnnotationUtils( $userFactory );
+		$this->userFactory = $userFactory;
 	}
 
 	/**
@@ -84,7 +91,8 @@ class AnnotationMarker {
 			$annotations,
 			$getUnusedAnnotations,
 			$reqLanguage,
-			$reqUser
+			$reqUser,
+			$this->utils
 		);
 		$serializer = new Serializer( $annotationFormatter );
 		$alist = new AnnotationTreeHandler( $serializer, $annotations );

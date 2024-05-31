@@ -4,25 +4,35 @@ namespace MediaWiki\Extension\InlineComments\Api;
 
 use ApiBase;
 use CommentStoreComment;
+use Language;
 use LogicException;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationContentHandler;
+use MediaWiki\Extension\InlineComments\AnnotationUtils;
 use MediaWiki\Page\WikiPageFactory;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
 
 class ApiAddReply extends ApiBase {
 
+	/** @var Language */
+	private $contentLang;
 	/** @var WikiPageFactory */
 	private $wikiPageFactory;
+	/** @var AnnotationUtils */
+	private $utils;
 
 	/**
 	 * @param \ApiMain $parent parent module
-	 * @param string $name module name
+	 * @param string $name module
+	 * @param Language $lang Language (Expected to be the content language)
 	 * @param WikiPageFactory $wpf
+	 * @param AnnotationUtils $utils
 	 */
-	public function __construct( $parent, $name, WikiPageFactory $wpf ) {
+	public function __construct( $parent, $name, Language $lang, WikiPageFactory $wpf, AnnotationUtils $utils ) {
+		$this->contentLang = $lang;
 		$this->wikiPageFactory = $wpf;
+		$this->utils = $utils;
 		parent::__construct( $parent, $name );
 	}
 
@@ -39,7 +49,14 @@ class ApiAddReply extends ApiBase {
 		$this->checkTitleUserPermissions( $title, 'inlinecomments-add' );
 
 		$user = $this->getUser();
-
+		$timestamp = $this->getCurrentTimestamp( $timestamp );
+		$commentText = str_replace( "\n", '<br>', htmlspecialchars( $data['comment'] ) );
+		$commentHTML = $this->utils->renderComment(
+			$user->getId(),
+			$user->getName(),
+			$timestamp,
+			$commentText
+		);
 		$this->addReply( $title, $data['id'], $data['comment'] );
 
 		$result = $this->getResult();
@@ -48,7 +65,7 @@ class ApiAddReply extends ApiBase {
 			$this->getModuleName(),
 			[
 				'success' => true,
-				'timestamp' => $this->getCurrentTimestamp( $timestamp ),
+				'comment' => $commentHTML
 			]
 		);
 	}

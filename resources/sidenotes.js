@@ -237,20 +237,12 @@
 						comment: text
 					};
 					api.postWithToken( 'csrf', data ).then( function (res) {
-						var timestamp = res['inlinecomments-addreply'].timestamp;
+						const commentHTML = res['inlinecomments-addreply'].comment;
 						textbox.setValue('');
 						var textDiv = $( aside ).find('.mw-inlinecomment-text')[0];
-						var p = document.createElement( 'p' );
-						// .innerText ensures that newlines are replaced with <br />,
-						// but all HTML is escaped.
-						p.innerText = text;
-						textDiv.appendChild( p );
-						if ( mw.config.get( 'wgUserName' ) !== null ) {
-							var author = document.createElement( 'div' );
-							author.className = 'mw-inlinecomment-author';
-							author.textContent = mw.config.get( 'wgUserName' ) + timestamp;
-							textDiv.appendChild( author );
-						}
+						const DOMs = $.parseHTML( commentHTML );
+						textDiv.appendChild( DOMs[0] );
+						textDiv.appendChild( DOMs[1] );
 						toolsDiv.replaceChildren( replyButton.$element[0], closeDiscussionButton.$element[0] );
 					} ).fail( function ( code, data ) {
 						mw.notify( api.getErrorMessage( data ), { type: 'error' } );

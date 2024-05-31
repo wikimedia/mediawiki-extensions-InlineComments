@@ -8,6 +8,7 @@ use Language;
 use LogicException;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationContentHandler;
+use MediaWiki\Extension\InlineComments\AnnotationUtils;
 use MediaWiki\Page\WikiPageFactory;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
@@ -18,16 +19,20 @@ class ApiAddAnnotation extends ApiBase {
 	private $contentLang;
 	/** @var WikiPageFactory */
 	private $wikiPageFactory;
+	/** @var AnnotationUtils */
+	private $utils;
 
 	/**
 	 * @param \ApiMain $parent parent module
 	 * @param string $name module name
 	 * @param Language $lang Language (Expected to be the content language)
 	 * @param WikiPageFactory $wpf
+	 * @param AnnotationUtils $utils
 	 */
-	public function __construct( $parent, $name, Language $lang, WikiPageFactory $wpf ) {
+	public function __construct( $parent, $name, Language $lang, WikiPageFactory $wpf, AnnotationUtils $utils ) {
 		$this->contentLang = $lang;
 		$this->wikiPageFactory = $wpf;
+		$this->utils = $utils;
 		parent::__construct( $parent, $name );
 	}
 
@@ -44,6 +49,15 @@ class ApiAddAnnotation extends ApiBase {
 		$this->checkTitleUserPermissions( $title, 'inlinecomments-add' );
 
 		$user = $this->getUser();
+		$timestamp = $this->getCurrentTimestamp( $timestamp );
+		$commentText = str_replace( "\n", '<br>', htmlspecialchars( $data['comment'] ) );
+		$commentHTML = $this->utils->renderComment(
+			$user->getId(),
+			$user->getName(),
+			$timestamp,
+			$commentText
+		);
+
 		$item = [
 			// Sometimes there is disagreement about if text starts with a newline so left trim.
 			'pre' => ltrim( $data['pre'] ),
@@ -85,7 +99,7 @@ class ApiAddAnnotation extends ApiBase {
 			[
 				'success' => true,
 				'id' => $item['id'],
-				'timestamp' => $this->getCurrentTimestamp( $timestamp ),
+				'comment' => $commentHTML
 			]
 		);
 	}

@@ -180,6 +180,10 @@ class AnnotationContent extends JsonContent {
 		return false;
 	}
 
+	/**
+	 * Check if data is empty
+	 * @return bool
+	 */
 	public function isEmpty() {
 		$data = $this->getData()->getValue();
 		return count( $data ) === 0;
