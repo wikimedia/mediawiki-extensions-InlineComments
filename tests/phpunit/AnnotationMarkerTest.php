@@ -127,6 +127,26 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 			'inside div'
 		];
 		yield [
+			'<div class="mw-parser-output"><div>bar</div></div>',
+			[
+				[
+					'id' => 'abc',
+					'pre' => 'b',
+					'body' => 'a',
+					'container' => 'div',
+					'comments' => [ [
+						'comment' => 'Hello <img src=x onerror=alert(1)>',
+						'userId' => 0,
+						'actorId' => 1,
+						'username' => '127.0.0.1'
+					] ],
+				]
+			],
+			'<div class="mw-parser-output"><div>b<span class="mw-annotation-highlight mw-annotation-abc" title="Hello &lt;img src=x onerror=alert(1)&gt;" data-mw-highlight-id="abc">a</span>r</div></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><p>Hello &lt;img src=x onerror=alert(1)&gt;</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></aside></div>',
+			'xss'
+		];
+
+		yield [
 			'<div class="mw-parser-output"><div>More text. bar</div></div>',
 			[
 				[
