@@ -96,7 +96,7 @@ class AnnotationFormatter extends HtmlFormatter {
 					$comment['username'],
 					$timestamp,
 					$commentText
-				);
+				)[ 'commentHTML' ];
 			}
 			$textDiv = Html::rawElement(
 				'div',

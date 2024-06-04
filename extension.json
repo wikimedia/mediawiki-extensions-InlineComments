@@ -27,7 +27,9 @@
 		"MultiContentSave": "main",
 		"UserGetReservedNames": "main",
 		"ApiParseMakeOutputPage": "main",
-		"OutputPageBeforeHTML": "main"
+		"OutputPageBeforeHTML": "main",
+		"BeforeCreateEchoEvent": "MediaWiki\\Extension\\InlineComments\\Hooks::onBeforeCreateEchoEvent",
+		"EchoGetDefaultNotifiedUsers": "MediaWiki\\Extension\\InlineComments\\Hooks::onEchoGetDefaultNotifiedUsers"
 	},
 	"HookHandlers": {
 		"main": {

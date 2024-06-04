@@ -11,11 +11,15 @@ class AnnotationUtils {
 	/** @var UserFactory */
 	private $userFactory;
 
+	/** @var array */
+	private $users;
+
 	/**
 	 * @param UserFactory $userFactory
 	 */
 	public function __construct( UserFactory $userFactory ) {
 		$this->userFactory = $userFactory;
+		$this->users = [];
 	}
 
 	/**
@@ -24,9 +28,10 @@ class AnnotationUtils {
 	 * @param string $username
 	 * @param string $timestamp
 	 * @param string $comment
-	 * @return string html
+	 * @return array
 	 */
 	public function renderComment( $userId, $username, $timestamp, $comment ) {
+		$this->users = [];
 		$commentHTML = preg_replace_callback(
 			"/@(\S+)/u",
 			[ $this, 'handleUserMention' ],
@@ -42,7 +47,11 @@ class AnnotationUtils {
 			[ 'class' => 'mw-inlinecomment-author' ],
 			Linker::userLink( $userId, $username ) . $timestamp
 		);
-		return $commentHTML;
+		$result = [
+			'commentHTML' => $commentHTML,
+			'users' => $this->users
+		];
+		return $result;
 	}
 
 	/**
@@ -61,6 +70,7 @@ class AnnotationUtils {
 				$displayName = str_replace( '_', ' ', $match );
 				$link = Linker::userLink( $mentionedUserId, $mentionedUser->getName(), $displayName );
 				$replacement = "@$link";
+				$this->users[] = $mentionedUser;
 			}
 		}
 		return $replacement;
