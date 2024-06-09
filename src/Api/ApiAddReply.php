@@ -4,6 +4,8 @@ namespace MediaWiki\Extension\InlineComments\Api;
 
 use ApiBase;
 use CommentStoreComment;
+use EchoEvent;
+use ExtensionRegistry;
 use Language;
 use LogicException;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
@@ -49,14 +51,26 @@ class ApiAddReply extends ApiBase {
 		$this->checkTitleUserPermissions( $title, 'inlinecomments-add' );
 
 		$user = $this->getUser();
-		$timestamp = $this->getCurrentTimestamp( $timestamp );
 		$commentText = str_replace( "\n", '<br>', htmlspecialchars( $data['comment'] ) );
-		$commentHTML = $this->utils->renderComment(
+		$result = $this->utils->renderComment(
 			$user->getId(),
 			$user->getName(),
-			$timestamp,
+			$this->getCurrentTimestamp( $timestamp ),
 			$commentText
 		);
+		$commentHTML = $result[ 'commentHTML' ];
+		$users = $result[ 'users' ];
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
+			EchoEvent::create( [
+				'type' => 'inlinecomments-mention',
+				'extra' => [
+					'title' => $title,
+					'users' => $users,
+					'commentor' => $user->getName()
+				],
+				'title' => $title
+			] );
+		}
 		$this->addReply( $title, $data['id'], $data['comment'] );
 
 		$result = $this->getResult();

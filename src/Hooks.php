@@ -4,6 +4,7 @@ namespace MediaWiki\Extension\InlineComments;
 use CommentStoreComment;
 use Config;
 use DeferredUpdates;
+use EchoEvent;
 use Language;
 use LogicException;
 use MediaWiki\Api\Hook\ApiParseMakeOutputPageHook;
@@ -260,6 +261,39 @@ class Hooks implements
 			DeferredUpdates::POSTSEND,
 			wfGetDB( DB_PRIMARY )
 		);
+	}
+
+	/**
+	 * @param EchoEvent $event
+	 * @param User[] &$users
+	 */
+	public static function onEchoGetDefaultNotifiedUsers( $event, &$users ) {
+		if ( $event->getType() == "inlinecomments-mention" ) {
+			$extra = $event->getExtra();
+			$newUsers = $extra['users'];
+			$users = array_merge( $users, $newUsers );
+		}
+	}
+
+	/**
+	 * @param array &$echoNotifications
+	 * @param array $echoNotificationCategories
+	 */
+	public static function onBeforeCreateEchoEvent( &$echoNotifications, $echoNotificationCategories ) {
+		$echoNotifications['inlinecomments-mention'] = [
+			'section' => 'alert',
+			'category' => 'mention',
+			'primary-link' => [
+				'message' => 'inlinecomments-primary-message',
+				'destination' => 'title'
+			],
+			'presentation-model' => UserPingPresentationModel::class,
+			'title-message' => 'inlinecomments-title-message',
+			'title-params' => [ 'title' ],
+			'bundle' => [
+				'web' => true
+			],
+		];
 	}
 
 	/**
