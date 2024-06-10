@@ -373,13 +373,68 @@
 			label: mw.msg( 'inlinecomments-addcomment-cancel' ),
 			flags: [ 'destructive' ]
 		} );
+		var autocompleteDropdown = $( '<div></div>' );
+		autocompleteDropdown.attr( 'class', 'userAutocompleteDropdown' );
+		if ( $( '.userAutocompleteDropdown' ).length == 0 ) {
+			textbox.$element.append( autocompleteDropdown[0] );
+		}
+		autocompleteDropdown.hide();
 		var div = document.createElement( 'div' );
 		div.className = 'mw-inlinecomments-editor';
 
-		// Disable "Save" button until text is added.
 		saveButton.setDisabled( true );
-		textbox.$element.keyup( function () {
+		textbox.$element.keyup( async function ( event ) {
+			// Disable "Save" button until text is added.
 			saveButton.setDisabled( textbox.getValue().trim() == '' );
+			autocompleteDropdown.val( '' );
+			var cursorPosition = event.target.selectionStart;
+			var textBeforeCursor = event.target.value.substring( 0, cursorPosition );
+			var textAfterCursor = event.target.value.substring( cursorPosition );
+			var atIndex = textBeforeCursor.lastIndexOf( '@' );
+			if ( atIndex !== -1 ) {
+				var query = textBeforeCursor.substring( atIndex + 1 );
+				if ( query.length > 0 ) {
+					const api = new mw.Api();
+					const requestParams = {
+						'action': 'query',
+						'format': 'json',
+						'list': 'allusers',
+						'auprefix': query,
+						'aulimit': 5
+					};
+					let response = await api.get( requestParams );
+					const usernames = response.query.allusers.map( function ( user ) {
+						return user.name;
+					} );
+					const usernamesDivs = usernames.map( function ( username ) {
+						let item = $('<a></a>');
+						item.attr( 'class', 'userAutocompleteDropdownItem' );
+						item.text( username );
+						item.on( 'click', function () {
+							username = username.replace( ' ', '_' );
+							var newText = textBeforeCursor.substring( 0, atIndex + 1 ) + username + ' ';
+							event.target.value = newText + textAfterCursor;
+							event.target.selectionStart = event.target.selectionEnd = newText.length;
+							autocompleteDropdown.hide();
+						} );
+						return item;
+					} );
+					autocompleteDropdown.empty();
+					if( usernames.length > 0 ) {
+						usernamesDivs.forEach( function ( div ) {
+							autocompleteDropdown.append( div );
+						});
+						autocompleteDropdown.show();
+					} else {
+						autocompleteDropdown.hide();
+					}
+					event.currentTarget.append( autocompleteDropdown[0] );
+				} else {
+					autocompleteDropdown.hide();
+				}
+			} else {
+				autocompleteDropdown.hide();
+			}
 		} );
 
 		saveButton.$element.click( function () {
