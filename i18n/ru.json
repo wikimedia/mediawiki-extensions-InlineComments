@@ -9,6 +9,8 @@
 	"apihelp-inlinecomments-add-param-pageid": "Идентификатор страницы, на которую нужно добавлить ответ. Используйте это <var>название</var>, но не оба.",
 	"apihelp-inlinecomments-add-param-containerid": "Атрибут <code>id</code> общего предка.",
 	"inlinecomments-addcomment-reply": "Ответить",
+	"inlinecomments-primary-message": "Просмотр страницы:",
+	"inlinecomments-mention-label": "Просмотреть страницу",
 	"apihelp-inlinecomments-addreply-param-title": "Идентификатор страницы, на которую нужно добавлить ответ. Используйте это <var>название</var>, но не оба.",
 	"apihelp-inlinecomments-addreply-param-pageid": "Идентификатор страницы, на которую нужно добавлить ответ. Используйте это <var>название</var>, но не оба.",
 	"apihelp-inlinecomments-close-param-title": "Название страницы, на которой можно закрыть обсуждение. Используйте этот или <var>pageid</var> , но не оба сразу.",
