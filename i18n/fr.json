@@ -6,5 +6,7 @@
 	},
 	"inlinecomments-addcomment-save": "Enregistrer",
 	"inlinecomments-addcomment-cancel": "Annuler",
-	"inlinecomments-addcomment-reply": "Répondre"
+	"inlinecomments-addcomment-reply": "Répondre",
+	"inlinecomments-primary-message": "Afficher la page :",
+	"inlinecomments-mention-label": "Afficher la page"
 }
