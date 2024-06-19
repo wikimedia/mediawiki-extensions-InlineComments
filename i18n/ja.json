@@ -11,6 +11,7 @@
 	"apihelp-inlinecomments-add-summary": "インラインで新規のコメントを追加。",
 	"apihelp-inlinecomments-add-param-pre": "選択した文字列の直前の文字。",
 	"apihelp-inlinecomments-add-param-body": "選択するテキスト。",
+	"apihelp-inlinecomments-add-param-container": "選択したテキストの共通の祖先である要素の名前。",
 	"apihelp-inlinecomments-add-param-comment": "追加するコメントの文字列。",
 	"inlinecomments-invaliditem": "項目が無効です",
 	"action-inlinecomments-add": "インライン コメントを追加する。",
