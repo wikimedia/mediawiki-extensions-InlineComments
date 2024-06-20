@@ -11,6 +11,7 @@
 	"apihelp-inlinecomments-add-summary": "インラインで新規のコメントを追加。",
 	"apihelp-inlinecomments-add-param-pre": "選択した文字列の直前の文字。",
 	"apihelp-inlinecomments-add-param-body": "選択するテキスト。",
+	"apihelp-inlinecomments-add-param-container": "選択したテキストの共通の祖先である要素の名前。",
 	"apihelp-inlinecomments-add-param-comment": "追加するコメントの文字列。",
 	"apihelp-inlinecomments-add-param-skipcount": "指定の文字列に一致する範囲から最初の n 文字を除外。",
 	"inlinecomments-invaliditem": "項目が無効です",
@@ -24,5 +25,7 @@
 	"inlinecomments-addcomment-reply": "返信",
 	"inlinecomments-addcomment-close": "議論を終了する",
 	"inlinecomments-placeholder": "コメントを入力。",
+	"apihelp-inlinecomments-close-summary": "協議を終了するにはページから除去します",
+	"apihelp-inlinecomments-close-param-id": "終了するコメントもしくは協議の ID 番号",
 	"inlinecomments-error-notext": "警告：強調表示した文字列が見つかりません。ページを再読み込みして正しい文字にコメントしたかどうか確認してください。"
 }
