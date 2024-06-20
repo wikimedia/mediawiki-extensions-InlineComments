@@ -1,20 +1,35 @@
-@media screen and ( min-width: 500px ) {
-	#mw-content-text #mw-inlinecomment-annotations {
-		position: absolute;
-		top: 0;
-		width: 300px;
-		right: -305px;
-	}
+html {
+	scroll-behavior: smooth;
 }
-@media screen and not ( min-width: 500px ) {
+
+@media screen and not ( min-width: 600px ) {
 	#mw-content-text #mw-inlinecomment-annotations .mw-inlinecomment-aside {
 		/* In mobile view, force JS not to absolutely position */
 		position: static !important;
 	}
+
+	#mw-content-text #mw-inlinecomments-precontainer {
+		width: 100% !important;
+	}
+
 	#mw-content-text #mw-inlinecomment-annotations .mw-inlinecomment-aside.mw-inlinecomment-selected {
 		margin-left: 5px;
 	}
 }
+
+#mw-content-text #mw-inlinecomment-annotations {
+	width: max-content;
+	margin-top: 1%;
+}
+
+#mw-inlinecomments-precontainer {
+	padding-right: 3rem;
+}
+
+#mw-inlinecomments-precontainer p {
+	width: 98%;
+}
+
 #mw-content-text #mw-inlinecomment-annotations .mw-inlinecomment-aside {
 	/* js sets position absolute to have good non-js fallback */
 	width: 260px;

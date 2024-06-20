@@ -60,6 +60,8 @@
 					curOffset = item.preferredOffset;
 				}
 				item.element.style.position = 'absolute';
+				item.element.style.left = 'auto';
+				item.element.style.right = '1px';
 				item.element.style.top = curOffset + 'px';
 				curOffset += item.element.offsetHeight;
 				curOffset += this.opts.padding;
@@ -163,6 +165,8 @@
 				element: element,
 			};
 			element.style.position = 'absolute';
+			element.style.left = 'auto';
+			element.style.right = '1px';
 			this.select( element.id, offset );
 
 			// Allow this new sidenote to be clickable.
@@ -196,6 +200,15 @@
 				hls[i].classList.remove( highlightClass );
 			}
 			this.renderUnselected();
+			// Dynamic content width based on sidenote
+			$preContainer = $('#mw-inlinecomments-precontainer');
+			$annotations = $('#mw-inlinecomment-annotations');
+			if ( $annotations.length && !window.matchMedia("not (min-width: 600px)").matches ) {
+				var annotationsWidth = $annotations.outerWidth();
+				$preContainer.css('width', 'calc(100% - ' + (annotationsWidth + 20) + 'px)');
+			} else {
+				$preContainer.css('width', '100%');
+			}
 		},
 		// Add "Reply" and "Close discussion" buttons to an aside.
 		addTools: function ( aside ) {

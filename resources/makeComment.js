@@ -39,6 +39,17 @@
 		}
 	} );
 
+	var isRangeInCommentsArea = function ( range ) {
+		let startNode = range.startContainer;
+		while (startNode) {
+		  if (startNode.id === 'mw-inlinecomment-annotations') {
+			return true;
+		  }
+		  startNode = startNode.parentNode;
+		}
+		return false;
+	}
+
 	document.body.appendChild( iconContainer );
 	var checkForNewSelection = function () {
 		var parent = document.querySelector( '#mw-content-text > .mw-parser-output');
@@ -47,7 +58,8 @@
 			getSelection().getRangeAt(0).collapsed === false &&
 			!veActive &&
 			parent &&
-			parent.contains( getSelection().getRangeAt(0).commonAncestorContainer )
+			parent.contains( getSelection().getRangeAt(0).commonAncestorContainer ) &&
+			!isRangeInCommentsArea( getSelection().getRangeAt(0) )
 		) {
 			var rect = getSelection().getRangeAt(0).getBoundingClientRect();
 			iconContainer.style.position = 'fixed';
@@ -464,29 +476,28 @@
 
 		var sidenoteContainer = document.getElementById( 'mw-inlinecomment-annotations' );
 		if ( !sidenoteContainer ) {
-			var sidenoteParent = document.getElementById( 'mw-content-text' );
+			var sidenoteParent = document.getElementById( 'content' );
 			sidenoteContainer = document.createElement( 'div' );
 			sidenoteContainer.id = 'mw-inlinecomment-annotations';
 			sidenoteParent.appendChild( sidenoteContainer );
 		}
+		var aside = document.createElement( 'aside' );
+		aside.className = 'mw-inlinecomment-aside';
+		aside.id = 'mw-inlinecomment-aside-' + Math.random();
+		// "init tools" refers to the interface for creating
+		// an initial comment; once the comment is saved, this
+		// div gets replaced with the interface for replying
+		// and deleting, with the class name "-tools".
+		var initToolsDiv = document.createElement( 'div' );
+		initToolsDiv.className = 'mw-inlinecomment-inittools';
+		var preText = range.startContainer.textContent.substring( 0, range.startOffset );
+		// Calling focus will unselect text, so highlight now.
+		var bodyText = highlightRange( aside.id, range );
+		var containerNode = range.commonAncestorContainer;
+		initToolsDiv.appendChild( getForm( aside, containerNode, preText, bodyText ) );
+		aside.appendChild( initToolsDiv );
+		sidenoteContainer.appendChild( aside );
 		mw.loader.using( [ 'ext.inlineComments.sidenotes', 'ext.inlineComments.sidenotes.styles' ], function () {
-			var aside = document.createElement( 'aside' );
-			aside.className = 'mw-inlinecomment-aside';
-			aside.id = 'mw-inlinecomment-aside-' + Math.random();
-			// "init tools" refers to the interface for creating
-			// an initial comment; once the comment is saved, this
-			// div gets replaced with the interface for replying
-			// and deleting, with the class name "-tools".
-			var initToolsDiv = document.createElement( 'div' );
-			initToolsDiv.className = 'mw-inlinecomment-inittools';
-			var preText = range.startContainer.textContent.substring( 0, range.startOffset );
-			// Calling focus will unselect text, so highlight now.
-			var bodyText = highlightRange( aside.id, range );
-			var containerNode = range.commonAncestorContainer;
-			initToolsDiv.appendChild( getForm( aside, containerNode, preText, bodyText ) );
-			aside.appendChild( initToolsDiv );
-			sidenoteContainer.appendChild( aside );
-
 			mw.inlineComments.manager.add( aside, getOffset( range ) );
 			aside.querySelector( 'textarea' ).focus();
 		} );

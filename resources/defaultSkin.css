@@ -1,6 +1,0 @@
-/* This seems to work well on monobook and generally */
-@media screen and ( min-width: 500px ) {
-	#content {
-		width: calc( 100% - 340px - 12.5em );
-	}
-}
