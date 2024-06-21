@@ -64,7 +64,6 @@ class ApiAddReply extends ApiBase {
 			EchoEvent::create( [
 				'type' => 'inlinecomments-mention',
 				'extra' => [
-					'title' => $title,
 					'users' => $users,
 					'commentor' => $user->getName()
 				],

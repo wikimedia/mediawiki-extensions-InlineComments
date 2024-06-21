@@ -5,13 +5,13 @@ namespace MediaWiki\Extension\InlineComments;
 class UserPingPresentationModel extends \EchoEventPresentationModel {
 	/** @inheritDoc */
 	public function getIconType() {
-		return 'placeholder';
+		return 'mention';
 	}
 
 	/** @inheritDoc */
 	public function getPrimaryLink() {
 		return [
-			'url' => $this->event->getExtraParam( 'title' )->getFullURL(),
+			'url' => $this->event->getTitle()->getFullURL(),
 			'label' => $this->msg( 'inlinecomments-mention-label' )->text(),
 		];
 	}
@@ -19,7 +19,7 @@ class UserPingPresentationModel extends \EchoEventPresentationModel {
 	/** @inheritDoc */
 	public function getHeaderMessage() {
 		$msg = $this->msg( 'inlinecomments-title-message' );
-		$msg->params( $this->event->getExtraParam( 'title' ), $this->event->getExtraParam( 'commentor' ) );
+		$msg->params( $this->event->getTitle(), $this->event->getExtraParam( 'commentor' ) );
 		return $msg;
 	}
 
