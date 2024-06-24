@@ -69,6 +69,14 @@
 				"WikiPageFactory",
 				"InlineComments:AnnotationUtils"
 			]
+		},
+		"inlinecomments-editcomment": {
+			"class": "MediaWiki\\Extension\\InlineComments\\Api\\ApiEditComment",
+			"services": [
+				"ContentLanguage",
+				"WikiPageFactory",
+				"InlineComments:AnnotationUtils"
+			]
 		}
 	},
 	"ServiceWiringFiles": [
@@ -92,11 +100,15 @@
 				"sidenotes.init.js"
 			],
 			"messages": [
+				"edit",
 				"inlinecomments-addcomment-reply",
 				"inlinecomments-addcomment-close",
 				"inlinecomments-addcomment-save",
 				"inlinecomments-addcomment-cancel",
-				"inlinecomments-placeholder"
+				"inlinecomments-placeholder",
+				"inlinecomments-editcomment-publish",
+				"inlinecomments-edited-label",
+				"parentheses"
 			],
 			"dependencies": [
 				"oojs-ui-widgets"
@@ -148,6 +160,7 @@
 	},
 	"AvailableRights": [
 		"inlinecomments-add",
+		"inlinecomments-edit-all",
 		"inlinecomments-view"
 	],
 	"ContentHandlers": {
@@ -159,6 +172,9 @@
 		},
 		"user": {
 			"inlinecomments-add": true
+		},
+		"sysop": {
+			"inlinecomments-edit-all": true
 		}
 	},
 	"attributes": {

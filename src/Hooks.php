@@ -118,7 +118,8 @@ class Hooks implements
 			$html,
 			$annotations,
 			$out->getLanguage(),
-			$out->getUser()
+			$out->getUser(),
+			$out->getTitle()
 		);
 		$out->addHtml( $result );
 
@@ -216,6 +217,7 @@ class Hooks implements
 			function () use ( $renderedRevision, $annotations, $user ) {
 				self::$loopCheck = true;
 				$rev = $renderedRevision->getRevision();
+				$title = Title::newFromLinkTarget( $rev->getPageAsLinkTarget() );
 				// Do this deferred, because parsing can take a lot of time.
 				$html = $renderedRevision->getRevisionParserOutput()->getText();
 				$sysUser = User::newSystemUser( 'InlineComments bot' );
@@ -223,7 +225,8 @@ class Hooks implements
 					$html,
 					$annotations,
 					$this->contentLanguage,
-					$sysUser
+					$sysUser,
+					$title
 				);
 				if ( in_array( true, $unused ) ) {
 					$count = 0;
@@ -233,7 +236,6 @@ class Hooks implements
 							$count++;
 						}
 					}
-					$title = Title::newFromLinkTarget( $rev->getPageAsLinkTarget() );
 					$wp = $this->wikiPageFactory->newFromTitle( $title );
 					$pageUpdater = $wp->newPageUpdater( $sysUser );
 					$prevRevision = $pageUpdater->grabParentRevision();

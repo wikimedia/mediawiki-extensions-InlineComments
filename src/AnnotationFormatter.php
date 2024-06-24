@@ -4,6 +4,8 @@ namespace MediaWiki\Extension\InlineComments;
 use Html;
 use Language;
 use LogicException;
+use MediaWiki\Permissions\PermissionManager;
+use Title;
 use User;
 use Wikimedia\RemexHtml\Serializer\HtmlFormatter;
 use Wikimedia\RemexHtml\Serializer\SerializerNode;
@@ -40,6 +42,12 @@ class AnnotationFormatter extends HtmlFormatter {
 	/** @var AnnotationUtils */
 	private $utils;
 
+	/** @var PermissionManager */
+	private $permissionManager;
+
+	/** @var Title for checking admin permission */
+	private $reqTitle;
+
 	/**
 	 * @param array $options Options for the html formatter base class
 	 * @param array $annotations
@@ -47,6 +55,8 @@ class AnnotationFormatter extends HtmlFormatter {
 	 * @param Language $reqLanguage
 	 * @param User $reqUser
 	 * @param AnnotationUtils $utils
+	 * @param PermissionManager $permissionManager
+	 * @param Title $reqTitle
 	 */
 	public function __construct(
 		$options,
@@ -54,7 +64,9 @@ class AnnotationFormatter extends HtmlFormatter {
 		callable $annotationsToSkipCB,
 		Language $reqLanguage,
 		User $reqUser,
-		AnnotationUtils $utils
+		AnnotationUtils $utils,
+		PermissionManager $permissionManager,
+		Title $reqTitle
 	) {
 		parent::__construct( $options );
 		$this->annotations = $annotations;
@@ -62,6 +74,8 @@ class AnnotationFormatter extends HtmlFormatter {
 		$this->reqLanguage = $reqLanguage;
 		$this->reqUser = $reqUser;
 		$this->utils = $utils;
+		$this->permissionManager = $permissionManager;
+		$this->reqTitle = $reqTitle;
 	}
 
 	/**
@@ -83,6 +97,14 @@ class AnnotationFormatter extends HtmlFormatter {
 			$asideContent = '';
 			foreach ( $annotation['comments'] as $comment ) {
 				$commentText = str_replace( "\n", '<br>', htmlspecialchars( $comment['comment'] ) );
+				if ( isset( $comment['edited'] ) && $comment['edited'] ) {
+					$editedStamp = '<span class="mw-inlinecomments-editedlabel"> '
+						. wfMessage( 'parentheses' )->params(
+							wfMessage( 'inlinecomments-edited-label' )->plain()
+						)->escaped()
+						. '</span>';
+					$commentText .= $editedStamp;
+				}
 				if ( isset( $comment['timestamp'] ) ) {
 					$timestamp = ' ' . $this->reqLanguage->userTimeAndDate(
 						$comment['timestamp'],
@@ -91,11 +113,20 @@ class AnnotationFormatter extends HtmlFormatter {
 				} else {
 					$timestamp = '';
 				}
+				$isAdmin = $this->permissionManager->userCan(
+					'inlinecomments-edit-all',
+					$this->reqUser,
+					$this->reqTitle,
+					PermissionManager::RIGOR_QUICK
+				);
+				$canEdit = !$this->reqUser->isAnon() &&
+					( $this->reqUser->getId() == $comment['userId'] || $isAdmin );
 				$asideContent .= $this->utils->renderComment(
 					$comment['userId'],
 					$comment['username'],
 					$timestamp,
-					$commentText
+					$commentText,
+					$canEdit
 				)[ 'commentHTML' ];
 			}
 			$textDiv = Html::rawElement(

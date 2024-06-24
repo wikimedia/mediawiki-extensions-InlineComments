@@ -28,9 +28,10 @@ class AnnotationUtils {
 	 * @param string $username
 	 * @param string $timestamp
 	 * @param string $comment
+	 * @param bool $editable
 	 * @return array
 	 */
-	public function renderComment( $userId, $username, $timestamp, $comment ) {
+	public function renderComment( $userId, $username, $timestamp, $comment, $editable = false ) {
 		$this->users = [];
 		$commentHTML = preg_replace_callback(
 			"/@(\S+)/u",
@@ -46,6 +47,23 @@ class AnnotationUtils {
 			'div',
 			[ 'class' => 'mw-inlinecomment-author' ],
 			Linker::userLink( $userId, $username ) . $timestamp
+		);
+		$commentHTML = Html::rawElement(
+			'div',
+			[],
+			$commentHTML
+		);
+		if ( $editable ) {
+			$commentHTML .= Html::element(
+				'button',
+				[ 'class' => 'mw-inlinecomment-editlink', 'title' => wfMessage( 'edit' )->text() ],
+				"🖉"
+			);
+		}
+		$commentHTML = Html::rawElement(
+			'div',
+			[ 'class' => 'mw-inlinecomment-comment' ],
+			$commentHTML
 		);
 		$result = [
 			'commentHTML' => $commentHTML,

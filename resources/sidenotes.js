@@ -65,6 +65,7 @@
 				curOffset += this.opts.padding;
 			}
 			this.deselectAnnotation();
+			$('.mw-inlinecomment-editlink').show();
 		},
 		// This deselects the highlighted text not the actual comments.
 		deselectAnnotation: function () {
@@ -231,6 +232,16 @@
 				textbox.$element.append( autocompleteDropdown[0] );
 			}
 
+			var initializeEditFunc = function () {
+				$( aside ).find( '.mw-inlinecomment-comment' ).each( function ( idx, commentElem ) {
+					$( commentElem ).find( '.mw-inlinecomment-editlink' ).click( function (event) {
+						$( aside ).find( '.mw-inlinecomment-editlink' ).show();
+						$(this).hide();
+						editClickFunc( event, idx, $( commentElem ) );
+					});
+				});
+			}
+
 			var saveReplyFunc = function () {
 				saveReplyButton.setDisabled( true );
 				mw.loader.using( 'mediawiki.api', function () {
@@ -247,9 +258,10 @@
 						textbox.setValue('');
 						var textDiv = $( aside ).find('.mw-inlinecomment-text')[0];
 						const DOMs = $.parseHTML( commentHTML );
+						$('.mw-inlinecomment-editlink').show();
 						textDiv.appendChild( DOMs[0] );
-						textDiv.appendChild( DOMs[1] );
 						toolsDiv.replaceChildren( replyButton.$element[0], closeDiscussionButton.$element[0] );
+						initializeEditFunc();
 					} ).fail( function ( code, data ) {
 						mw.notify( api.getErrorMessage( data ), { type: 'error' } );
 					} );
@@ -257,9 +269,16 @@
 			};
 			var cancelReplyFunc = function () {
 				textbox.setValue('');
+				saveReplyButton.setLabel( mw.msg( 'inlinecomments-addcomment-save' ) );
 				toolsDiv.replaceChildren( replyButton.$element[0], closeDiscussionButton.$element[0] );
+				$( aside ).find( '.currentedit' ).removeClass( 'currentedit' );
+				$( aside ).find( '.mw-inlinecomment-editlink' ).show();
 			};
-			var replyFunc = function () {
+			var replyFunc = function (edit=false, existingCommentObject=null,
+				commentIdx=null) {
+				if ( edit ) {
+					existingCommentObject.addClass('currentedit');
+				}
 				textbox.$element.keyup( async function ( event ) {
 					// Disable "Save" button until text is added.
 					saveReplyButton.setDisabled( textbox.getValue().trim() == '' );
@@ -315,12 +334,50 @@
 				} );
 				// We call unbind() to avoid these functions getting called multiple times,
 				// if the buttons were cancelled and re-added.
-				saveReplyButton.$element.unbind('click').click( saveReplyFunc );
+				saveReplyButton.$element.unbind('click').click( function () {
+					if ( edit ) {
+						editCommentFunc( existingCommentObject, commentIdx );
+						edit = false;
+					} else {
+						saveReplyFunc();
+					}
+				} );
 				cancelReplyButton.$element.unbind('click').click( cancelReplyFunc );
 				var buttonsDiv = document.createElement( 'div' );
 				buttonsDiv.className = 'mw-inlinecomment-buttons';
 				buttonsDiv.replaceChildren(  saveReplyButton.$element[0], cancelReplyButton.$element[0] );
 				toolsDiv.replaceChildren( textbox.$element[0], buttonsDiv );
+			}
+			var editCommentFunc = function ( existingCommentObject, commentIdx ) {
+				$('.currentedit').removeClass('currentedit');
+				saveReplyButton.setDisabled( true );
+				mw.loader.using( 'mediawiki.api', function () {
+					var api = new mw.Api();
+					var text = textbox.getValue().trim();
+					const action = 'inlinecomments-editcomment';
+					var data = {
+						title: mw.config.get( 'wgPageName' ),
+						id: asideId,
+						action: action,
+						comment: text,
+						existing_comment_idx: commentIdx
+					};
+					api.postWithToken( 'csrf', data ).then( function (res) {
+						const commentHTML = res[action].comment;
+						textbox.setValue('');
+						saveReplyButton.setLabel( mw.msg( 'inlinecomments-addcomment-save' ) );
+						existingCommentObject.removeClass('currentedit');
+						existingCommentObject[0].innerHTML = commentHTML;
+						let editedLabel = $('<span></span>');
+						editedLabel.addClass('mw-inlinecomments-editedlabel');
+						editedLabel.text( ' ' + mw.msg( 'parentheses', mw.msg( 'inlinecomments-edited-label' ) ) );
+						existingCommentObject.children().first().find('p').first().append(editedLabel);
+						$('.mw-inlinecomment-editlink').show();
+						initializeEditFunc();
+					} ).fail( function ( code, data ) {
+						mw.notify( api.getErrorMessage( data ), { type: 'error' } );
+					} );
+				} );
 			}
 			var closeDiscussionFunc = function () {
 				closeDiscussionButton.setDisabled( true );
@@ -339,10 +396,33 @@
 				} );
 			}
 
+			var editClickFunc = function ( event, commentIdx, comment ) {
+				event.preventDefault();
+				textbox.setValue('');
+				$( aside ).find( '.currentedit' ).removeClass( 'currentedit' );
+				$(this).parent().addClass('currentedit');
+				let existingComment = comment.children().first().children().first().clone(true);
+				existingComment.find('span').remove();
+				existingComment.find( 'bdi' ).each( function () {
+					let current = $( this ).text();
+					current = current.replaceAll( ' ', '_' );
+					$( this ).text( current );
+				} );
+				let escapedHTML = existingComment.html().replaceAll( '<br>', '\n' );
+				escapedHTML = $.parseHTML( escapedHTML );
+				const processedContent = $( escapedHTML ).text();
+				textbox.setValue(processedContent);
+				saveReplyButton.setLabel( mw.msg( 'inlinecomments-editcomment-publish' ) );
+				replyFunc(true, comment, commentIdx);
+			}
+
 			closeDiscussionButton.$element.click( closeDiscussionFunc );
-			replyButton.$element.unbind('click').click( replyFunc );
+			replyButton.$element.unbind('click').click( function () {
+				replyFunc();
+			} );
 			$( toolsDiv ).append( replyButton.$element, closeDiscussionButton.$element );
 			aside.appendChild( toolsDiv );
+			initializeEditFunc();
 		},
 		/**
 		 * Get the vertical offset from the container element

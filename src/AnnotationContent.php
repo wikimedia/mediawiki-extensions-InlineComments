@@ -227,6 +227,71 @@ class AnnotationContent extends JsonContent {
 					'username' => $user->getName(),
 					'actorId' => $user->getActorId(),
 					'timestamp' => wfTimestampNow(),
+					'edited' => false
+				];
+				break;
+			}
+		}
+		return new AnnotationContent( FormatJson::encode( $data, true, FormatJson::UTF8_OK ) );
+	}
+
+	/**
+	 * Get the author user ID of the existing comment
+	 *
+	 * @param string $itemId
+	 * @param int $existingCommentIdx
+	 * @return User
+	 */
+	public function getCommentAuthor( string $itemId, int $existingCommentIdx ) {
+		$data = $this->getData()->getValue();
+		if ( !$this->hasItem( $itemId ) ) {
+			throw new LogicException( "No item by that id" );
+		}
+		$author = null;
+		for ( $i = 0; $i < count( $data ); $i++ ) {
+			if ( $data[ $i ][ 'id' ] === $itemId ) {
+				$comment = $data[ $i ][ 'comments' ][$existingCommentIdx];
+				$author = User::newFromActorId( $comment[ 'actorId' ] );
+				break;
+			}
+		}
+		if ( $author == null ) {
+			throw new LogicException( "Author not found" );
+		}
+		return $author;
+	}
+
+	/**
+	 * Edit a comment
+	 *
+	 * @param string $itemId
+	 * @param string $comment
+	 * @param User $user
+	 * @param int $existingCommentIdx
+	 * @return AnnotationContent A new content object with the changes made.
+	 */
+	public function editComment(
+		string $itemId,
+		string $comment,
+		User $user,
+		int $existingCommentIdx
+	) {
+		$data = $this->getData()->getValue();
+		if ( !$this->hasItem( $itemId ) ) {
+			throw new LogicException( "No item by that id" );
+		}
+		for ( $i = 0; $i < count( $data ); $i++ ) {
+			if ( $data[$i]['id'] === $itemId ) {
+				if ( !isset( $data[$i]['comments'][$existingCommentIdx] ) ) {
+					throw new LogicException( "No comment by that id" );
+				}
+				$data[$i]['comments'][$existingCommentIdx] = [
+					'comment' => $comment,
+					'userId' => $user->getId(),
+					'username' => $user->getName(),
+					'actorId' => $user->getActorId(),
+					'timestamp' => wfTimestampNow(),
+					'edited' => true
 				];
 				break;
 			}
