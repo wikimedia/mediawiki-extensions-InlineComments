@@ -6,5 +6,7 @@
 	},
 	"inlinecomments-addcomment-save": "Ruõkk",
 	"inlinecomments-addcomment-cancel": "Jõõsk",
-	"inlinecomments-addcomment-reply": "Vaʹstted"
+	"inlinecomments-addcomment-reply": "Vaʹstted",
+	"inlinecomments-primary-message": "Čuäʹjet seeid:",
+	"inlinecomments-mention-label": "Čuäʹjet seeid"
 }
