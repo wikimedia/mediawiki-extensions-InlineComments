@@ -4,7 +4,9 @@ namespace MediaWiki\Extension\InlineComments;
 // Namespace got renamed to be prefixed with Wikimedia!
 use Config;
 use Language;
+use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\User\UserFactory;
+use Title;
 use User;
 use Wikimedia\RemexHtml\HTMLData;
 use Wikimedia\RemexHtml\Serializer\Serializer;
@@ -24,13 +26,17 @@ class AnnotationMarker {
 	/** @var UserFactory */
 	private $userFactory;
 
+	/** @var PermissionManager */
+	private $permissionManager;
+
 	/**
 	 * @param Config $config
 	 */
-	public function __construct( Config $config, UserFactory $userFactory ) {
+	public function __construct( Config $config, UserFactory $userFactory, PermissionManager $permissionManager ) {
 		$this->config = $config;
 		$this->utils = new AnnotationUtils( $userFactory );
 		$this->userFactory = $userFactory;
+		$this->permissionManager = $permissionManager;
 	}
 
 	/**
@@ -40,19 +46,22 @@ class AnnotationMarker {
 	 * @param AnnotationContent $annotationContent The annotations to add
 	 * @param Language $reqLanguage for formatting timestamps
 	 * @param User $reqUser for formatting timestamps
+	 * @param Title $reqTitle for checking admin permissions
 	 * @return string HTML with annotations and asides added
 	 */
 	public function markUp(
 		string $html,
 		AnnotationContent $annotationContent,
 		Language $reqLanguage,
-		User $reqUser
+		User $reqUser,
+		Title $reqTitle
 	) {
 		return $this->markUpAndGetUnused(
 			$html,
 			$annotationContent,
 			$reqLanguage,
-			$reqUser
+			$reqUser,
+			$reqTitle
 		)[0];
 	}
 
@@ -69,7 +78,8 @@ class AnnotationMarker {
 		string $html,
 		AnnotationContent $annotationsContent,
 		Language $reqLanguage,
-		User $reqUser
+		User $reqUser,
+		Title $reqTitle
 	) {
 		$annotations = $annotationsContent->getData()->getValue();
 		// TODO: We may want to set the performance optimisation options.
@@ -92,7 +102,9 @@ class AnnotationMarker {
 			$getUnusedAnnotations,
 			$reqLanguage,
 			$reqUser,
-			$this->utils
+			$this->utils,
+			$this->permissionManager,
+			$reqTitle
 		);
 		$serializer = new Serializer( $annotationFormatter );
 		$alist = new AnnotationTreeHandler( $serializer, $annotations );

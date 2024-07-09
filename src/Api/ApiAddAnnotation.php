@@ -56,7 +56,8 @@ class ApiAddAnnotation extends ApiBase {
 			$user->getId(),
 			$user->getName(),
 			$this->getCurrentTimestamp( $timestamp ),
-			$commentText
+			$commentText,
+			true
 		);
 		$commentHTML = $result[ 'commentHTML' ];
 		$users = $result[ 'users' ];
@@ -84,6 +85,7 @@ class ApiAddAnnotation extends ApiBase {
 					'userId' => $user->getId(),
 					'username' => $user->getName(),
 					'timestamp' => $timestamp,
+					'edited' => false
 				]
 			],
 			'id' => (string)mt_rand(),

@@ -9,13 +9,12 @@ use ExtensionRegistry;
 use Language;
 use LogicException;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
-use MediaWiki\Extension\InlineComments\AnnotationContentHandler;
 use MediaWiki\Extension\InlineComments\AnnotationUtils;
 use MediaWiki\Page\WikiPageFactory;
 use Title;
 use Wikimedia\ParamValidator\ParamValidator;
 
-class ApiAddReply extends ApiBase {
+class ApiEditComment extends ApiBase {
 
 	/** @var Language */
 	private $contentLang;
@@ -44,11 +43,11 @@ class ApiAddReply extends ApiBase {
 	public function execute() {
 		$data = $this->extractRequestParams();
 		$title = $this->getTitleFromTitleOrPageId( $data );
+		$existingComment = $data['existing_comment_idx'];
 		$timestamp = wfTimestampNow();
 		if ( !$title || $title->getNamespace() < 0 ) {
 			$this->dieWithError( 'inlinecomments-invalidtitle' );
 		}
-		$this->checkTitleUserPermissions( $title, 'inlinecomments-add' );
 
 		$user = $this->getUser();
 		$commentText = str_replace( "\n", '<br>', htmlspecialchars( $data['comment'] ) );
@@ -65,13 +64,14 @@ class ApiAddReply extends ApiBase {
 			EchoEvent::create( [
 				'type' => 'inlinecomments-mention',
 				'extra' => [
+					'title' => $title,
 					'users' => $users,
 					'commentor' => $user->getName()
 				],
 				'title' => $title
 			] );
 		}
-		$this->addReply( $title, $data['id'], $data['comment'] );
+		$this->editComment( $title, $data['id'], $data['comment'], $existingComment );
 
 		$result = $this->getResult();
 		$result->addValue(
@@ -90,8 +90,14 @@ class ApiAddReply extends ApiBase {
 	 * @param Title $title Page to add annotation to
 	 * @param string $id ID of comment to add it to
 	 * @param string $comment Text of comment
+	 * @param int $existingCommentIdx Existing comment index
 	 */
-	private function addReply( Title $title, string $id, string $comment ) {
+	private function editComment(
+		Title $title,
+		string $id,
+		string $comment,
+		int $existingCommentIdx
+	) {
 		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 
@@ -100,13 +106,22 @@ class ApiAddReply extends ApiBase {
 			$this->dieWithError( "inlinecomments-missingpage" );
 		}
 
-		if ( $prevRevision->hasSlot( AnnotationContent::SLOT_NAME ) ) {
-			$content = $prevRevision->getContent( AnnotationContent::SLOT_NAME );
-		} else {
-			$content = ( new AnnotationContentHandler )->makeEmptyContent();
-		}
+		$content = $prevRevision->getContent( AnnotationContent::SLOT_NAME );
 		if ( !( $content instanceof AnnotationContent ) ) {
 			throw new LogicException( "Unexpected content type" );
+		}
+
+		// Check if the existing comment is made by the current user or if the current user is an edit admin
+		$user = $this->getUser();
+		$existingCommentAuthor = $content->getCommentAuthor( $id, $existingCommentIdx );
+		$canEditAllComments = true;
+		try {
+			$this->checkTitleUserPermissions( $title, 'inlinecomments-edit-all' );
+		} catch ( \Exception $e ) {
+			$canEditAllComments = false;
+		}
+		if ( $user->equals( $existingCommentAuthor ) && !$canEditAllComments ) {
+			$this->dieWithError( "inlinecomments-editcomment-unauthorized-error" );
 		}
 
 		// TODO: In future, we might want to re-render page, check if
@@ -115,11 +130,11 @@ class ApiAddReply extends ApiBase {
 		if ( !$content->hasItem( $id ) ) {
 			$this->dieWithError( "inlinecomments-addcomment-noitembyid" );
 		}
-		$newContent = $content->addReply( $id, $comment, $this->getUser() );
+		$newContent = $content->editComment( $id, $comment, $this->getUser(), $existingCommentIdx );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		$summary = CommentStoreComment::newUnsavedComment(
-			$this->msg( 'inlinecomments-editsummary-addreply' )
+			$this->msg( 'inlinecomments-editsummary-editcomment' )
 				->inContentLanguage()
 		);
 		// TODO: If someone edits the page between when we ran grabRevision()
@@ -176,7 +191,12 @@ class ApiAddReply extends ApiBase {
 			'comment' => [
 				ParamValidator::PARAM_REQUIRED => true,
 				ParamValidator::PARAM_TYPE => 'string',
+			],
+			'existing_comment_idx' => [
+				ParamValidator::PARAM_REQUIRED => true,
+				ParamValidator::PARAM_TYPE => 'integer',
 			]
 		];
 	}
+
 }

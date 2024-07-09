@@ -346,7 +346,6 @@
 				// (username should be a link, timestamp should be included)
 				const DOMs = $.parseHTML( commentHTML );
 				textDiv.appendChild( DOMs[0] );
-				textDiv.appendChild( DOMs[1] );
 				asideElm.prepend(textDiv);
 
 				var asideElmOffset = mw.inlineComments.manager.getOffset( asideElm );

@@ -11,7 +11,8 @@ return [
 	AnnotationMarker::SERVICE_NAME => static function ( MediaWikiServices $services ): AnnotationMarker {
 		return new AnnotationMarker(
 			$services->getMainConfig(),
-			$services->getUserFactory()
+			$services->getUserFactory(),
+			$services->getPermissionManager()
 		);
 	},
 	AnnotationUtils::SERVICE_NAME => static function ( MediaWikiServices $services ): AnnotationUtils {
