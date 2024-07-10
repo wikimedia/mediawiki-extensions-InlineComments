@@ -15,6 +15,7 @@
 	"apihelp-inlinecomments-add-param-comment": "Text des Kommentars, der hinzugefügt wird.",
 	"apihelp-inlinecomments-add-param-containerid": "ID-Attribut des gemeinsamen Vorfahren.",
 	"apihelp-inlinecomments-add-param-containerclass": "Klassenattribut des gemeinsamen Vorfahren.",
+	"inlinecomments-invaliditem": "Ungültiger Titel.",
 	"action-inlinecomments-add": "Inline-Kommentare hinzuzufügen",
 	"right-inlinecomments-add": "Inline-Kommentare hinzufügen",
 	"inlinecomments-editsummary-add": "Kommentar „$1“ hinzugefügt",
