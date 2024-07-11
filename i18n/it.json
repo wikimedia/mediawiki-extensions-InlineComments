@@ -4,5 +4,7 @@
 			"Beta16"
 		]
 	},
-	"inlinecomments-addcomment-cancel": "Annulla"
+	"inlinecomments-addcomment-cancel": "Annulla",
+	"inlinecomments-edited-label": "modificato",
+	"apihelp-inlinecomments-editcomment-param-comment": "Il testo del commento modificato"
 }

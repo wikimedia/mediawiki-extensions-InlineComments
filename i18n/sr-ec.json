@@ -11,8 +11,10 @@
 	"right-inlinecomments-add": "додавање коментара инлајн",
 	"inlinecomments-editsummary-close": "Затворена дискусија",
 	"inlinecomments-editsummary-addreply": "Одговор на коментар",
+	"inlinecomments-editsummary-editcomment": "Коментар измењен",
 	"inlinecomments-addcomment-reply": "Одговори",
 	"inlinecomments-addcomment-close": "Затвори дискусију",
+	"inlinecomments-editcomment-publish": "Објави измену",
 	"inlinecomments-placeholder": "Унесите Ваш коментар.",
 	"inlinecomments-primary-message": "Прикажи страницу:",
 	"inlinecomments-mention-label": "Прикажи страницу"

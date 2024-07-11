@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Rebeccayoga"
+		]
+	},
+	"inlinecomments-editcomment-publish": "Terbitkan edit",
+	"inlinecomments-editcomment-unauthorized-error": "Kamu tidak berwenang untuk mengedit komentar ini",
+	"inlinecomments-edited-label": "diedit",
+	"apihelp-inlinecomments-editcomment-param-id": "ID komentar yang sedang kamu edit"
+}

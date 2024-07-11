@@ -1,0 +1,19 @@
+{
+	"@metadata": {
+		"authors": [
+			"Eleassar"
+		]
+	},
+	"action-inlinecomments-edit-all": "urejanje vseh medbesedilnih komentarjev",
+	"right-inlinecomments-edit-all": "Urejanje vseh medbesedilnih komentarjev",
+	"inlinecomments-editsummary-editcomment": "Urejeni komentar",
+	"inlinecomments-editcomment-publish": "Objavi urejanje",
+	"inlinecomments-editcomment-unauthorized-error": "Za urejanje tega komentarja niste pooblaščeni.",
+	"inlinecomments-edited-label": "urejano",
+	"apihelp-inlinecomments-editcomment-param-title": "Naslov strani za urejanje komentarja. Uporabite to ali <var>pageid</var>, vendar ne obojega.",
+	"apihelp-inlinecomments-editcomment-param-pageid": "ID strani za urejanje komentarja. Uporabite to ali <var>title</var>, vendar ne obojega.",
+	"apihelp-inlinecomments-editcomment-param-id": "ID komentarja, ki ga urejate",
+	"apihelp-inlinecomments-editcomment-param-comment": "Besedilo urejenega komentarja",
+	"apihelp-inlinecomments-editcomment-param-existing_comment_idx": "Indeks obstoječega komentarja v vsebinski reži",
+	"apihelp-inlinecomments-editcomment-summary": "Urejanje medbesedilnega komentarja"
+}
