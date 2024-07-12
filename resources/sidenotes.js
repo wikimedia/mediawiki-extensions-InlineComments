@@ -11,6 +11,10 @@
 
 		this.items = [];
 
+		// Disable selection in older revisions
+		const params = new URLSearchParams( window.location.search );
+		if ( params.get( 'oldid' ) !== null ) return;
+
 		for ( var i = 0; i < notes.length; i++ ) {
 			var annotationClass = notes[i].id.replace(
 				this.opts.idRegex,
