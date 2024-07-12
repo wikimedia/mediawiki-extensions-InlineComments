@@ -81,7 +81,8 @@ class ApiCloseDiscussion extends ApiBase {
 		if ( !$content->hasItem( $id ) ) {
 			$this->dieWithError( "inlinecomments-noitembyid" );
 		}
-		$newContent = $content->removeItem( $id );
+		$user = $this->getUser();
+		$newContent = $content->removeItem( $id, $user, $title );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		$summary = CommentStoreComment::newUnsavedComment(
