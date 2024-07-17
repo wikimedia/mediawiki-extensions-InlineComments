@@ -1,0 +1,82 @@
+.mw-inlinecomments-comment-added {
+	background-color: rgb(182, 215, 132);
+	float: right;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	width: max-content;
+	border-radius: 0.5rem;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+}
+
+.mw-inlinecomments-comment-removed {
+	background-color: rgb(241, 138, 138);
+	float: left;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	width: max-content;
+	border-radius: 0.5rem;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+}
+
+.mw-inlinecomments-comment-changed {
+	background-color: rgb(239, 243, 169);
+	float: right;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	width: max-content;
+	border-radius: 0.5rem;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+}
+
+.mw-inlinecomments-comment-changed-old {
+	text-decoration: line-through;
+	background-color: rgb(241, 138, 138);
+}
+
+.mw-inlinecomments-comment-unchanged {
+	background-color:gainsboro;
+	float: left;
+	padding: 0.5rem;
+	margin-bottom: 1rem;
+	width: max-content;
+	border-radius: 0.5rem;
+	border-style: solid;
+	border-color: lightgray;
+	border-width: 1px;
+}
+
+.mw-inlinecomments-diff {
+	display: flex;
+	flex-direction: column;
+}
+
+.mw-inlinecomments-diff-target-text {
+	background-color: rgb(183, 235, 244);
+	padding: 0.5rem;
+	border-style: solid;
+	border-width: 1px;
+}
+
+.mw-inlinecomments-diff-username {
+	font-size: smaller;
+	color: rgba(92, 89, 89, 0.875);
+	font-weight: bold;
+}
+
+.mw-inlinecomments-comment-diff {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.mw-inlinecomments-diff-sign {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+	margin-right: 0.5rem;
+}
