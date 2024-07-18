@@ -1,9 +1,12 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
+use EchoEvent;
+use ExtensionRegistry;
 use FormatJson;
 use JsonContent;
 use LogicException;
+use Title;
 use User;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
@@ -193,12 +196,19 @@ class AnnotationContent extends JsonContent {
 	 * Get a new content object but with a specific item removed.
 	 *
 	 * @param string $itemId
+	 * @param User|null $closingUser
+	 * @param Title|null $title
 	 * @return AnnotationContent
 	 */
-	public function removeItem( string $itemId ) {
+	public function removeItem( string $itemId, User $closingUser = null, Title $title = null ) {
 		$data = $this->getData()->getValue();
 		for ( $i = 0; $i < count( $data ); $i++ ) {
 			if ( $data[$i]['id'] === $itemId ) {
+				$initiator = User::newFromActorId( $data[$i]['comments'][0]['actorId'] );
+				// Close discussion notification
+				if ( $closingUser != null && $title != null ) {
+					$this->notifyInitiator( $initiator, $closingUser, $title, 'close' );
+				}
 				unset( $data[$i] );
 				break;
 			}
@@ -207,20 +217,44 @@ class AnnotationContent extends JsonContent {
 	}
 
 	/**
+	 * Notify the comment thread creator
+	 * @param User $initiator
+	 * @param User $commentor
+	 * @param Title $title
+	 * @param string $action
+	 */
+	public function notifyInitiator( User $initiator, User $commentor, Title $title, string $action ) {
+		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
+			EchoEvent::create( [
+				'type' => 'inlinecomments-title-notify',
+				'extra' => [
+					'commentor' => $commentor->getName(),
+					'action' => $action,
+					'initiator' => $initiator
+				],
+				'title' => $title
+			] );
+		}
+	}
+
+	/**
 	 * Add a reply to a comment
 	 *
 	 * @param string $itemId
 	 * @param string $comment
 	 * @param User $user
+	 * @param Title $title
 	 * @return AnnotationContent A new content object with the changes made.
 	 */
-	public function addReply( string $itemId, string $comment, User $user ) {
+	public function addReply( string $itemId, string $comment, User $user, Title $title ) {
 		$data = $this->getData()->getValue();
 		if ( !$this->hasItem( $itemId ) ) {
 			throw new LogicException( "No item by that id" );
 		}
 		for ( $i = 0; $i < count( $data ); $i++ ) {
 			if ( $data[$i]['id'] === $itemId ) {
+				$initiator = User::newFromActorId( $data[$i]['comments'][0]['actorId'] );
+				$this->notifyInitiator( $initiator, $user, $title, 'reply' );
 				$data[$i]['comments'][] = [
 					'comment' => $comment,
 					'userId' => $user->getId(),

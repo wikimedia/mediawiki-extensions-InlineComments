@@ -270,10 +270,13 @@ class Hooks implements
 	 * @param User[] &$users
 	 */
 	public static function onEchoGetDefaultNotifiedUsers( $event, &$users ) {
+		$extra = $event->getExtra();
 		if ( $event->getType() == "inlinecomments-mention" ) {
-			$extra = $event->getExtra();
 			$newUsers = $extra['users'];
 			$users = array_merge( $users, $newUsers );
+		}
+		if ( $event->getType() == "inlinecomments-title-notify" ) {
+			$users[] = $extra['initiator'];
 		}
 	}
 
@@ -291,6 +294,20 @@ class Hooks implements
 			],
 			'presentation-model' => UserPingPresentationModel::class,
 			'title-message' => 'inlinecomments-title-message',
+			'title-params' => [ 'title' ],
+			'bundle' => [
+				'web' => true
+			],
+		];
+		$echoNotifications['inlinecomments-title-notify'] = [
+			'section' => 'alert',
+			'category' => 'mention',
+			'primary-link' => [
+				'message' => 'inlinecomments-primary-message',
+				'destination' => 'title'
+			],
+			'title-message' => 'inlinecomments-title-reply-message',
+			'presentation-model' => UpdatePresentationModel::class,
 			'title-params' => [ 'title' ],
 			'bundle' => [
 				'web' => true

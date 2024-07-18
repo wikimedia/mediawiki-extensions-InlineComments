@@ -115,7 +115,7 @@ class ApiAddReply extends ApiBase {
 		if ( !$content->hasItem( $id ) ) {
 			$this->dieWithError( "inlinecomments-addcomment-noitembyid" );
 		}
-		$newContent = $content->addReply( $id, $comment, $this->getUser() );
+		$newContent = $content->addReply( $id, $comment, $this->getUser(), $title );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		$summary = CommentStoreComment::newUnsavedComment(
