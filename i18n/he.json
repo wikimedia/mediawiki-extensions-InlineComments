@@ -1,10 +1,11 @@
 {
 	"@metadata": {
 		"authors": [
-			"Amire80"
+			"Amire80",
+			"YaronSh"
 		]
 	},
-	"inlinecomments-desc": "אפשרות להוסיף הערות לדף",
+	"inlinecomments-desc": "אפשרות להוסיף תגובות לדף",
 	"inlinecomments-addcomment-tooltip": "להגיב על הטקסט המסומן [ctrl+alt+m]",
 	"inlinecomments-addcomment-save": "שמירה",
 	"inlinecomments-addcomment-cancel": "ביטול",
@@ -17,9 +18,9 @@
 	"action-inlinecomments-add": "להוסיף תגובות מוטבעות",
 	"right-inlinecomments-add": "הוספת תגובות מוטבעות",
 	"inlinecomments-editsummary-add": "נוספה התגובה \"$1\"",
-	"inlinecomments-editsummary-addreply": "השיב להערה",
+	"inlinecomments-editsummary-addreply": "השיב לתגובה",
 	"inlinecomments-addcomment-reply": "להשיב",
-	"inlinecomments-placeholder": "נא להין את התגובה שלך.",
+	"inlinecomments-placeholder": "נא להזין את התגובה שלך.",
 	"inlinecomments-missingpage": "לא היה אפשר לערוך תגובות מכיוון שהדף אינו קיים.",
 	"inlinecomments-saveerror": "שגיאה בשמירה התגובות.",
 	"inlinecomments-addcomment-noitembyid": "לא ניתן להשיב לתגובה כי היא לא קיימת.",
