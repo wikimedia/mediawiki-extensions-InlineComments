@@ -42,6 +42,8 @@
 	"inlinecomments-addcomment-noitembyid": "לא ניתן להשיב לתגובה כי היא לא קיימת.",
 	"inlinecomments-primary-message": "צפייה בדף:",
 	"inlinecomments-title-message": "$2 {{GENDER:$2|הזכיר|הזכירה}} אותך בתגובה בדף <b>$1</b>",
+	"inlinecomments-title-reply-message": "$2 {{GENDER:$2|השיב|השיבה}} להערה שכתבת בדף <b>$1</b>",
+	"inlinecomments-title-close-message": "$2 {{GENDER:$2|סגר|סגרה}} הערה שכתבת בדף <b>$1</b>",
 	"inlinecomments-mention-label": "צפייה בדף",
 	"apihelp-inlinecomments-addreply-param-title": "כותרת הדף להוספת תשובה. יש להשתמש בזה או ב־<var>pageid</var> אבל לא בשניהם.",
 	"apihelp-inlinecomments-addreply-param-pageid": "מזהה הדף להוספת תשובה. יש להשתמש בזה או ב־<var>title</var>, אבל לא בשניהם.",

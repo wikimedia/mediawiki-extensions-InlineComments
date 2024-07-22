@@ -18,5 +18,6 @@
 	"inlinecomments-placeholder": "Унесите Ваш коментар.",
 	"inlinecomments-edited-label": "измењено",
 	"inlinecomments-primary-message": "Прикажи страницу:",
+	"inlinecomments-title-reply-message": "$2 је одговорио на Ваш коментар на страници <b>$1</b>",
 	"inlinecomments-mention-label": "Прикажи страницу"
 }

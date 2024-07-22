@@ -41,6 +41,8 @@
 	"inlinecomments-addcomment-noitembyid": "Не можам да одговорам на коментарот бидејќи истиот не постои.",
 	"inlinecomments-primary-message": "Погл. страница:",
 	"inlinecomments-title-message": "$2 ве спомна во коментар на страницата <b>$1</b>",
+	"inlinecomments-title-reply-message": "$2 одговори на вашиот коментар на страницата <b>$1</b>",
+	"inlinecomments-title-close-message": "$2 затвори ваш коментар на страницата <b>$1</b>",
 	"inlinecomments-mention-label": "Погл. страница",
 	"apihelp-inlinecomments-addreply-param-title": "Насловот на страницата во која се додава одговор. Користете го ова или <var>pageid</var>, но не обете.",
 	"apihelp-inlinecomments-addreply-param-pageid": "Назнака за страницата во која се додадава коментарот. Користете го ова или <var>title</var>, но не обете.",
