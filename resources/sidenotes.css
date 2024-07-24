@@ -118,6 +118,10 @@
 	height: min-content;
 }
 
+.mw-inlinecomment-editlink:hover {
+	font-weight: bold;
+}
+
 .mw-inlinecomments-editedlabel {
 	color: gray;
 	margin-bottom: 1rem;
