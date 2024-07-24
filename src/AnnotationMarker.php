@@ -5,9 +5,11 @@ namespace MediaWiki\Extension\InlineComments;
 use Config;
 use Language;
 use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\User\ActorStore;
 use MediaWiki\User\UserFactory;
 use Title;
 use User;
+use Wikimedia\Rdbms\LBFactory;
 use Wikimedia\RemexHtml\HTMLData;
 use Wikimedia\RemexHtml\Serializer\Serializer;
 use Wikimedia\RemexHtml\Tokenizer\Tokenizer;
@@ -28,13 +30,27 @@ class AnnotationMarker {
 
 	/** @var PermissionManager */
 	private $permissionManager;
+	/** @var ActorStore */
+	private $actorStore;
+	/** @var LBFactory */
+	private $dbLoadBalancerFactory;
 
 	/**
 	 * @param Config $config
+	 * @param UserFactory $userFactory
+	 * @param PermissionManager $permissionManager
+	 * @param LBFactory $dbLoadBalancerFactory
+	 * @param ActorStore $actorStore
 	 */
-	public function __construct( Config $config, UserFactory $userFactory, PermissionManager $permissionManager ) {
+	public function __construct(
+		Config $config,
+		UserFactory $userFactory,
+		PermissionManager $permissionManager,
+		LBFactory $dbLoadBalancerFactory,
+		ActorStore $actorStore
+	) {
 		$this->config = $config;
-		$this->utils = new AnnotationUtils( $userFactory );
+		$this->utils = new AnnotationUtils( $userFactory, $dbLoadBalancerFactory, $actorStore );
 		$this->userFactory = $userFactory;
 		$this->permissionManager = $permissionManager;
 	}

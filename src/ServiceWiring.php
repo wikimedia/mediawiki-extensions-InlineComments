@@ -12,10 +12,16 @@ return [
 		return new AnnotationMarker(
 			$services->getMainConfig(),
 			$services->getUserFactory(),
-			$services->getPermissionManager()
+			$services->getPermissionManager(),
+			$services->getDBLoadBalancerFactory(),
+			$services->getActorStore()
 		);
 	},
 	AnnotationUtils::SERVICE_NAME => static function ( MediaWikiServices $services ): AnnotationUtils {
-		return new AnnotationUtils( $services->getUserFactory() );
+		return new AnnotationUtils(
+			$services->getUserFactory(),
+			$services->getDBLoadBalancerFactory(),
+			$services->getActorStore()
+		);
 	},
 ];

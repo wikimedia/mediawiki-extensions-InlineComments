@@ -30,7 +30,13 @@ class ApiEditComment extends ApiBase {
 	 * @param WikiPageFactory $wpf
 	 * @param AnnotationUtils $utils
 	 */
-	public function __construct( $parent, $name, Language $lang, WikiPageFactory $wpf, AnnotationUtils $utils ) {
+	public function __construct(
+		$parent,
+		$name,
+		Language $lang,
+		WikiPageFactory $wpf,
+		AnnotationUtils $utils
+	) {
 		$this->contentLang = $lang;
 		$this->wikiPageFactory = $wpf;
 		$this->utils = $utils;
@@ -130,7 +136,8 @@ class ApiEditComment extends ApiBase {
 		if ( !$content->hasItem( $id ) ) {
 			$this->dieWithError( "inlinecomments-addcomment-noitembyid" );
 		}
-		$newContent = $content->editComment( $id, $comment, $this->getUser(), $existingCommentIdx );
+		$actorId = $this->utils->getActorId( $user );
+		$newContent = $content->editComment( $id, $comment, $user, $existingCommentIdx, $actorId );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		$summary = CommentStoreComment::newUnsavedComment(

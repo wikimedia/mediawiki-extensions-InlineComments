@@ -244,9 +244,10 @@ class AnnotationContent extends JsonContent {
 	 * @param string $comment
 	 * @param User $user
 	 * @param Title $title
+	 * @param int $actorId
 	 * @return AnnotationContent A new content object with the changes made.
 	 */
-	public function addReply( string $itemId, string $comment, User $user, Title $title ) {
+	public function addReply( string $itemId, string $comment, User $user, Title $title, int $actorId ) {
 		$data = $this->getData()->getValue();
 		if ( !$this->hasItem( $itemId ) ) {
 			throw new LogicException( "No item by that id" );
@@ -259,7 +260,7 @@ class AnnotationContent extends JsonContent {
 					'comment' => $comment,
 					'userId' => $user->getId(),
 					'username' => $user->getName(),
-					'actorId' => $user->getActorId(),
+					'actorId' => $actorId,
 					'timestamp' => wfTimestampNow(),
 					'edited' => false
 				];
@@ -302,13 +303,15 @@ class AnnotationContent extends JsonContent {
 	 * @param string $comment
 	 * @param User $user
 	 * @param int $existingCommentIdx
+	 * @param int $actorId
 	 * @return AnnotationContent A new content object with the changes made.
 	 */
 	public function editComment(
 		string $itemId,
 		string $comment,
 		User $user,
-		int $existingCommentIdx
+		int $existingCommentIdx,
+		int $actorId
 	) {
 		$data = $this->getData()->getValue();
 		if ( !$this->hasItem( $itemId ) ) {
@@ -323,7 +326,7 @@ class AnnotationContent extends JsonContent {
 					'comment' => $comment,
 					'userId' => $user->getId(),
 					'username' => $user->getName(),
-					'actorId' => $user->getActorId(),
+					'actorId' => $actorId,
 					'timestamp' => wfTimestampNow(),
 					'edited' => true
 				];
