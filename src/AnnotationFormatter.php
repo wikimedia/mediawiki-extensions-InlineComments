@@ -5,6 +5,7 @@ use Html;
 use Language;
 use LogicException;
 use MediaWiki\Permissions\PermissionManager;
+use RequestContext;
 use Title;
 use User;
 use Wikimedia\RemexHtml\Serializer\HtmlFormatter;
@@ -121,6 +122,9 @@ class AnnotationFormatter extends HtmlFormatter {
 				);
 				$canEdit = !$this->reqUser->isAnon() &&
 					( $this->reqUser->getId() == $comment['userId'] || $isAdmin );
+				// Disable editing for older revisions of the page
+				$request = RequestContext::getMain()->getRequest();
+				$canEdit = $canEdit && $request->getVal( 'oldid' ) == null;
 				$asideContent .= $this->utils->renderComment(
 					$comment['userId'],
 					$comment['username'],
