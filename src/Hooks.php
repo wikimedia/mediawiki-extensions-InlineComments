@@ -80,6 +80,10 @@ class Hooks implements
 			// and instead show the previous annotations on page preview.
 			return;
 		}
+		// Check if InlineComments should be enabled for the current page's namespace
+		if ( !in_array( $out->getTitle()->getNamespace(), $this->config->get( 'InlineCommentsNamespaces' ) ) ) {
+			return;
+		}
 
 		// Also exit if user can't view comments.
 		$canViewComments = $this->permissionManager->userCan(
@@ -320,5 +324,11 @@ class Hooks implements
 	 */
 	public function onUserGetReservedNames( &$reservedUsernames ) {
 		$reservedUsernames[] = 'InlineComments bot';
+	}
+
+	public static function setDefaultNamespaces() {
+		if ( !isset( $GLOBALS['wgInlineCommentsNamespaces'] ) ) {
+			$GLOBALS['wgInlineCommentsNamespaces'] = $GLOBALS['wgContentNamespaces'];
+		}
 	}
 }

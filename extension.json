@@ -86,8 +86,13 @@
 		"InlineCommentsAutoDeleteComments": {
 			"value": true,
 			"description": "Automatically delete comments if the text they are commenting on was removed or can no longer be found"
+		},
+		"InlineCommentsNamespaces": {
+			"value": null,
+			"description": "Namespaces for which InlineComments should be enabled"
 		}
 	},
+	"callback": "MediaWiki\\Extension\\InlineComments\\Hooks::setDefaultNamespaces",
 	"ResourceModules": {
 		"ext.inlineComments.forceReload": {
 			"scripts": [
