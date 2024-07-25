@@ -25,6 +25,13 @@
 	"inlinecomments-addcomment-reply": "返信",
 	"inlinecomments-addcomment-close": "議論を終了する",
 	"inlinecomments-placeholder": "コメントを入力。",
+	"inlinecomments-missingpage": "ページが存在しないため コメントを編集できません。",
+	"inlinecomments-saveerror": "コメントの追加中にエラーが発生しました。",
+	"inlinecomments-noitembyid": "協議が存在しないため終了できません。",
+	"inlinecomments-addcomment-noitembyid": "コメントが存在しないため返信できません。",
+	"apihelp-inlinecomments-addreply-param-id": "返信するコメントの ID",
+	"apihelp-inlinecomments-addreply-param-comment": "返信する文章",
+	"apihelp-inlinecomments-addreply-summary": "インラインのコメントに返信する",
 	"apihelp-inlinecomments-close-summary": "協議を終了するにはページから除去します",
 	"apihelp-inlinecomments-close-param-id": "終了するコメントもしくは協議の ID 番号",
 	"inlinecomments-error-notext": "警告：強調表示した文字列が見つかりません。ページを再読み込みして正しい文字にコメントしたかどうか確認してください。"
