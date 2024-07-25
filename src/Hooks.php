@@ -82,11 +82,9 @@ class Hooks implements
 		}
 
 		// Also exit if user can't view comments.
-		$canViewComments = $this->permissionManager->userCan(
-			'inlinecomments-view',
+		$canViewComments = $this->permissionManager->userHasRight(
 			$out->getUser(),
-			$out->getTitle(),
-			PermissionManager::RIGOR_FULL
+			'inlinecomments-view'
 		);
 		if ( !$canViewComments ) {
 			return;
