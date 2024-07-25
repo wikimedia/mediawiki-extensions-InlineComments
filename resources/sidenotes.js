@@ -300,11 +300,14 @@
 								'format': 'json',
 								'list': 'allusers',
 								'auprefix': query,
-								'aulimit': 5
+								'aulimit': 5,
+								'auprop': 'blockinfo'
 							};
 							let response = await api.get( requestParams );
 							const usernames = response.query.allusers.map( function ( user ) {
-								return user.name;
+								if ( !Object.keys( user ).includes( 'hidden' ) ) {
+									return user.name;
+								}
 							} );
 							const usernamesDivs = usernames.map( function ( username ) {
 								let item = $('<a></a>');

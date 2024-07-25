@@ -84,7 +84,7 @@ class AnnotationUtils {
 		$mentionedUser = $this->userFactory->newFromName( $match );
 		if ( $mentionedUser ) {
 			$mentionedUserId = $mentionedUser->getId();
-			if ( $mentionedUserId != 0 ) {
+			if ( $mentionedUserId != 0 && !$mentionedUser->isHidden() ) {
 				$displayName = str_replace( '_', ' ', $match );
 				$link = Linker::userLink( $mentionedUserId, $mentionedUser->getName(), $displayName );
 				$replacement = "@$link";
