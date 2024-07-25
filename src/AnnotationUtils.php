@@ -43,10 +43,20 @@ class AnnotationUtils {
 			[],
 			str_replace( "\n", '<br>', $commentHTML )
 		);
+		$user = $this->userFactory->newFromId( $userId );
+		if ( $user->isHidden() ) {
+			$displayName = Html::element(
+				'span',
+				[ 'class' => 'history-deleted mw-history-suppressed' ],
+				wfMessage( 'rev-deleted-user' )->text()
+			);
+		} else {
+			$displayName = Linker::userLink( $userId, $username );
+		}
 		$commentHTML .= Html::rawElement(
 			'div',
 			[ 'class' => 'mw-inlinecomment-author' ],
-			Linker::userLink( $userId, $username ) . $timestamp
+			$displayName . $timestamp
 		);
 		$commentHTML = Html::rawElement(
 			'div',

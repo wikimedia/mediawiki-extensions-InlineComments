@@ -111,7 +111,8 @@
 				"parentheses"
 			],
 			"dependencies": [
-				"oojs-ui-widgets"
+				"oojs-ui-widgets",
+				"mediawiki.interface.helpers.styles"
 			]
 		},
 		"ext.inlineComments.sidenotes.styles": {
