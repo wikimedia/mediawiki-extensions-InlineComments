@@ -31,7 +31,13 @@ class ApiAddAnnotation extends ApiBase {
 	 * @param WikiPageFactory $wpf
 	 * @param AnnotationUtils $utils
 	 */
-	public function __construct( $parent, $name, Language $lang, WikiPageFactory $wpf, AnnotationUtils $utils ) {
+	public function __construct(
+		$parent,
+		$name,
+		Language $lang,
+		WikiPageFactory $wpf,
+		AnnotationUtils $utils
+	) {
 		$this->contentLang = $lang;
 		$this->wikiPageFactory = $wpf;
 		$this->utils = $utils;
@@ -71,7 +77,7 @@ class ApiAddAnnotation extends ApiBase {
 				'title' => $title
 			] );
 		}
-
+		$actorId = $this->utils->getActorId( $user );
 		$item = [
 			// Sometimes there is disagreement about if text starts with a newline so left trim.
 			'pre' => ltrim( $data['pre'] ),
@@ -81,7 +87,7 @@ class ApiAddAnnotation extends ApiBase {
 			'comments' => [
 				[
 					'comment' => $data['comment'],
-					'actorId' => $user->getActorId(),
+					'actorId' => $actorId,
 					'userId' => $user->getId(),
 					'username' => $user->getName(),
 					'timestamp' => $timestamp,

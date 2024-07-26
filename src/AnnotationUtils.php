@@ -3,13 +3,20 @@ namespace MediaWiki\Extension\InlineComments;
 
 use Html;
 use Linker;
+use MediaWiki\User\ActorStore;
 use MediaWiki\User\UserFactory;
+use User;
+use Wikimedia\Rdbms\LBFactory;
 
 class AnnotationUtils {
 	public const SERVICE_NAME = "InlineComments:AnnotationUtils";
 
 	/** @var UserFactory */
 	private $userFactory;
+	/** @var ActorStore */
+	private $actorStore;
+	/** @var LBFactory */
+	private $dbLoadBalancerFactory;
 
 	/** @var array */
 	private $users;
@@ -17,8 +24,14 @@ class AnnotationUtils {
 	/**
 	 * @param UserFactory $userFactory
 	 */
-	public function __construct( UserFactory $userFactory ) {
+	public function __construct(
+		UserFactory $userFactory,
+		LBFactory $dbLoadBalancerFactory,
+		ActorStore $actorStore
+	) {
 		$this->userFactory = $userFactory;
+		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
+		$this->actorStore = $actorStore;
 		$this->users = [];
 	}
 
@@ -102,5 +115,21 @@ class AnnotationUtils {
 			}
 		}
 		return $replacement;
+	}
+
+	/**
+	 * Returns the actor ID of the user
+	 * @param User $user
+	 * @return int actorId
+	 */
+	public function getActorId( $user ) {
+		if ( method_exists( $this->dbLoadBalancerFactory, 'getPrimaryDatabase' ) ) {
+			// MW 1.40+
+			$db = $this->dbLoadBalancerFactory->getPrimaryDatabase();
+		} else {
+			$db = $this->dbLoadBalancerFactory->getMainLB()->getConnection( DB_PRIMARY );
+		}
+		$actorId = $this->actorStore->acquireActorId( $user, $db );
+		return $actorId;
 	}
 }

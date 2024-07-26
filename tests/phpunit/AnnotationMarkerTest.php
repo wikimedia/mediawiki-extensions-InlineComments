@@ -6,8 +6,10 @@ use MediaWiki\Extension\InlineComments\AnnotationMarker;
 use MediaWiki\Extension\InlineComments\AnnotationUtils;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\User\ActorStore;
 use MediaWiki\User\UserFactory;
 use MediaWiki\User\UserNameUtils;
+use Wikimedia\Rdbms\LBFactory;
 use Wikimedia\TestingAccessWrapper;
 
 /**
@@ -36,13 +38,26 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 		$mockUserFactory = $this->getMockBuilder( UserFactory::class )
 			->disableOriginalConstructor()
 			->getMock();
+		$mockLBFactory = $this->getMockBuilder( LBFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$mockActorStore = $this->getMockBuilder( ActorStore::class )
+			->disableOriginalConstructor()
+			->getMock();
 		$mockPermissionManager = $this->getMockBuilder( PermissionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
-		$utils = new AnnotationUtils( $mockUserFactory );
+		$utils = new AnnotationUtils( $mockUserFactory, $mockLBFactory, $mockActorStore );
 		$mockUserFactory->method( 'newFromName' )->willReturn( $user );
 		$mockPermissionManager->method( 'userCan' )->willReturn( true );
-		$marker = new AnnotationMarker( $config, $mockUserFactory, $mockPermissionManager );
+		$mockActorStore->method( 'acquireActorId' )->willReturn( 1 );
+		$marker = new AnnotationMarker(
+			$config,
+			$mockUserFactory,
+			$mockPermissionManager,
+			$mockLBFactory,
+			$mockActorStore
+		);
 		$lang = $services->getLanguageFactory()->getLanguage( 'en' );
 		$res = $marker->markUp( $inputHtml, $content, $lang, $user, $title );
 		$this->assertEquals( $expectedOutput, $res, $info );
@@ -67,9 +82,16 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 		$mockPermissionManager = $this->getMockBuilder( PermissionManager::class )
 			->disableOriginalConstructor()
 			->getMock();
+		$mockLBFactory = $this->getMockBuilder( LBFactory::class )
+			->disableOriginalConstructor()
+			->getMock();
+		$mockActorStore = $this->getMockBuilder( ActorStore::class )
+			->disableOriginalConstructor()
+			->getMock();
 		$mockPermissionManager->method( 'userCan' )->willReturn( true );
 		$mockUserFactory->method( 'newFromName' )->willReturn( $user );
-		$utils = new AnnotationUtils( $mockUserFactory );
+		$mockActorStore->method( 'acquireActorId' )->willReturn( 1 );
+		$utils = new AnnotationUtils( $mockUserFactory, $mockLBFactory, $mockActorStore );
 		$formatter = TestingAccessWrapper::newFromObject(
 			new AnnotationFormatter(
 				[],

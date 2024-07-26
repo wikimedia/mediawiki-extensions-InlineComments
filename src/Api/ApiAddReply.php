@@ -31,7 +31,13 @@ class ApiAddReply extends ApiBase {
 	 * @param WikiPageFactory $wpf
 	 * @param AnnotationUtils $utils
 	 */
-	public function __construct( $parent, $name, Language $lang, WikiPageFactory $wpf, AnnotationUtils $utils ) {
+	public function __construct(
+		$parent,
+		$name,
+		Language $lang,
+		WikiPageFactory $wpf,
+		AnnotationUtils $utils
+	) {
 		$this->contentLang = $lang;
 		$this->wikiPageFactory = $wpf;
 		$this->utils = $utils;
@@ -115,7 +121,8 @@ class ApiAddReply extends ApiBase {
 		if ( !$content->hasItem( $id ) ) {
 			$this->dieWithError( "inlinecomments-addcomment-noitembyid" );
 		}
-		$newContent = $content->addReply( $id, $comment, $this->getUser(), $title );
+		$actorId = $this->utils->getActorId( $this->getUser() );
+		$newContent = $content->addReply( $id, $comment, $this->getUser(), $title, $actorId );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
 		$summary = CommentStoreComment::newUnsavedComment(
