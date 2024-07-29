@@ -4,6 +4,7 @@ use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationFormatter;
 use MediaWiki\Extension\InlineComments\AnnotationMarker;
 use MediaWiki\Extension\InlineComments\AnnotationUtils;
+use MediaWiki\MainConfigNames;
 use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\User\ActorStore;
@@ -19,9 +20,9 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 
 	public function setUp(): void {
 		parent::setUp();
-		$this->setMwGlobals( [
-			'wgArticlePath' => '/wiki/$1',
-			'wgScriptPath' => '/w/'
+		$this->overrideConfigValues( [
+			MainConfigNames::ArticlePath => '/wiki/$1',
+			MainConfigNames::ScriptPath => '/w/',
 		] );
 	}
 
