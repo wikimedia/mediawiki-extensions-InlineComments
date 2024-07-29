@@ -6,7 +6,14 @@
 	},
 	"inlinecomments-addcomment-save": "Enregistrer",
 	"inlinecomments-addcomment-cancel": "Annuler",
+	"apihelp-inlinecomments-add-param-body": "Texte à sélectionner.",
 	"inlinecomments-addcomment-reply": "Répondre",
+	"inlinecomments-noitembyid": "Impossible de fermer la discussion car elle n'existe pas.",
+	"inlinecomments-addcomment-noitembyid": "Impossible de répondre au commentaire car il n'existe pas.",
 	"inlinecomments-primary-message": "Afficher la page :",
-	"inlinecomments-mention-label": "Afficher la page"
+	"inlinecomments-title-message": "$2 vous a mentionné dans un commentaire sur la page <b>$1</b>",
+	"inlinecomments-title-reply-message": "$2 a répondu à un commentaire que vous avez fait sur la page <b>$1</b>",
+	"inlinecomments-title-close-message": "$2 a fermé un commentaire que vous avez fait sur la page <b>$1</b>",
+	"inlinecomments-mention-label": "Afficher la page",
+	"apihelp-inlinecomments-addreply-param-comment": "Le texte de votre réponse"
 }
