@@ -20,5 +20,10 @@
 	"inlinecomments-editsummary-addreply": "コメントに返信",
 	"inlinecomments-addcomment-reply": "返信",
 	"inlinecomments-placeholder": "コメントを入力。",
+	"inlinecomments-missingpage": "ページが存在しないため コメントを編集できません。",
+	"inlinecomments-saveerror": "コメントの追加中にエラーが発生しました。",
+	"inlinecomments-addcomment-noitembyid": "コメントが存在しないため返信できません。",
+	"apihelp-inlinecomments-addreply-param-comment": "返信する文章",
+	"apihelp-inlinecomments-addreply-summary": "インラインのコメントに返信する",
 	"inlinecomments-error-notext": "警告：強調表示した文字列が見つかりません。ページを再読み込みして正しい文字にコメントしたかどうか確認してください。"
 }
