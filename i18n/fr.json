@@ -6,5 +6,9 @@
 	},
 	"inlinecomments-addcomment-save": "Enregistrer",
 	"inlinecomments-addcomment-cancel": "Annuler",
-	"inlinecomments-addcomment-reply": "Répondre"
+	"apihelp-inlinecomments-add-param-body": "Texte à sélectionner.",
+	"inlinecomments-addcomment-reply": "Répondre",
+	"inlinecomments-noitembyid": "Impossible de fermer la discussion car elle n'existe pas.",
+	"inlinecomments-addcomment-noitembyid": "Impossible de répondre au commentaire car il n'existe pas.",
+	"apihelp-inlinecomments-addreply-param-comment": "Le texte de votre réponse"
 }
