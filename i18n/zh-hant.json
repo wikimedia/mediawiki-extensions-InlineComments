@@ -1,0 +1,30 @@
+{
+	"@metadata": {
+		"authors": [
+			"Kly",
+			"Winston Sung"
+		]
+	},
+	"inlinecomments-desc": "允許對頁面添加留言",
+	"inlinecomments-addcomment-tooltip": "在突顯文字上留言 [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "儲存",
+	"inlinecomments-addcomment-cancel": "取消",
+	"apihelp-inlinecomments-add-summary": "添加新的行內留言。",
+	"apihelp-inlinecomments-add-param-pre": "所選文字前方的文字。",
+	"apihelp-inlinecomments-add-param-body": "要選擇的文字。",
+	"apihelp-inlinecomments-add-param-container": "所選文字共同起源的元素名稱。",
+	"apihelp-inlinecomments-add-param-comment": "要添加的留言文字。",
+	"inlinecomments-invaliditem": "無效項目。",
+	"action-inlinecomments-add": "添加行內留言",
+	"right-inlinecomments-add": "添加行內留言",
+	"inlinecomments-editsummary-add": "已添加留言「$1」",
+	"inlinecomments-editsummary-addreply": "已回覆留言",
+	"inlinecomments-addcomment-reply": "回覆",
+	"inlinecomments-placeholder": "輸入您的留言。",
+	"inlinecomments-missingpage": "由於頁面不存在，無法編輯留言。",
+	"inlinecomments-saveerror": "儲存留言時發生錯誤。",
+	"inlinecomments-addcomment-noitembyid": "無法回覆留言，因為此留言不存在。",
+	"apihelp-inlinecomments-addreply-param-comment": "您所回覆的文字",
+	"apihelp-inlinecomments-addreply-summary": "對行內留言添加回覆",
+	"inlinecomments-error-notext": "警告：尋找突顯文字時發生錯誤。請重新載入頁面，以驗證有註解到正確的文字"
+}
