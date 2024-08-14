@@ -140,6 +140,7 @@ class ApiEditComment extends ApiBase {
 		$newContent = $content->editComment( $id, $comment, $user, $existingCommentIdx, $actorId );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
+		$pageUpdater->addTag( 'inlinecomments' );
 		$summary = CommentStoreComment::newUnsavedComment(
 			$this->msg( 'inlinecomments-editsummary-editcomment' )
 				->inContentLanguage()

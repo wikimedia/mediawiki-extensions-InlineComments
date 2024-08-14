@@ -249,6 +249,7 @@ class Hooks implements
 						return;
 					}
 					$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $annotations );
+					$pageUpdater->addTag( 'inlinecomments' );
 					$summary = CommentStoreComment::newUnsavedComment(
 						wfMessage( 'inlinecomments-editsummary-autoclose' )
 							->numParams( $count )
@@ -315,6 +316,22 @@ class Hooks implements
 				'web' => true
 			],
 		];
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public static function onListDefinedTags( &$tags ) {
+		$tags[] = 'inlinecomments';
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public static function onChangeTagsListActive( &$tags ) {
+		$tags[] = 'inlinecomments';
+		return true;
 	}
 
 	/**

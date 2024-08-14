@@ -85,6 +85,7 @@ class ApiCloseDiscussion extends ApiBase {
 		$newContent = $content->removeItem( $id, $user, $title );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
+		$pageUpdater->addTag( 'inlinecomments' );
 		$summary = CommentStoreComment::newUnsavedComment(
 			$this->msg( 'inlinecomments-editsummary-close' )
 				->inContentLanguage()

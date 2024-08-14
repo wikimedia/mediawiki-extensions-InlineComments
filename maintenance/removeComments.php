@@ -96,6 +96,7 @@ class RemoveComments extends Maintenance {
 			return;
 		}
 		$pageUpdater->removeSlot( 'inlinecomments' );
+		$pageUpdater->addTag( 'inlinecomments' );
 		$summary = CommentStoreComment::newUnsavedComment( 'Removing inline comments' );
 		$pageUpdater->saveRevision( $summary, EDIT_INTERNAL | EDIT_UPDATE | EDIT_SUPPRESS_RC );
 		if ( !$pageUpdater->wasSuccessful() ) {

@@ -25,6 +25,8 @@
 	"right-inlinecomments-view": "View inline comments",
 	"action-inlinecomments-edit-all": "edit all inline comments",
 	"right-inlinecomments-edit-all": "Edit all inline comments",
+	"tag-inlinecomments": "Inline comments",
+	"tag-inlinecomments-description": "Comment edits made through the [https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments InlineComments] extension",
 	"inlinecomments-editsummary-add": "Added comment \"$1\"",
 	"inlinecomments-editsummary-close": "Closed discussion",
 	"inlinecomments-editsummary-addreply": "Replied to comment",

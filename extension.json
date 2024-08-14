@@ -29,7 +29,9 @@
 		"ApiParseMakeOutputPage": "main",
 		"OutputPageBeforeHTML": "main",
 		"BeforeCreateEchoEvent": "MediaWiki\\Extension\\InlineComments\\Hooks::onBeforeCreateEchoEvent",
-		"EchoGetDefaultNotifiedUsers": "MediaWiki\\Extension\\InlineComments\\Hooks::onEchoGetDefaultNotifiedUsers"
+		"EchoGetDefaultNotifiedUsers": "MediaWiki\\Extension\\InlineComments\\Hooks::onEchoGetDefaultNotifiedUsers",
+		"ListDefinedTags": "MediaWiki\\Extension\\InlineComments\\Hooks::onListDefinedTags",
+		"ChangeTagsListActive": "MediaWiki\\Extension\\InlineComments\\Hooks::onChangeTagsListActive"
 	},
 	"HookHandlers": {
 		"main": {

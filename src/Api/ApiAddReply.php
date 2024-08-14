@@ -125,6 +125,7 @@ class ApiAddReply extends ApiBase {
 		$newContent = $content->addReply( $id, $comment, $this->getUser(), $title, $actorId );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
+		$pageUpdater->addTag( 'inlinecomments' );
 		$summary = CommentStoreComment::newUnsavedComment(
 			$this->msg( 'inlinecomments-editsummary-addreply' )
 				->inContentLanguage()

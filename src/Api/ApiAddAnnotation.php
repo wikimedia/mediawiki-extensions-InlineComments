@@ -155,6 +155,7 @@ class ApiAddAnnotation extends ApiBase {
 		$newContent = $content->newWithAddedItem( $item );
 
 		$pageUpdater->setContent( AnnotationContent::SLOT_NAME, $newContent );
+		$pageUpdater->addTag( 'inlinecomments' );
 		// 70 is chosen very arbitrarily.
 		$commentTruncated = $this->contentLang->truncateForVisual(
 			$item['comments'][0]['comment'],

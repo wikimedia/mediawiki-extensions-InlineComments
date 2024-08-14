@@ -25,6 +25,8 @@
 	"right-inlinecomments-view": "{{Doc-right|inlinecomments-view}}\nMessage for inlinecomments-view action. This right is used to determine if the user can view existing comments on a page.",
 	"action-inlinecomments-edit-all": "{{Doc-action|inlinecomments-edit-all}}\nMessage for inlinecomments-edit-all action which is used to determine if a user is sysop on a page.",
 	"right-inlinecomments-edit-all": "{{Doc-right|inlinecomments-edit-all}}\nMessage for inlinecomments-edit-all action. This right is used to determine if a user is sysop on a page.",
+	"tag-inlinecomments": "Title for the inlinecomments tag",
+	"tag-inlinecomments-description": "Description for the inlinecomments tag",
 	"inlinecomments-editsummary-add": "Edit summary when you add an annotation. Parameters:\n* $1 - a substring of the added comment",
 	"inlinecomments-editsummary-close": "Edit summary when you close a discussion",
 	"inlinecomments-editsummary-addreply": "Edit summary when you reply to a comment",
