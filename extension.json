@@ -158,6 +158,14 @@
 				"inlinecomments-placeholder",
 				"inlinecomments-error-notext"
 			]
+		},
+		"ext.inlineComments.diff.styles": {
+			"scripts": [
+				"diffHandler.js"
+			],
+			"styles": [
+				"sidenotesDiff.css"
+			]
 		}
 	},
 	"ResourceFileModulePaths": {

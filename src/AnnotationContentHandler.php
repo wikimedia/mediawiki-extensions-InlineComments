@@ -1,6 +1,7 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
+use IContextSource;
 use JsonContentHandler;
 
 class AnnotationContentHandler extends JsonContentHandler {
@@ -21,4 +22,12 @@ class AnnotationContentHandler extends JsonContentHandler {
 	public function getContentClass() {
 		return AnnotationContent::class;
 	}
+
+	/**
+	 * @inheritDoc
+	 */
+	protected function getSlotDiffRendererWithOptions( IContextSource $context, $options = [] ) {
+		return new CommentSlotDiffRenderer();
+	}
+
 }
