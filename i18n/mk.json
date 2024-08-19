@@ -25,6 +25,8 @@
 	"right-inlinecomments-view": "Преглед на внатрередови коментари",
 	"action-inlinecomments-edit-all": "уредување на сите внатрередови коментари",
 	"right-inlinecomments-edit-all": "Уредување на сите внатрередови коментари",
+	"tag-inlinecomments": "Внатрередови коментари",
+	"tag-inlinecomments-description": "Коментари направени преку додатокот [https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments Внатрередови коментари]",
 	"inlinecomments-editsummary-add": "Додаден коментарот „$1“",
 	"inlinecomments-editsummary-close": "Затворена дискусија",
 	"inlinecomments-editsummary-addreply": "Одговор на коментар",

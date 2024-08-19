@@ -26,6 +26,8 @@
 	"right-inlinecomments-view": "צפייה בתגובות מוטבעות",
 	"action-inlinecomments-edit-all": "לערוך את כל התגובות המוטבעות",
 	"right-inlinecomments-edit-all": "עריכת כל התגובות המוטבעות",
+	"tag-inlinecomments": "הערות מוטבעות",
+	"tag-inlinecomments-description": "עריכות של הערות שנעשו באמצעות ההרחבה [https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments InlineComments]",
 	"inlinecomments-editsummary-add": "נוספה התגובה \"$1\"",
 	"inlinecomments-editsummary-close": "הדיון נסגר",
 	"inlinecomments-editsummary-addreply": "השיב לתגובה",

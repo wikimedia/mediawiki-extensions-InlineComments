@@ -25,6 +25,8 @@
 	"right-inlinecomments-view": "Inline-Kommentare anzeigen",
 	"action-inlinecomments-edit-all": "alle Inline-Kommentare zu bearbeiten",
 	"right-inlinecomments-edit-all": "Alle Inline-Kommentare bearbeiten",
+	"tag-inlinecomments": "Inline-Kommentare",
+	"tag-inlinecomments-description": "Kommentarbearbeitungen, die über die Erweiterung [https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments InlineComments] vorgenommen wurden",
 	"inlinecomments-editsummary-add": "Kommentar „$1“ hinzugefügt",
 	"inlinecomments-editsummary-close": "Geschlossene Diskussion",
 	"inlinecomments-editsummary-addreply": "Auf Kommentar geantwortet",
