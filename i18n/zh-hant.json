@@ -26,6 +26,8 @@
 	"right-inlinecomments-view": "檢視行內留言",
 	"action-inlinecomments-edit-all": "編輯所有行內留言",
 	"right-inlinecomments-edit-all": "編輯所有行內留言",
+	"tag-inlinecomments": "行內留言",
+	"tag-inlinecomments-description": "透過 [https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments InlineComments] 擴充功能作出的留言編輯",
 	"inlinecomments-editsummary-add": "已添加留言「$1」",
 	"inlinecomments-editsummary-close": "關閉討論",
 	"inlinecomments-editsummary-addreply": "已回覆留言",
