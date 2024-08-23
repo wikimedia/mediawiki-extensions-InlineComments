@@ -23,6 +23,8 @@
 	"right-inlinecomments-add": "افزودن نظرات درون‌خطی",
 	"action-inlinecomments-view": "مشاهدهٔ نظرات درون‌خطی",
 	"right-inlinecomments-view": "مشاهدهٔ نظرات درون‌خطی",
+	"tag-inlinecomments": "نظرات درخط",
+	"tag-inlinecomments-description": "ویرایش‌های انجام‌شده برای ثبت نظر از طریق افزونهٔ [https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments نظرات درخط]",
 	"inlinecomments-editsummary-add": "افزودن نظر «$1»",
 	"inlinecomments-editsummary-close": "جمع‌بندی بحث",
 	"inlinecomments-editsummary-addreply": "پاسخ به نظر",
