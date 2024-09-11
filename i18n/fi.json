@@ -1,8 +1,39 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pyscowicz"
+			"Pyscowicz",
+			"Samoasambia"
 		]
 	},
-	"inlinecomments-addcomment-cancel": "Peruuta"
+	"inlinecomments-desc": "Mahdollistaa kommenttien lisäämisen sivulle",
+	"inlinecomments-addcomment-tooltip": "Kommentoi korostettua tekstiä [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "Tallenna",
+	"inlinecomments-addcomment-cancel": "Peruuta",
+	"apihelp-inlinecomments-add-summary": "Lisää uusi upotettu kommentti.",
+	"action-inlinecomments-add": "lisätä upotettuja kommentteja",
+	"right-inlinecomments-add": "Lisätä upotettuja kommentteja",
+	"action-inlinecomments-view": "katsoa upotettuja kommentteja",
+	"right-inlinecomments-view": "Katsoa upotettuja kommentteja",
+	"action-inlinecomments-edit-all": "muokata kaikkia upotettuja kommentteja",
+	"right-inlinecomments-edit-all": "Muokata kaikkia upotettuja kommentteja",
+	"tag-inlinecomments": "upotetut kommentit",
+	"inlinecomments-editsummary-add": "Lisätty kommentti ”$1”",
+	"inlinecomments-editsummary-close": "Keskustelu suljettu",
+	"inlinecomments-editsummary-addreply": "Vastattu kommenttiin",
+	"inlinecomments-editsummary-editcomment": "Muokattu kommenttia",
+	"inlinecomments-addcomment-reply": "Vastaa",
+	"inlinecomments-addcomment-close": "Sulje keskustelu",
+	"inlinecomments-editcomment-publish": "Julkaise muokkaus",
+	"inlinecomments-editcomment-unauthorized-error": "Sinulla ei ole oikeutta muokata tätä kommenttia",
+	"inlinecomments-placeholder": "Kirjoita kommenttisi.",
+	"inlinecomments-missingpage": "Kommentteja ei voitu muokata, koska sivua ei ole olemassa.",
+	"inlinecomments-saveerror": "Virhe kommentteja tallennettaessa.",
+	"inlinecomments-edited-label": "muokattu",
+	"inlinecomments-noitembyid": "Keskustelua ei voida sulkea, koska sitä ei ole olemassa.",
+	"inlinecomments-addcomment-noitembyid": "Kommenttiin ei voida vastata, koska sitä ei ole olemassa.",
+	"inlinecomments-primary-message": "Näytä sivu:",
+	"inlinecomments-title-message": "$2 mainitsi sinut kommentissa sivulla <b>$1</b>",
+	"inlinecomments-title-reply-message": "$2 vastasi tekemääsi kommenttiin sivulla <b>$1</b>",
+	"inlinecomments-title-close-message": "$2 sulki tekemäsi kommentin sivulla <b>$1</b>",
+	"inlinecomments-mention-label": "Näytä sivu"
 }
