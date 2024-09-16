@@ -1,8 +1,22 @@
 {
 	"@metadata": {
 		"authors": [
-			"Pyscowicz"
+			"Pyscowicz",
+			"Samoasambia"
 		]
 	},
-	"inlinecomments-addcomment-cancel": "Peruuta"
+	"inlinecomments-desc": "Mahdollistaa kommenttien lisäämisen sivulle",
+	"inlinecomments-addcomment-tooltip": "Kommentoi korostettua tekstiä [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "Tallenna",
+	"inlinecomments-addcomment-cancel": "Peruuta",
+	"apihelp-inlinecomments-add-summary": "Lisää uusi upotettu kommentti.",
+	"action-inlinecomments-add": "lisätä upotettuja kommentteja",
+	"right-inlinecomments-add": "Lisätä upotettuja kommentteja",
+	"inlinecomments-editsummary-add": "Lisätty kommentti ”$1”",
+	"inlinecomments-editsummary-addreply": "Vastattu kommenttiin",
+	"inlinecomments-addcomment-reply": "Vastaa",
+	"inlinecomments-placeholder": "Kirjoita kommenttisi.",
+	"inlinecomments-missingpage": "Kommentteja ei voitu muokata, koska sivua ei ole olemassa.",
+	"inlinecomments-saveerror": "Virhe kommentteja tallennettaessa.",
+	"inlinecomments-addcomment-noitembyid": "Kommenttiin ei voida vastata, koska sitä ei ole olemassa."
 }
