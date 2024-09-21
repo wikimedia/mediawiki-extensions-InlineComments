@@ -10,6 +10,7 @@ use LogicException;
 use MediaWiki\Api\Hook\ApiParseMakeOutputPageHook;
 use MediaWiki\Hook\BeforePageDisplayHook;
 use MediaWiki\Hook\OutputPageBeforeHTMLHook;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Storage\Hook\MultiContentSaveHook;
@@ -264,7 +265,7 @@ class Hooks implements
 				}
 			},
 			DeferredUpdates::POSTSEND,
-			wfGetDB( DB_PRIMARY )
+			MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_PRIMARY )
 		);
 	}
 
