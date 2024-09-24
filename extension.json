@@ -27,8 +27,6 @@
 		"MediaWikiServices": "service",
 		"MultiContentSave": "main",
 		"UserGetReservedNames": "main",
-		"ApiParseMakeOutputPage": "main",
-		"OutputPageBeforeHTML": "main",
 		"BeforeCreateEchoEvent": "MediaWiki\\Extension\\InlineComments\\Hooks::onBeforeCreateEchoEvent",
 		"EchoGetDefaultNotifiedUsers": "MediaWiki\\Extension\\InlineComments\\Hooks::onEchoGetDefaultNotifiedUsers",
 		"ListDefinedTags": "MediaWiki\\Extension\\InlineComments\\Hooks::onListDefinedTags",
@@ -97,11 +95,6 @@
 	},
 	"callback": "MediaWiki\\Extension\\InlineComments\\Hooks::setDefaultNamespaces",
 	"ResourceModules": {
-		"ext.inlineComments.forceReload": {
-			"scripts": [
-				"forceReload.js"
-			]
-		},
 		"ext.inlineComments.sidenotes": {
 			"scripts": [
 				"sidenotes.js",

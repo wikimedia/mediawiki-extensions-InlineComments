@@ -54,4 +54,14 @@ $( function () {
 			sidenoteManager.renderUnselected();
 		}
 	);
+
+	// VisualEditor does not reload the page on save; instead it simply modifies the DOM. If there was
+	// a VE save, reload the page, so that the JavaScript is called that will display annotations.
+	mw.hook( 'postEdit' ).add( function () {
+		if ( ve && ve.init && ve.init.articleTarget && ve.init.articleTarget.teardownUnloadHandlers ) {
+			ve.init.articleTarget.teardownUnloadHandlers();
+			location.replace( location.href );
+		}
+	});
+
 } );
