@@ -25,6 +25,8 @@
 	"right-inlinecomments-view": "インラインコメントを表示",
 	"action-inlinecomments-edit-all": "インラインのコメントを全て編集",
 	"right-inlinecomments-edit-all": "インラインのコメントを全て編集",
+	"tag-inlinecomments": "インライン コメント",
+	"tag-inlinecomments-description": "[https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments InlineComments]拡張機能を使ったコメント編集",
 	"inlinecomments-editsummary-add": "「$1」というコメントを追加しました",
 	"inlinecomments-editsummary-close": "終了した議論",
 	"inlinecomments-editsummary-addreply": "コメントに返信",
