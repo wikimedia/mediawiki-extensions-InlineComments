@@ -1,6 +1,7 @@
 {
 	"@metadata": {
 		"authors": [
+			"McDutchie",
 			"WikiTeq"
 		]
 	},
@@ -55,7 +56,7 @@
 	"apihelp-inlinecomments-editcomment-param-pageid": "{{doc-apihelp-param|inlinecomments-editcomment|pageid}}",
 	"apihelp-inlinecomments-editcomment-param-id": "{{doc-apihelp-param|inlinecomments-editcomment|id}}",
 	"apihelp-inlinecomments-editcomment-param-comment": "{{doc-apihelp-param|inlinecomments-editcomment|comment}}",
-	"apihelp-inlinecomments-editcomment-param-existing_comment_idx": "{{doc-apihelp-param|inlinecomments-editcomment|existing_comment_idx}}",
+	"apihelp-inlinecomments-editcomment-param-existing_comment_idx": "See [[:mw:Manual:Slot]] for what a “slot” is.\n\n{{doc-apihelp-param|inlinecomments-editcomment|existing_comment_idx}}",
 	"apihelp-inlinecomments-editcomment-summary": "{{doc-apihelp-summary|inlinecomments-editcomment}}",
 	"apihelp-inlinecomments-close-summary": "{{doc-apihelp-summary|inlinecomments-close}}",
 	"apihelp-inlinecomments-close-param-title": "{{doc-apihelp-param|inlinecomments-close|title}}",
