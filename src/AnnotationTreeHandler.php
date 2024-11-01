@@ -19,22 +19,22 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	private const ELEMENT = 1;
 
 	/** @var array Annotations (as an array) */
-	private $annotations;
+	private array $annotations;
 
 	/** @var int How many annotations are in progress? */
-	private $annotationsInFlight = 0;
+	private int $annotationsInFlight = 0;
 
 	/** @var array stack of events to send */
-	private $pendingEvents = [];
+	private array $pendingEvents = [];
 
 	/** @var int next available link id */
-	private $linkId = 1;
+	private int $linkId = 1;
 
 	/**
 	 * @param Serializer $serializer Base serializer class that provides fallback
 	 * @param array $annotations List of annotations to add
 	 */
-	public function __construct( Serializer $serializer, $annotations ) {
+	public function __construct( Serializer $serializer, array $annotations ) {
 		parent::__construct( $serializer );
 		// Can access serializer via $this->nextHandler.
 		$this->annotations = $annotations;
@@ -50,7 +50,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 * Assumption - block elements stop matching
 	 *   pre text does not span elements?
 	 */
-	private function initStateMachine() {
+	private function initStateMachine(): void {
 		foreach ( $this->annotations as $key => $annotation ) {
 			$this->resetAnnotation( $key );
 		}
@@ -61,7 +61,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 *
 	 * @param int $key The key for the annotation to reset
 	 */
-	private function resetAnnotation( int $key ) {
+	private function resetAnnotation( int $key ): void {
 		$oldState = $this->annotations[$key]['state'] ?? null;
 		$this->annotations[$key]['state'] = self::INACTIVE;
 		$this->annotations[$key]['startElement'] = null;
@@ -97,7 +97,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 *
 	 * @param int $key The key in the annotations array (not the annotation id)
 	 */
-	private function markActive( $key ) {
+	private function markActive( int $key ): void {
 		$annotation =& $this->annotations[$key];
 		if ( $annotation['state'] !== self::INACTIVE ) {
 			throw new LogicException( "Annotation $key already active" );
@@ -112,7 +112,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 *
 	 * @param int $key Annotation key to check
 	 */
-	private function maybeTransition( $key ) {
+	private function maybeTransition( int $key ): void {
 		$annotation =& $this->annotations[$key];
 		switch ( $annotation['state'] ) {
 			case self::LOOKING_PRE:
@@ -290,7 +290,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 *
 	 * @param Element $node
 	 */
-	private function getMatchingContainer( Element $node ) {
+	private function getMatchingContainer( Element $node ): void {
 		$newList = [];
 		foreach ( $this->annotations as $key => $annotation ) {
 			if ( $annotation['state'] !== self::INACTIVE ) {
@@ -326,14 +326,14 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 *
 	 * We consider annotations that have progressed to the LOOKING_BODY stage as in flight.
 	 */
-	private function incrAnnotationsInFlight() {
+	private function incrAnnotationsInFlight(): void {
 		$this->annotationsInFlight++;
 	}
 
 	/**
 	 * No longer processing, resume sending events if nothing else pending.
 	 */
-	private function decrAnnotationsInFlight() {
+	private function decrAnnotationsInFlight(): void {
 		$this->annotationsInFlight--;
 		if ( $this->annotationsInFlight === 0 ) {
 			$this->flushEvents();
@@ -352,7 +352,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 * @param array $args Arguments to method call
 	 * @param int|null $linkId
 	 */
-	private function sendCharacters( array $args, $linkId ) {
+	private function sendCharacters( array $args, ?int $linkId ): void {
 		if ( $this->annotationsInFlight === 0 ) {
 			$this->setLinkId( $args[0] /* preposition */, $args[1] /* ref */, $linkId );
 			// @phan-suppress-next-line PhanParamTooFewUnpack
@@ -371,7 +371,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 * @param Element $element The element the annotations are attached to
 	 * @param int|null $linkId Which link id we are currently processing
 	 */
-	private function setLinkId( $preposition, Element $element, $linkId ) {
+	private function setLinkId( int $preposition, Element $element, ?int $linkId ): void {
 		// Hacky. AnnotationFormatter needs to know
 		// which child we are processing to find the
 		// right annotation. Originally this used the child number,
@@ -393,7 +393,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 * Send all pending character events
 	 * @suppress PhanTypeArraySuspiciousNullable
 	 */
-	private function flushEvents() {
+	private function flushEvents(): void {
 		foreach ( $this->pendingEvents as [ $type, $event, $linkId ] ) {
 			if ( $type === self::CHARACTER ) {
 				$this->setLinkId( $event[0], $event[1], $linkId );
@@ -412,7 +412,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 	 *
 	 * @return array
 	 */
-	public function getUnusedAnnotations() {
+	public function getUnusedAnnotations(): array {
 		$unused = [];
 		foreach ( $this->annotations as $annotation ) {
 			$unused[$annotation['id']] = $annotation['state'] !== self::DONE;

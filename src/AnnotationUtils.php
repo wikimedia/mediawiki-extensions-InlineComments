@@ -11,19 +11,12 @@ use Wikimedia\Rdbms\LBFactory;
 class AnnotationUtils {
 	public const SERVICE_NAME = 'InlineComments:AnnotationUtils';
 
-	/** @var UserFactory */
-	private $userFactory;
-	/** @var ActorStore */
-	private $actorStore;
-	/** @var LBFactory */
-	private $dbLoadBalancerFactory;
+	private UserFactory $userFactory;
+	private ActorStore $actorStore;
+	private LBFactory $dbLoadBalancerFactory;
 
-	/** @var array */
-	private $users;
+	private array $users;
 
-	/**
-	 * @param UserFactory $userFactory
-	 */
 	public function __construct(
 		UserFactory $userFactory,
 		LBFactory $dbLoadBalancerFactory,
@@ -35,16 +28,13 @@ class AnnotationUtils {
 		$this->users = [];
 	}
 
-	/**
-	 *
-	 * @param int $userId
-	 * @param string $username
-	 * @param string $timestamp
-	 * @param string $comment
-	 * @param bool $editable
-	 * @return array
-	 */
-	public function renderComment( $userId, $username, $timestamp, $comment, $editable = false ) {
+	public function renderComment(
+		int $userId,
+		string $username,
+		string $timestamp,
+		string $comment,
+		bool $editable = false
+	): array {
 		$this->users = [];
 		$commentHTML = preg_replace_callback(
 			'/@(\S+)/u',
@@ -101,7 +91,7 @@ class AnnotationUtils {
 	 * @param array $matches
 	 * @return string replacement
 	 */
-	private function handleUserMention( $matches ) {
+	private function handleUserMention( array $matches ): string {
 		$match = $matches[1];
 		$replacement = "@$match";
 		$mentionedUser = $this->userFactory->newFromName( $match );
@@ -122,7 +112,7 @@ class AnnotationUtils {
 	 * @param User $user
 	 * @return int actorId
 	 */
-	public function getActorId( $user ) {
+	public function getActorId( User $user ): int {
 		$db = $this->dbLoadBalancerFactory->getPrimaryDatabase();
 		$actorId = $this->actorStore->acquireActorId( $user, $db );
 		return $actorId;

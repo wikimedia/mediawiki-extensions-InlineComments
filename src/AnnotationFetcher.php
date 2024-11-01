@@ -6,13 +6,8 @@ use MediaWiki\Revision\RevisionLookup;
 
 class AnnotationFetcher {
 	public const SERVICE_NAME = 'InlineComments:AnnotationFetcher';
+	private RevisionLookup $revLookup;
 
-	/** @var RevisionLookup */
-	private $revLookup;
-
-	/**
-	 * @param RevisionLookup $revLookup
-	 */
 	public function __construct( RevisionLookup $revLookup ) {
 		$this->revLookup = $revLookup;
 	}

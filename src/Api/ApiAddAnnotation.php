@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\InlineComments\Api;
 
 use ApiBase;
+use ApiMain;
 use EchoEvent;
 use ExtensionRegistry;
 use Language;
@@ -17,23 +18,20 @@ use Wikimedia\ParamValidator\ParamValidator;
 
 class ApiAddAnnotation extends ApiBase {
 
-	/** @var Language */
-	private $contentLang;
-	/** @var WikiPageFactory */
-	private $wikiPageFactory;
-	/** @var AnnotationUtils */
-	private $utils;
+	private Language $contentLang;
+	private WikiPageFactory $wikiPageFactory;
+	private AnnotationUtils $utils;
 
 	/**
-	 * @param \ApiMain $parent parent module
+	 * @param ApiMain $parent parent module
 	 * @param string $name module name
 	 * @param Language $lang Language (Expected to be the content language)
 	 * @param WikiPageFactory $wpf
 	 * @param AnnotationUtils $utils
 	 */
 	public function __construct(
-		$parent,
-		$name,
+		ApiMain $parent,
+		string $name,
 		Language $lang,
 		WikiPageFactory $wpf,
 		AnnotationUtils $utils
@@ -131,7 +129,7 @@ class ApiAddAnnotation extends ApiBase {
 	 * @param Title $title Page to add annotation to
 	 * @param array $item Item to add
 	 */
-	private function addItemToTitle( Title $title, array $item ) {
+	private function addItemToTitle( Title $title, array $item ): void {
 		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 
@@ -183,7 +181,7 @@ class ApiAddAnnotation extends ApiBase {
 	 * @param string $timestamp The timestamp to format
 	 * @return string Formatted current timestamp
 	 */
-	private function getCurrentTimestamp( $timestamp ) {
+	private function getCurrentTimestamp( string $timestamp ): string {
 		$formattedTimestamp = $this->contentLang->userTimeAndDate( $timestamp, $this->getUser() );
 		return ' ' . $formattedTimestamp;
 	}

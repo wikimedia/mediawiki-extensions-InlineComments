@@ -21,27 +21,13 @@ use Wikimedia\RemexHtml\TreeBuilder\TreeBuilder;
 class AnnotationMarker {
 	public const SERVICE_NAME = 'InlineComments:AnnotationMarker';
 
-	/** @var Config */
-	private $config;
-	/** @var AnnotationUtils */
-	private $utils;
-	/** @var UserFactory */
-	private $userFactory;
+	private Config $config;
+	private AnnotationUtils $utils;
+	private UserFactory $userFactory;
+	private PermissionManager $permissionManager;
+	private ActorStore $actorStore;
+	private LBFactory $dbLoadBalancerFactory;
 
-	/** @var PermissionManager */
-	private $permissionManager;
-	/** @var ActorStore */
-	private $actorStore;
-	/** @var LBFactory */
-	private $dbLoadBalancerFactory;
-
-	/**
-	 * @param Config $config
-	 * @param UserFactory $userFactory
-	 * @param PermissionManager $permissionManager
-	 * @param LBFactory $dbLoadBalancerFactory
-	 * @param ActorStore $actorStore
-	 */
 	public function __construct(
 		Config $config,
 		UserFactory $userFactory,
@@ -71,7 +57,7 @@ class AnnotationMarker {
 		Language $reqLanguage,
 		User $reqUser,
 		Title $reqTitle
-	) {
+	): string {
 		return $this->markUpAndGetUnused(
 			$html,
 			$annotationContent,
@@ -96,7 +82,7 @@ class AnnotationMarker {
 		Language $reqLanguage,
 		User $reqUser,
 		Title $reqTitle
-	) {
+	): array {
 		$annotations = $annotationsContent->getData()->getValue();
 		// TODO: We may want to set the performance optimisation options.
 

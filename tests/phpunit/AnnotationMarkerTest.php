@@ -110,7 +110,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 		$this->assertEquals( $expectedOutput, $res, $info );
 	}
 
-	private function getAC( $data ) {
+	private function getAC( $data ): AnnotationContent {
 		$json = json_encode( $data );
 		return new AnnotationContent( $json );
 	}

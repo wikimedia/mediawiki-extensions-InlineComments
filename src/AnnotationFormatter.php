@@ -26,28 +26,22 @@ class AnnotationFormatter extends HtmlFormatter {
 	public const CHILD = 2;
 	public const POSITION = 3;
 
-	/**
-	 * @var array Annotations (as in array, not a content obect)
-	 */
-	private $annotations;
+	/** @var array Annotations (as in array, not a content obect) */
+	private array $annotations;
 
 	/** @var callable Callback to find out which annotations are used */
 	private $annotationsToSkipCB;
 
 	/** @var Language for formatting timestamps */
-	private $reqLanguage;
+	private Language $reqLanguage;
 
 	/** @var User for formatting timestamps */
-	private $reqUser;
-
-	/** @var AnnotationUtils */
-	private $utils;
-
-	/** @var PermissionManager */
-	private $permissionManager;
+	private User $reqUser;
+	private AnnotationUtils $utils;
+	private PermissionManager $permissionManager;
 
 	/** @var Title for checking admin permission */
-	private $reqTitle;
+	private Title $reqTitle;
 
 	/**
 	 * @param array $options Options for the html formatter base class
@@ -60,8 +54,8 @@ class AnnotationFormatter extends HtmlFormatter {
 	 * @param Title $reqTitle
 	 */
 	public function __construct(
-		$options,
-		$annotations,
+		array $options,
+		array $annotations,
 		callable $annotationsToSkipCB,
 		Language $reqLanguage,
 		User $reqUser,
@@ -84,7 +78,7 @@ class AnnotationFormatter extends HtmlFormatter {
 	 *
 	 * @return string html
 	 */
-	private function getAsides() {
+	private function getAsides(): string {
 		if ( !$this->annotations ) {
 			return '';
 		}
@@ -278,7 +272,7 @@ class AnnotationFormatter extends HtmlFormatter {
 	 * @param int $key Key into annotations array
 	 * @return string html span element
 	 */
-	private function openSpan( $key ) {
+	private function openSpan( int $key ): string {
 		return Html::openElement(
 			'span',
 			[
@@ -344,7 +338,7 @@ class AnnotationFormatter extends HtmlFormatter {
 	 * @param int $key Key into $this->annotations
 	 * @return bool
 	 */
-	private function hasStartForKey( $node, $key ) {
+	private function hasStartForKey( SerializerNode $node, int $key ): bool {
 		$data = $node->snData['annotations'];
 		foreach ( $data as $item ) {
 			if (

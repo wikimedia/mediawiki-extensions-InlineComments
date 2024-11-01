@@ -3,6 +3,7 @@
 namespace MediaWiki\Extension\InlineComments\Api;
 
 use ApiBase;
+use ApiMain;
 use LogicException;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
@@ -13,15 +14,18 @@ use Wikimedia\ParamValidator\ParamValidator;
 
 class ApiCloseDiscussion extends ApiBase {
 
-	/** @var WikiPageFactory */
-	private $wikiPageFactory;
+	private WikiPageFactory $wikiPageFactory;
 
 	/**
-	 * @param \ApiMain $parent parent module
+	 * @param ApiMain $parent parent module
 	 * @param string $name module name
 	 * @param WikiPageFactory $wpf
 	 */
-	public function __construct( $parent, $name, WikiPageFactory $wpf ) {
+	public function __construct(
+		ApiMain $parent,
+		string $name,
+		WikiPageFactory $wpf
+	) {
 		$this->wikiPageFactory = $wpf;
 		parent::__construct( $parent, $name );
 	}
@@ -57,7 +61,7 @@ class ApiCloseDiscussion extends ApiBase {
 	 * @param Title $title Page to remove annotation from
 	 * @param string $id Id of annotation to remove
 	 */
-	private function removeItemFromTitle( Title $title, $id ) {
+	private function removeItemFromTitle( Title $title, string $id ): void {
 		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		$pageUpdater = $wp->newPageUpdater( $this->getUser() );
 

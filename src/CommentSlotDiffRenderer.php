@@ -18,7 +18,7 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 	 * @param int $id
 	 * @return array|null $item
 	 */
-	private function getOldItem( array $oldData, int $id ) {
+	private function getOldItem( array $oldData, int $id ): ?array {
 		foreach ( $oldData as $oldItem ) {
 			if ( $oldItem[ 'id' ] == $id ) {
 				return $oldItem;
@@ -122,7 +122,7 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 	 * @param array|null $newItem
 	 * @return array diff
 	 */
-	private function renderJsonObjectDiff( $oldItem, $newItem ) {
+	private function renderJsonObjectDiff( ?array $oldItem, ?array $newItem ): array {
 		$output = '';
 		$changed = true;
 		if ( $oldItem === null && $newItem !== null ) {

@@ -21,30 +21,15 @@ class Hooks implements
 	MultiContentSaveHook,
 	UserGetReservedNamesHook
 {
-
-	/** @var AnnotationFetcher */
 	private AnnotationFetcher $annotationFetcher;
-	/** @var AnnotationMarker */
 	private AnnotationMarker $annotationMarker;
-	/** @var PermissionManager */
-	private $permissionManager;
-	/** @var Language */
-	private $contentLanguage;
-	/** @var Config */
-	private $config;
-	/** @var WikiPageFactory */
-	private $wikiPageFactory;
+	private PermissionManager $permissionManager;
+	private Language $contentLanguage;
+	private Config $config;
+	private WikiPageFactory $wikiPageFactory;
 	/** @var bool Variable to guard against indef loop when removing comments */
 	private static $loopCheck = false;
 
-	/**
-	 * @param AnnotationFetcher $annotationFetcher
-	 * @param AnnotationMarker $annotationMarker
-	 * @param PermissionManager $permissionManager
-	 * @param Language $contentLanguage
-	 * @param Config $config
-	 * @param WikiPageFactory $wikiPageFactory
-	 */
 	public function __construct(
 		AnnotationFetcher $annotationFetcher,
 		AnnotationMarker $annotationMarker,

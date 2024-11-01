@@ -12,13 +12,13 @@ use IDBAccessObject;
 use Maintenance;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\MediaWikiServices;
+use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Title\Title;
 use User;
 
 class RemoveComments extends Maintenance {
 
-	/** @var \MediaWiki\Page\WikiPageFactory */
-	private $wikiPageFactory;
+	private WikiPageFactory $wikiPageFactory;
 
 	public function __construct() {
 		parent::__construct();
@@ -78,7 +78,7 @@ class RemoveComments extends Maintenance {
 	/**
 	 * @param int $pageId the id of page to delete comments from
 	 */
-	private function deleteComments( $pageId ) {
+	private function deleteComments( int $pageId ): void {
 		if ( class_exists( 'MediaWiki\Title\Title' ) ) {
 			// MW 1.40+
 			$title = \MediaWiki\Title\Title::newFromID( $pageId, IDBAccessObject::READ_LATEST );
