@@ -8,9 +8,11 @@ use MediaWiki\Deferred\DeferredUpdates;
 use MediaWiki\Extension\Notifications\AttributeManager;
 use MediaWiki\Extension\Notifications\UserLocator;
 use MediaWiki\Language\Language;
+use MediaWiki\MainConfigNames;
 use MediaWiki\Output\Hook\BeforePageDisplayHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
+use MediaWiki\Settings\SettingsBuilder;
 use MediaWiki\Storage\Hook\MultiContentSaveHook;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
@@ -260,9 +262,13 @@ class Hooks implements
 		$reservedUsernames[] = 'InlineComments bot';
 	}
 
-	public static function setDefaultNamespaces() {
-		if ( !isset( $GLOBALS['wgInlineCommentsNamespaces'] ) ) {
-			$GLOBALS['wgInlineCommentsNamespaces'] = $GLOBALS['wgContentNamespaces'];
+	public static function setDefaultNamespaces( array $extInfo, SettingsBuilder $settings ) {
+		$config = $settings->getConfig();
+		if ( $config->get( 'InlineCommentsNamespaces' ) === null ) {
+			$settings->overrideConfigValue(
+				'InlineCommentsNamespaces',
+				$config->get( MainConfigNames::ContentNamespaces )
+			);
 		}
 	}
 }
