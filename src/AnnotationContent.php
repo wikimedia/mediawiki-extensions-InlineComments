@@ -200,7 +200,7 @@ class AnnotationContent extends JsonContent {
 	 * @param Title|null $title
 	 * @return AnnotationContent
 	 */
-	public function removeItem( string $itemId, User $closingUser = null, Title $title = null ) {
+	public function removeItem( string $itemId, ?User $closingUser = null, ?Title $title = null ) {
 		$data = $this->getData()->getValue();
 		for ( $i = 0; $i < count( $data ); $i++ ) {
 			if ( $data[$i]['id'] === $itemId ) {
