@@ -103,7 +103,7 @@ class ApiAddReply extends ApiBase {
 
 		$prevRevision = $pageUpdater->grabParentRevision();
 		if ( !$prevRevision ) {
-			$this->dieWithError( "inlinecomments-missingpage" );
+			$this->dieWithError( 'inlinecomments-missingpage' );
 		}
 
 		if ( $prevRevision->hasSlot( AnnotationContent::SLOT_NAME ) ) {
@@ -112,14 +112,14 @@ class ApiAddReply extends ApiBase {
 			$content = ( new AnnotationContentHandler )->makeEmptyContent();
 		}
 		if ( !( $content instanceof AnnotationContent ) ) {
-			throw new LogicException( "Unexpected content type" );
+			throw new LogicException( 'Unexpected content type' );
 		}
 
 		// TODO: In future, we might want to re-render page, check if
 		// any annotations don't apply anymore, and remove them at this
 		// point.
 		if ( !$content->hasItem( $id ) ) {
-			$this->dieWithError( "inlinecomments-addcomment-noitembyid" );
+			$this->dieWithError( 'inlinecomments-addcomment-noitembyid' );
 		}
 		$actorId = $this->utils->getActorId( $this->getUser() );
 		$newContent = $content->addReply( $id, $comment, $this->getUser(), $title, $actorId );

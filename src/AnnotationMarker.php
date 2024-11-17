@@ -19,7 +19,7 @@ use Wikimedia\RemexHtml\TreeBuilder\TreeBuilder;
 // Based on MediaWiki\Html\HtmlHelper
 
 class AnnotationMarker {
-	public const SERVICE_NAME = "InlineComments:AnnotationMarker";
+	public const SERVICE_NAME = 'InlineComments:AnnotationMarker';
 
 	/** @var Config */
 	private $config;

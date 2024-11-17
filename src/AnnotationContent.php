@@ -152,14 +152,14 @@ class AnnotationContent extends JsonContent {
 	 */
 	public function newWithAddedItem( array $item ) {
 		if ( !$this->isValid() || !self::validateItem( $item ) ) {
-			throw new LogicException( "Invalid annotation data" );
+			throw new LogicException( 'Invalid annotation data' );
 		}
 
 		$data = $this->getData()->getValue();
 		foreach ( $data as $annotation ) {
 			if ( $annotation['id'] === $item['id'] ) {
 				// Should not be possible.
-				throw new LogicException( "ID collision" );
+				throw new LogicException( 'ID collision' );
 			}
 		}
 
@@ -250,7 +250,7 @@ class AnnotationContent extends JsonContent {
 	public function addReply( string $itemId, string $comment, User $user, Title $title, int $actorId ) {
 		$data = $this->getData()->getValue();
 		if ( !$this->hasItem( $itemId ) ) {
-			throw new LogicException( "No item by that id" );
+			throw new LogicException( 'No item by that ID' );
 		}
 		for ( $i = 0; $i < count( $data ); $i++ ) {
 			if ( $data[$i]['id'] === $itemId ) {
@@ -280,7 +280,7 @@ class AnnotationContent extends JsonContent {
 	public function getCommentAuthor( string $itemId, int $existingCommentIdx ) {
 		$data = $this->getData()->getValue();
 		if ( !$this->hasItem( $itemId ) ) {
-			throw new LogicException( "No item by that id" );
+			throw new LogicException( 'No item by that ID' );
 		}
 		$author = null;
 		for ( $i = 0; $i < count( $data ); $i++ ) {
@@ -291,7 +291,7 @@ class AnnotationContent extends JsonContent {
 			}
 		}
 		if ( $author == null ) {
-			throw new LogicException( "Author not found" );
+			throw new LogicException( 'Author not found' );
 		}
 		return $author;
 	}
@@ -315,12 +315,12 @@ class AnnotationContent extends JsonContent {
 	) {
 		$data = $this->getData()->getValue();
 		if ( !$this->hasItem( $itemId ) ) {
-			throw new LogicException( "No item by that id" );
+			throw new LogicException( 'No item by that ID' );
 		}
 		for ( $i = 0; $i < count( $data ); $i++ ) {
 			if ( $data[$i]['id'] === $itemId ) {
 				if ( !isset( $data[$i]['comments'][$existingCommentIdx] ) ) {
-					throw new LogicException( "No comment by that id" );
+					throw new LogicException( 'No comment by that ID' );
 				}
 				$data[$i]['comments'][$existingCommentIdx] = [
 					'comment' => $comment,

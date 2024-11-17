@@ -63,7 +63,7 @@ class ApiCloseDiscussion extends ApiBase {
 
 		$prevRevision = $pageUpdater->grabParentRevision();
 		if ( !$prevRevision ) {
-			$this->dieWithError( "inlinecomments-missingpage" );
+			$this->dieWithError( 'inlinecomments-missingpage' );
 		}
 
 		if ( $prevRevision->hasSlot( AnnotationContent::SLOT_NAME ) ) {
@@ -72,14 +72,14 @@ class ApiCloseDiscussion extends ApiBase {
 			$content = ( new AnnotationContentHandler )->makeEmptyContent();
 		}
 		if ( !( $content instanceof AnnotationContent ) ) {
-			throw new LogicException( "Unexpected content type" );
+			throw new LogicException( 'Unexpected content type' );
 		}
 
 		// TODO: In future, we might want to re-render page, check if
 		// any annotations don't apply anymore, and remove them at this
 		// point.
 		if ( !$content->hasItem( $id ) ) {
-			$this->dieWithError( "inlinecomments-noitembyid" );
+			$this->dieWithError( 'inlinecomments-noitembyid' );
 		}
 		$user = $this->getUser();
 		$newContent = $content->removeItem( $id, $user, $title );

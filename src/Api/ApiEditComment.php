@@ -109,12 +109,12 @@ class ApiEditComment extends ApiBase {
 
 		$prevRevision = $pageUpdater->grabParentRevision();
 		if ( !$prevRevision ) {
-			$this->dieWithError( "inlinecomments-missingpage" );
+			$this->dieWithError( 'inlinecomments-missingpage' );
 		}
 
 		$content = $prevRevision->getContent( AnnotationContent::SLOT_NAME );
 		if ( !( $content instanceof AnnotationContent ) ) {
-			throw new LogicException( "Unexpected content type" );
+			throw new LogicException( 'Unexpected content type' );
 		}
 
 		// Check if the existing comment is made by the current user or if the current user is an edit admin
@@ -127,14 +127,14 @@ class ApiEditComment extends ApiBase {
 			$canEditAllComments = false;
 		}
 		if ( $user->equals( $existingCommentAuthor ) && !$canEditAllComments ) {
-			$this->dieWithError( "inlinecomments-editcomment-unauthorized-error" );
+			$this->dieWithError( 'inlinecomments-editcomment-unauthorized-error' );
 		}
 
 		// TODO: In future, we might want to re-render page, check if
 		// any annotations don't apply anymore, and remove them at this
 		// point.
 		if ( !$content->hasItem( $id ) ) {
-			$this->dieWithError( "inlinecomments-addcomment-noitembyid" );
+			$this->dieWithError( 'inlinecomments-addcomment-noitembyid' );
 		}
 		$actorId = $this->utils->getActorId( $user );
 		$newContent = $content->editComment( $id, $comment, $user, $existingCommentIdx, $actorId );

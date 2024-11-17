@@ -9,7 +9,7 @@ use User;
 use Wikimedia\Rdbms\LBFactory;
 
 class AnnotationUtils {
-	public const SERVICE_NAME = "InlineComments:AnnotationUtils";
+	public const SERVICE_NAME = 'InlineComments:AnnotationUtils';
 
 	/** @var UserFactory */
 	private $userFactory;
@@ -47,7 +47,7 @@ class AnnotationUtils {
 	public function renderComment( $userId, $username, $timestamp, $comment, $editable = false ) {
 		$this->users = [];
 		$commentHTML = preg_replace_callback(
-			"/@(\S+)/u",
+			'/@(\S+)/u',
 			[ $this, 'handleUserMention' ],
 			$comment
 		);
@@ -80,7 +80,7 @@ class AnnotationUtils {
 			$commentHTML .= Html::element(
 				'button',
 				[ 'class' => 'mw-inlinecomment-editlink', 'title' => wfMessage( 'edit' )->text() ],
-				"🖉"
+				'🖉'
 			);
 		}
 		$commentHTML = Html::rawElement(

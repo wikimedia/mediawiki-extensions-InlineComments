@@ -142,7 +142,7 @@ class Hooks implements
 		}
 		$annotations = $rev->getSlot( AnnotationContent::SLOT_NAME )->getContent();
 		if ( !$annotations instanceof AnnotationContent ) {
-			throw new LogicException( "Expected AnnotationContent content type" );
+			throw new LogicException( 'Expected AnnotationContent content type' );
 		}
 		if ( $annotations->isEmpty() ) {
 			return;

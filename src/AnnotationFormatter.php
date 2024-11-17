@@ -243,7 +243,7 @@ class AnnotationFormatter extends HtmlFormatter {
 					$tmpStack = [];
 					if ( count( $currentOpenStack ) === 0 ) {
 						// Just in case something goes wrong. Should not happen.
-						wfDebugLog( 'InlineComments', "stack mismatch" );
+						wfDebugLog( 'InlineComments', 'stack mismatch' );
 						// Try and fail safely and just close the span
 						$newContents .= Html::closeElement( 'span' ) . '<!-- mismatch -->';
 					}
@@ -264,7 +264,7 @@ class AnnotationFormatter extends HtmlFormatter {
 				// It should be impossible for sibling end to have valid child offset.
 				case self::SIBLING_END:
 				default:
-					throw new LogicException( "Unrecognized position" );
+					throw new LogicException( 'Unrecognized position' );
 			}
 			$curIndex += $advance;
 		}

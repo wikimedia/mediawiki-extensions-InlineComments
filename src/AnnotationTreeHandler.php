@@ -228,7 +228,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 						}
 						break;
 					default:
-						throw new LogicException( "Unrecognized state" );
+						throw new LogicException( 'Unrecognized state' );
 				}
 			}
 		}
@@ -339,7 +339,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 			$this->flushEvents();
 		}
 		if ( $this->annotationsInFlight < 0 ) {
-			throw new LogicException( "Counter negative" );
+			throw new LogicException( 'Counter negative' );
 		}
 	}
 
