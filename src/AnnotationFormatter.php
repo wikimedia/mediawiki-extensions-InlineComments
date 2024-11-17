@@ -118,7 +118,7 @@ class AnnotationFormatter extends HtmlFormatter {
 					( $this->reqUser->getId() == $comment['userId'] || $isAdmin );
 				// Disable editing for older revisions of the page
 				$request = RequestContext::getMain()->getRequest();
-				$canEdit = $canEdit && $request->getVal( 'oldid' ) == null;
+				$canEdit = $canEdit && !$request->getCheck( 'oldid' );
 				$asideContent .= $this->utils->renderComment(
 					$comment['userId'],
 					$comment['username'],
