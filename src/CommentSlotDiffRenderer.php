@@ -16,13 +16,10 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 
 	/**
 	 * Get old item if exists by comment ID
-	 * @param array $oldData
-	 * @param int $id
-	 * @return array|null $item
 	 */
-	private function getOldItem( array $oldData, int $id ): ?array {
+	private function getOldItem( array $oldData, string $id ): ?array {
 		foreach ( $oldData as $oldItem ) {
-			if ( $oldItem[ 'id' ] == $id ) {
+			if ( $oldItem[ 'id' ] === $id ) {
 				return $oldItem;
 			}
 		}

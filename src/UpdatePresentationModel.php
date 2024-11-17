@@ -22,9 +22,9 @@ class UpdatePresentationModel extends EchoEventPresentationModel {
 	public function getHeaderMessage() {
 		$action = $this->event->getExtraParam( 'action' );
 		$i18nLabel = 'inlinecomments-title-message';
-		if ( $action == 'reply' ) {
+		if ( $action === 'reply' ) {
 			$i18nLabel = 'inlinecomments-title-reply-message';
-		} elseif ( $action == 'close' ) {
+		} elseif ( $action === 'close' ) {
 			$i18nLabel = 'inlinecomments-title-close-message';
 		}
 		$msg = $this->msg( $i18nLabel );

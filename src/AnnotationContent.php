@@ -200,7 +200,7 @@ class AnnotationContent extends JsonContent {
 			if ( $data[$i]['id'] === $itemId ) {
 				$initiator = User::newFromActorId( $data[$i]['comments'][0]['actorId'] );
 				// Close discussion notification
-				if ( $closingUser != null && $title != null ) {
+				if ( $closingUser && $title ) {
 					$this->notifyInitiator( $initiator, $closingUser, $title, 'close' );
 				}
 				unset( $data[$i] );
@@ -282,7 +282,7 @@ class AnnotationContent extends JsonContent {
 				break;
 			}
 		}
-		if ( $author == null ) {
+		if ( !$author ) {
 			throw new LogicException( 'Author not found' );
 		}
 		return $author;

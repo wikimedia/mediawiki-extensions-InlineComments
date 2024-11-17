@@ -386,7 +386,7 @@
 		} );
 		var autocompleteDropdown = $( '<div></div>' );
 		autocompleteDropdown.attr( 'class', 'userAutocompleteDropdown' );
-		if ( $( '.userAutocompleteDropdown' ).length == 0 ) {
+		if ( $( '.userAutocompleteDropdown' ).length === 0 ) {
 			textbox.$element.append( autocompleteDropdown[0] );
 		}
 		autocompleteDropdown.hide();
@@ -396,7 +396,7 @@
 		saveButton.setDisabled( true );
 		textbox.$element.keyup( async function ( event ) {
 			// Disable "Save" button until text is added.
-			saveButton.setDisabled( textbox.getValue().trim() == '' );
+			saveButton.setDisabled( textbox.getValue().trim() === '' );
 			autocompleteDropdown.val( '' );
 			var cursorPosition = event.target.selectionStart;
 			var textBeforeCursor = event.target.value.substring( 0, cursorPosition );

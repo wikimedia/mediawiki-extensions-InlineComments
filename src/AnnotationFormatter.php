@@ -115,7 +115,7 @@ class AnnotationFormatter extends HtmlFormatter {
 					PermissionManager::RIGOR_QUICK
 				);
 				$canEdit = !$this->reqUser->isAnon() &&
-					( $this->reqUser->getActorId() == $comment['actorId'] || $isAdmin );
+					( $this->reqUser->getActorId() === $comment['actorId'] || $isAdmin );
 				// Disable editing for older revisions of the page
 				$request = RequestContext::getMain()->getRequest();
 				$canEdit = $canEdit && !$request->getCheck( 'oldid' );
@@ -294,7 +294,7 @@ class AnnotationFormatter extends HtmlFormatter {
 	 */
 	public function element( SerializerNode $parent, SerializerNode $node, $contents ) {
 		if (
-			$node->name == 'div'
+			$node->name === 'div'
 			&& in_array( 'mw-parser-output', explode( ' ', ( $node->attrs->getValues()['class'] ?? '' ) ) )
 			// Ensure the parent element has no `mw-parser-output` class
 			&& !in_array( 'mw-parser-output', explode( ' ', ( $parent->attrs->getValues()['class'] ?? '' ) ) )

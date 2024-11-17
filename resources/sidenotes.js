@@ -254,7 +254,7 @@
 			var autocompleteDropdown = $( '<div></div>' );
 			autocompleteDropdown.attr( 'class', 'userAutocompleteDropdown' );
 			autocompleteDropdown.hide();
-			if ( $( '.userAutocompleteDropdown' ).length == 0 ) {
+			if ( $( '.userAutocompleteDropdown' ).length === 0 ) {
 				textbox.$element.append( autocompleteDropdown[0] );
 			}
 
@@ -307,7 +307,7 @@
 				}
 				textbox.$element.keyup( async function ( event ) {
 					// Disable "Save" button until text is added.
-					saveReplyButton.setDisabled( textbox.getValue().trim() == '' );
+					saveReplyButton.setDisabled( textbox.getValue().trim() === '' );
 					autocompleteDropdown.val( '' );
 					var cursorPosition = event.target.selectionStart;
 					var textBeforeCursor = event.target.value.substring( 0, cursorPosition );

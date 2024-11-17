@@ -73,7 +73,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 		$lang = $services->getLanguageFactory()->getLanguage( 'en' );
 		$user = $services->getUserFactory()->newFromName( '127.0.0.1', UserNameUtils::RIGOR_NONE );
 		$title = $services->getTitleFactory()->newFromText( 'sample' );
-		if ( $info == 'real user mention' ) {
+		if ( $info === 'real user mention' ) {
 			$testUser = new TestUser( 'TestUser' );
 			$user = $testUser->getUser();
 		}
