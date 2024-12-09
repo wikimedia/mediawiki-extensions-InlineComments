@@ -1,14 +1,30 @@
 {
 	"@metadata": {
 		"authors": [
-			"SleaY"
+			"SleaY",
+			"Mahabarata"
 		]
 	},
+	"inlinecomments-desc": "Autoriser l'ajout de commentaires à une page",
+	"inlinecomments-addcomment-tooltip": "Commenter le texte surligné [ctrl+alt+m]",
 	"inlinecomments-addcomment-save": "Enregistrer",
 	"inlinecomments-addcomment-cancel": "Annuler",
+	"apihelp-inlinecomments-add-summary": "Ajouter un nouveau commentaire en ligne.",
+	"apihelp-inlinecomments-add-param-pre": "Texte avant le texte sélectionné.",
 	"apihelp-inlinecomments-add-param-body": "Texte à sélectionner.",
+	"apihelp-inlinecomments-add-param-container": "Nom de l'élément qui est l'ancêtre commun du texte sélectionné.",
+	"apihelp-inlinecomments-add-param-comment": "Texte du commentaire en cours d'ajout.",
+	"inlinecomments-invaliditem": "Élément invalide",
+	"action-inlinecomments-add": "ajouter des commentaires en ligne",
+	"right-inlinecomments-add": "Ajouter des commentaires en ligne",
+	"inlinecomments-editsummary-add": "Ajout du commentaire « $1 »",
 	"inlinecomments-editsummary-addreply": "A répondu au commentaire",
 	"inlinecomments-addcomment-reply": "Répondre",
+	"inlinecomments-placeholder": "Entrez votre commentaire.",
+	"inlinecomments-missingpage": "Impossible de modifier les commentaires car la page n'existe pas.",
+	"inlinecomments-saveerror": "Erreur lors de l'enregistrement des commentaires.",
 	"inlinecomments-addcomment-noitembyid": "Impossible de répondre au commentaire car il n'existe pas.",
-	"apihelp-inlinecomments-addreply-param-comment": "Le texte de votre réponse"
+	"apihelp-inlinecomments-addreply-param-comment": "Le texte de votre réponse",
+	"apihelp-inlinecomments-addreply-summary": "Ajouter une réponse à un commentaire en ligne",
+	"inlinecomments-error-notext": "Avertissement : erreur lors de la recherche du texte mis en surbrillance. Rechargez la page pour vérifier que le texte correct a été annoté."
 }
