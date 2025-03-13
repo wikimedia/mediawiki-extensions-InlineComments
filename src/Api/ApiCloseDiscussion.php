@@ -3,12 +3,12 @@
 namespace MediaWiki\Extension\InlineComments\Api;
 
 use ApiBase;
-use CommentStoreComment;
 use LogicException;
+use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationContentHandler;
 use MediaWiki\Page\WikiPageFactory;
-use Title;
+use MediaWiki\Title\Title;
 use Wikimedia\ParamValidator\ParamValidator;
 
 class ApiCloseDiscussion extends ApiBase {

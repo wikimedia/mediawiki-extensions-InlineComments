@@ -2,7 +2,7 @@
 namespace MediaWiki\Extension\InlineComments;
 
 use Content;
-use Html;
+use MediaWiki\Html\Html;
 use SlotDiffRenderer;
 
 class CommentSlotDiffRenderer extends SlotDiffRenderer {

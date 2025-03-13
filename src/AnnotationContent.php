@@ -6,7 +6,7 @@ use ExtensionRegistry;
 use FormatJson;
 use JsonContent;
 use LogicException;
-use Title;
+use MediaWiki\Title\Title;
 use User;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 

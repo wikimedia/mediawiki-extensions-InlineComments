@@ -1,8 +1,8 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use Html;
-use Linker;
+use MediaWiki\Html\Html;
+use MediaWiki\Linker\Linker;
 use MediaWiki\User\ActorStore;
 use MediaWiki\User\UserFactory;
 use User;
