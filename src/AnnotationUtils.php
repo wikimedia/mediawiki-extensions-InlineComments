@@ -123,12 +123,7 @@ class AnnotationUtils {
 	 * @return int actorId
 	 */
 	public function getActorId( $user ) {
-		if ( method_exists( $this->dbLoadBalancerFactory, 'getPrimaryDatabase' ) ) {
-			// MW 1.40+
-			$db = $this->dbLoadBalancerFactory->getPrimaryDatabase();
-		} else {
-			$db = $this->dbLoadBalancerFactory->getMainLB()->getConnection( DB_PRIMARY );
-		}
+		$db = $this->dbLoadBalancerFactory->getPrimaryDatabase();
 		$actorId = $this->actorStore->acquireActorId( $user, $db );
 		return $actorId;
 	}
