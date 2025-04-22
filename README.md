@@ -1,7 +1,8 @@
-InlineComments is a MediaWiki extension to allow users to highlight text on a page
-and add a comment to it. All directly from page view. Comments are stored in a separate
-slot, so they do not alter the wikitext while still being tied to the page and showing
-up on watchlists and recent changes.
+InlineComments is a MediaWiki extension that allows users to highlight text on a page
+and add comments to it, viewable inline within the page.
+
+Comments are stored in a separate MediaWiki "slot", so they do not alter the wikitext,
+while still being tied to the page and showing up on watchlists and recent changes.
 
 ## Installing
 
@@ -10,13 +11,13 @@ Copy the extension into your extensions directory in a directory named InlineCom
 Add `wfLoadExtension( 'InlineComments' );` to the end of LocalSettings.php
 
 ## Using
-If we are a logged in user (or otherwise have the inlinecomments-add user right) you can select some text. A small
-icon will appear. You can add a comment by clicking the icon or typing ctrl+alt+m.
+If you have the "inlinecomments-add" user right (by default, available to all
+logged-in users), if you select any text on a page, a small icon will appear. You can
+then add a comment by clicking the icon or typing ctrl+alt+m; a dialog will then
+appear to add your comment.
 
-A dialog will appear to add your comment. Once you hit save, it will be shown to other users.
-
-If you click on an already existing comment or discussion, tools appear to either close
-(delete) the discussion or reply to it.
+If you click on an already existing comment or discussion, tools appear to either
+close (delete) the discussion, or reply to it.
 
 ## Configuration
 
@@ -57,17 +58,19 @@ $wgContentHandlers['annotation+json'] = JsonContentHandler::class;
 ```
 to have the comments be displayed as json data.
 
-Alternatively you can run the maintenance script included with this extension to remove stored comment data.
+Alternatively you can run the maintenance scripts included with this extension to remove stored comment data:
 
-There are two. removeComments.php will make an edit to all current pages, deleting all comments. The comments will
-still be present on previous versions, which will leave those versions unviewable without the LocalSettings.php.
-This does not delete any data, as all comments are still present on old revisions and can be viewed if the
-extension is reinstalled.
+- removeComments.php will delete all comments via MediaWiki edits. The comments will still be present on
+previous versions within the "inlinecomments" slot, which means that they will become unviewable if/when
+InlineComments is uninstalled - although they will of course be viewable again if it is re-installed.
 
-There is a second maintenance script, convertComments.php, which can be used to convert the comments to
-something mediawiki understands without the extension installed. You can specify --format json to convert
-to json output. --format fallback makes MediaWiki just show a not supported message. --format comments undos
-the work of the script. The other formats only work if InlineComments is not installed.
+- convertComments.php will convert the comments to something that MediaWiki understands without the extension
+installed. You can specify the following parameters:
+  - --format json converts to JSON output.
+  - --format fallback makes MediaWiki just show a not supported message.
+  - --format comments undoes the work of the script.
+
+The "json" and "fallback" formats only work if InlineComments is not installed.
 
 cd extensions/InlineComments/maintenance
 php removeComments.php
