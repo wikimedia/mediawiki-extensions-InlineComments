@@ -4,8 +4,14 @@ and add comments to it, viewable inline within the page.
 Comments are stored in a separate MediaWiki "slot", so they do not alter the wikitext,
 while still being tied to the page and showing up on watchlists and recent changes.
 
-## Installing
+For more information, see the online documentation at:
+https://www.mediawiki.org/wiki/Extension:InlineComments
 
+## Version
+InlineComments is currently at version 1.1. It works with MediaWiki version 1.40 and
+higher.
+
+## Installing
 Copy the extension into your extensions directory in a directory named InlineComments.
 
 Add `wfLoadExtension( 'InlineComments' );` to the end of LocalSettings.php
