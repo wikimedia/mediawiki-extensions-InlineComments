@@ -1,0 +1,20 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"inlinecomments-desc": "Omogućava dodavanje komentara na stranicu",
+	"inlinecomments-addcomment-save": "Sačuvaj",
+	"inlinecomments-addcomment-cancel": "Otkaži",
+	"right-inlinecomments-add": "dodavanje komentara inlajn",
+	"inlinecomments-editsummary-close": "Zatvorena diskusija",
+	"inlinecomments-editsummary-addreply": "Odgovor na komentar",
+	"inlinecomments-editsummary-editcomment": "Komentar izmenjen",
+	"inlinecomments-addcomment-reply": "Odgovori",
+	"inlinecomments-addcomment-close": "Zatvori diskusiju",
+	"inlinecomments-editcomment-publish": "Objavi izmenu",
+	"inlinecomments-placeholder": "Unesite Vaš komentar.",
+	"inlinecomments-edited-label": "izmenjeno",
+	"inlinecomments-primary-message": "Prikaži stranicu:",
+	"inlinecomments-title-reply-message": "$2 je odgovorio na Vaš komentar na stranici <b>$1</b>",
+	"inlinecomments-mention-label": "Prikaži stranicu"
+}
