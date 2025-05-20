@@ -3,7 +3,8 @@ namespace MediaWiki\Extension\InlineComments;
 
 use Config;
 use DeferredUpdates;
-use EchoEvent;
+use EchoAttributeManager as AttributeManager;
+use EchoUserLocator as UserLocator;
 use Language;
 use LogicException;
 use MediaWiki\CommentStore\CommentStoreComment;
@@ -187,21 +188,6 @@ class Hooks implements
 	}
 
 	/**
-	 * @param EchoEvent $event
-	 * @param User[] &$users
-	 */
-	public static function onEchoGetDefaultNotifiedUsers( $event, &$users ) {
-		$extra = $event->getExtra();
-		if ( $event->getType() == "inlinecomments-mention" ) {
-			$newUsers = $extra['users'];
-			$users = array_merge( $users, $newUsers );
-		}
-		if ( $event->getType() == "inlinecomments-title-notify" ) {
-			$users[] = $extra['initiator'];
-		}
-	}
-
-	/**
 	 * @param array &$echoNotifications
 	 * @param array $echoNotificationCategories
 	 */
@@ -219,6 +205,12 @@ class Hooks implements
 			'bundle' => [
 				'web' => true
 			],
+			AttributeManager::ATTR_LOCATORS => [
+				[
+					[ UserLocator::class, 'locateFromEventExtra' ],
+					[ 'users' ]
+				],
+			],
 		];
 		$echoNotifications['inlinecomments-title-notify'] = [
 			'section' => 'alert',
@@ -232,6 +224,12 @@ class Hooks implements
 			'title-params' => [ 'title' ],
 			'bundle' => [
 				'web' => true
+			],
+			AttributeManager::ATTR_LOCATORS => [
+				[
+					[ UserLocator::class, 'locateFromEventExtra' ],
+					[ 'initiator' ]
+				],
 			],
 		];
 	}
