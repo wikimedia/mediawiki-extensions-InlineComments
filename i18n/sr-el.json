@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": []
+	},
+	"inlinecomments-desc": "Omogućava dodavanje komentara na stranicu",
+	"inlinecomments-addcomment-save": "Sačuvaj",
+	"inlinecomments-addcomment-cancel": "Otkaži",
+	"right-inlinecomments-add": "dodavanje komentara inlajn",
+	"inlinecomments-editsummary-addreply": "Odgovor na komentar",
+	"inlinecomments-addcomment-reply": "Odgovori",
+	"inlinecomments-placeholder": "Unesite Vaš komentar."
+}
