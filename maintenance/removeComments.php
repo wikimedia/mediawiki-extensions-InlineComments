@@ -79,12 +79,7 @@ class RemoveComments extends Maintenance {
 	 * @param int $pageId the id of page to delete comments from
 	 */
 	private function deleteComments( int $pageId ): void {
-		if ( class_exists( 'MediaWiki\Title\Title' ) ) {
-			// MW 1.40+
-			$title = \MediaWiki\Title\Title::newFromID( $pageId, IDBAccessObject::READ_LATEST );
-		} else {
-			$title = Title::newFromID( $pageId, IDBAccessObject::READ_LATEST );
-		}
+		$title = Title::newFromID( $pageId, IDBAccessObject::READ_LATEST );
 
 		$wp = $this->wikiPageFactory->newFromTitle( $title );
 		$user = User::newSystemUser( User::MAINTENANCE_SCRIPT_USER, [ 'steal' => true ] );
