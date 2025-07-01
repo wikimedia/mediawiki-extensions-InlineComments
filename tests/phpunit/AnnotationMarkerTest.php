@@ -455,7 +455,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					] ],
 				]
 			],
-			'<div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>@<a href="/index.php?title=User:TestUser&amp;action=edit&amp;redlink=1" class="new mw-userlink" title="User:TestUser (page does not exist)"><bdi>TestUser</bdi></a> is the one testing this</p><div class="mw-inlinecomment-author"><a href="/index.php?title=User:TestUser&amp;action=edit&amp;redlink=1" class="new mw-userlink" title="User:TestUser (page does not exist)"><bdi>TestUser</bdi></a> 00:00, 1 May 2024</div></div><button class="mw-inlinecomment-editlink" title="Edit" type="submit">🖉</button></div></div></aside></div>',
+			'<div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>@<a href="/index.php?title=User:TestUser&amp;action=edit&amp;redlink=1" class="mw-userlink new" title="User:TestUser (page does not exist)"><bdi>TestUser</bdi></a> is the one testing this</p><div class="mw-inlinecomment-author"><a href="/index.php?title=User:TestUser&amp;action=edit&amp;redlink=1" class="mw-userlink new" title="User:TestUser (page does not exist)"><bdi>TestUser</bdi></a> 00:00, 1 May 2024</div></div><button class="mw-inlinecomment-editlink" title="Edit" type="submit">🖉</button></div></div></aside></div>',
 			'real user mention'
 		];
 		yield [
@@ -471,7 +471,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					] ],
 				]
 			],
-			'<div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>@127.0.0.1 is an invalid user testing this</p><div class="mw-inlinecomment-author"><a href="/index.php?title=User:127.0.0.1&amp;action=edit&amp;redlink=1" class="new mw-userlink" title="User:127.0.0.1 (page does not exist)"><bdi>127.0.0.1</bdi></a> 00:00, 1 May 2024</div></div></div></div></aside></div>',
+			'<div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>@127.0.0.1 is an invalid user testing this</p><div class="mw-inlinecomment-author"><a href="/index.php?title=User:127.0.0.1&amp;action=edit&amp;redlink=1" class="mw-userlink new" title="User:127.0.0.1 (page does not exist)"><bdi>127.0.0.1</bdi></a> 00:00, 1 May 2024</div></div></div></div></aside></div>',
 			'invalid user mention'
 		];
 	}
