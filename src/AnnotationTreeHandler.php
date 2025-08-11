@@ -132,6 +132,7 @@ class AnnotationTreeHandler extends RelayTreeHandler {
 						$this->resetAnnotation( $key );
 						$annotation['skipCount']--;
 						$annotation['state'] = self::LOOKING_PRE;
+						// @phan-suppress-next-line PhanPossiblyInfiniteRecursionSameParams
 						$this->maybeTransition( $key );
 					} else {
 						$annotation['state'] = self::DONE;

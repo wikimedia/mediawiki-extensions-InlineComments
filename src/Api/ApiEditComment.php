@@ -121,7 +121,7 @@ class ApiEditComment extends ApiBase {
 		$canEditAllComments = true;
 		try {
 			$this->checkTitleUserPermissions( $title, 'inlinecomments-edit-all' );
-		} catch ( \Exception $e ) {
+		} catch ( \Exception ) {
 			$canEditAllComments = false;
 		}
 		if ( $user->equals( $existingCommentAuthor ) && !$canEditAllComments ) {
