@@ -139,7 +139,7 @@ class Hooks implements
 				$rev = $renderedRevision->getRevision();
 				$title = Title::newFromLinkTarget( $rev->getPageAsLinkTarget() );
 				// Do this deferred, because parsing can take a lot of time.
-				$html = $renderedRevision->getRevisionParserOutput()->getText();
+				$html = $renderedRevision->getRevisionParserOutput()->getContentHolderText();
 				$sysUser = User::newSystemUser( 'InlineComments bot' );
 				[ , $unused ] = $this->annotationMarker->markUpAndGetUnused(
 					$html,
