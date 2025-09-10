@@ -57,8 +57,7 @@ class ApiAddAnnotation extends ApiBase {
 		$user = $this->getUser();
 		$commentText = str_replace( "\n", '<br>', htmlspecialchars( $data['comment'] ) );
 		$result = $this->utils->renderComment(
-			$user->getId(),
-			$user->getName(),
+			$user->getActorId(),
 			$this->getCurrentTimestamp( $timestamp ),
 			$commentText,
 			true
@@ -86,8 +85,6 @@ class ApiAddAnnotation extends ApiBase {
 				[
 					'comment' => $data['comment'],
 					'actorId' => $actorId,
-					'userId' => $user->getId(),
-					'username' => $user->getName(),
 					'timestamp' => $timestamp,
 					'edited' => false
 				]

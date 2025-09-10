@@ -50,6 +50,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 			->getMock();
 		$utils = new AnnotationUtils( $mockUserFactory, $mockLBFactory, $mockActorStore );
 		$mockUserFactory->method( 'newFromName' )->willReturn( $user );
+		$mockUserFactory->method( 'newFromActorId' )->willReturn( $user );
 		$mockPermissionManager->method( 'userCan' )->willReturn( true );
 		$mockActorStore->method( 'acquireActorId' )->willReturn( 1 );
 		$marker = new AnnotationMarker(
@@ -91,6 +92,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 			->getMock();
 		$mockPermissionManager->method( 'userCan' )->willReturn( true );
 		$mockUserFactory->method( 'newFromName' )->willReturn( $user );
+		$mockUserFactory->method( 'newFromActorId' )->willReturn( $user );
 		$mockActorStore->method( 'acquireActorId' )->willReturn( 1 );
 		$utils = new AnnotationUtils( $mockUserFactory, $mockLBFactory, $mockActorStore );
 		$formatter = TestingAccessWrapper::newFromObject(
@@ -134,9 +136,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'containerAttribs' => [ 'id' => 'foo' ],
 					'comments' => [ [
 						'comment' => 'Hello',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.1'
+						'actorId' => 1
 					] ],
 				]
 			],
@@ -153,9 +153,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'div',
 					'comments' => [ [
 						'comment' => 'Hello',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.1'
+						'actorId' => 1
 					] ],
 				]
 			],
@@ -172,9 +170,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'div',
 					'comments' => [ [
 						'comment' => 'Hello <img src=x onerror=alert(1)>',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.1'
+						'actorId' => 1
 					] ],
 				]
 			],
@@ -192,9 +188,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'div',
 					'comments' => [ [
 						'comment' => 'Hello',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.1'
+						'actorId' => 1
 					] ],
 				]
 			],
@@ -211,13 +205,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
-						'userId' => 0,
 						'actorId' => 1,
-						'username' => '127.0.0.2'
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'inside paragraph'
 		];
 		yield [
@@ -230,13 +222,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first p<b>a</b>ragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first p<b>a</b>ragraph</span>.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'inside paragraph with formatting'
 		];
 		yield [
@@ -249,13 +239,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph.' . "\n" . '</span></p><p><span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">This</span> is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is <span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first paragraph.' . "\n" . '</span></p><p><span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">This</span> is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'spanning paragraph'
 		];
 		yield [
@@ -268,13 +256,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'Prefix appears twice'
 		];
 		yield [
@@ -287,9 +273,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'li',
 					'comments' => [ [
 						'comment' => 'Hello',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.1'
+						'actorId' => 1
 					] ],
 					'skipCount' => 1
 				]
@@ -307,13 +291,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is <i>i</i><b>s</b> <i>t</i>he sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>This is first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is <i>i</i><b>s</b> <i>t</i>he sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'Highlight spans multiple child elements'
 		];
 
@@ -327,9 +309,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'li',
 					'comments' => [ [
 						'comment' => 'Hello',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.1'
+						'actorId' => 1
 					] ],
 					'skipCount' => 1
 				]
@@ -347,13 +327,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p><i>This is</i> first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p><i>This is</i> first paragraph.' . "\n" . '</p><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is the sec</span>ond.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'Prefix appears twice with first prefix in nested elm'
 		];
 		yield [
@@ -366,13 +344,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'Hello Paragraph',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is </span><i><span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first</span></i> paragraph.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>Th<span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">is is </span><i><span class="mw-annotation-highlight mw-annotation-abc" title="Hello Paragraph" data-mw-highlight-id="abc">first</span></i> paragraph.' . "\n" . '</p><p>This is the second.' . "\n" . '</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>Hello Paragraph</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'annotation ends in child element'
 		];
 
@@ -386,9 +362,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'f',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				],
 				[
@@ -398,13 +372,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 's',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.3'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>Begin. <span class="mw-annotation-highlight mw-annotation-first" title="f" data-mw-highlight-id="first">First <span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second">overlap</span></span><span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second"> second.</span> End</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-first" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>f</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside><aside id="mw-inlinecomment-aside-second" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>s</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.3" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.3"><bdi>127.0.0.3</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>Begin. <span class="mw-annotation-highlight mw-annotation-first" title="f" data-mw-highlight-id="first">First <span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second">overlap</span></span><span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second"> second.</span> End</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-first" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>f</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside><aside id="mw-inlinecomment-aside-second" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>s</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'Overlapped comments properly nest span tags'
 		];
 		yield [
@@ -417,9 +389,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 'f',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.2'
+						'actorId' => 1
 					] ],
 				],
 				[
@@ -429,13 +399,11 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'container' => 'p',
 					'comments' => [ [
 						'comment' => 's',
-						'userId' => 0,
-						'actorId' => 1,
-						'username' => '127.0.0.3'
+						'actorId' => 1
 					] ],
 				]
 			],
-			'<div class="mw-parser-output"><p>Begin. <span class="mw-annotation-highlight mw-annotation-first" title="f" data-mw-highlight-id="first">First <span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second">o<i>v</i><b><ins>e</ins></b>r<i>l</i>ap</span></span><span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second"> second.</span> End</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-first" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>f</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.2" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.2"><bdi>127.0.0.2</bdi></a></div></div></div></div></aside><aside id="mw-inlinecomment-aside-second" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>s</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.3" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.3"><bdi>127.0.0.3</bdi></a></div></div></div></div></aside></div>',
+			'<div class="mw-parser-output"><p>Begin. <span class="mw-annotation-highlight mw-annotation-first" title="f" data-mw-highlight-id="first">First <span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second">o<i>v</i><b><ins>e</ins></b>r<i>l</i>ap</span></span><span class="mw-annotation-highlight mw-annotation-second" title="s" data-mw-highlight-id="second"> second.</span> End</p></div><div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-first" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>f</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside><aside id="mw-inlinecomment-aside-second" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>s</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a></div></div></div></div></aside></div>',
 			'Overlapped comments properly nest span tags with children'
 		];
 	}
@@ -448,9 +416,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'id' => 'abc',
 					'comments' => [ [
 						'comment' => '@TestUser is the one testing this',
-						'userId' => 1,
 						'actorId' => 1,
-						'username' => 'TestUser',
 						'timestamp' => '2024-05-01T00:00:00+00:00'
 					] ],
 				]
@@ -464,14 +430,12 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 					'id' => 'abc',
 					'comments' => [ [
 						'comment' => '@127.0.0.1 is an invalid user testing this',
-						'userId' => 1,
 						'actorId' => 1,
-						'username' => '127.0.0.1',
 						'timestamp' => '2024-05-01T00:00:00+00:00'
 					] ],
 				]
 			],
-			'<div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>@127.0.0.1 is an invalid user testing this</p><div class="mw-inlinecomment-author"><a href="/index.php?title=User:127.0.0.1&amp;action=edit&amp;redlink=1" class="mw-userlink new" title="User:127.0.0.1 (page does not exist)"><bdi>127.0.0.1</bdi></a> 00:00, 1 May 2024</div></div></div></div></aside></div>',
+			'<div id="mw-inlinecomment-annotations"><aside id="mw-inlinecomment-aside-abc" class="mw-inlinecomment-aside"><div class="mw-inlinecomment-text"><div class="mw-inlinecomment-comment"><div><p>@127.0.0.1 is an invalid user testing this</p><div class="mw-inlinecomment-author"><a href="/wiki/Special:Contributions/127.0.0.1" class="mw-userlink mw-anonuserlink" title="Special:Contributions/127.0.0.1"><bdi>127.0.0.1</bdi></a> 00:00, 1 May 2024</div></div></div></div></aside></div>',
 			'invalid user mention'
 		];
 	}

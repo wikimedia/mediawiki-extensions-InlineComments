@@ -29,8 +29,7 @@ class AnnotationUtils {
 	}
 
 	public function renderComment(
-		int $userId,
-		string $username,
+		int $actorId,
 		string $timestamp,
 		string $comment,
 		bool $editable = false
@@ -46,7 +45,8 @@ class AnnotationUtils {
 			[],
 			str_replace( "\n", '<br>', $commentHTML )
 		);
-		$user = $this->userFactory->newFromId( $userId );
+		$user = $this->userFactory->newFromActorId( $actorId );
+		$username = $user->getName();
 		if ( $user->isHidden() ) {
 			$displayName = Html::element(
 				'span',
@@ -54,7 +54,7 @@ class AnnotationUtils {
 				wfMessage( 'rev-deleted-user' )->text()
 			);
 		} else {
-			$displayName = Linker::userLink( $userId, $username );
+			$displayName = Linker::userLink( $user->getId(), $username );
 		}
 		$commentHTML .= Html::rawElement(
 			'div',

@@ -93,12 +93,6 @@ class AnnotationContent extends JsonContent {
 					}
 					foreach ( $value as $commentVal ) {
 						if (
-							!isset( $commentVal['userId'] ) ||
-							!is_int( $commentVal['userId'] ) ||
-							$commentVal['userId'] < 0 ||
-							!isset( $commentVal['username'] ) ||
-							!is_string( $commentVal['username'] ) ||
-							$commentVal['username'] === '' ||
 							!isset( $commentVal['actorId'] ) ||
 							!is_int( $commentVal['actorId'] ) ||
 							$commentVal['actorId'] <= 0 ||
@@ -258,8 +252,6 @@ class AnnotationContent extends JsonContent {
 				$this->notifyInitiator( $initiator, $user, $title, 'reply' );
 				$data[$i]['comments'][] = [
 					'comment' => $comment,
-					'userId' => $user->getId(),
-					'username' => $user->getName(),
 					'actorId' => $actorId,
 					'timestamp' => wfTimestampNow(),
 					'edited' => false
@@ -324,8 +316,6 @@ class AnnotationContent extends JsonContent {
 				}
 				$data[$i]['comments'][$existingCommentIdx] = [
 					'comment' => $comment,
-					'userId' => $user->getId(),
-					'username' => $user->getName(),
 					'actorId' => $actorId,
 					'timestamp' => wfTimestampNow(),
 					'edited' => true

@@ -115,13 +115,12 @@ class AnnotationFormatter extends HtmlFormatter {
 					PermissionManager::RIGOR_QUICK
 				);
 				$canEdit = !$this->reqUser->isAnon() &&
-					( $this->reqUser->getId() == $comment['userId'] || $isAdmin );
+					( $this->reqUser->getActorId() == $comment['actorId'] || $isAdmin );
 				// Disable editing for older revisions of the page
 				$request = RequestContext::getMain()->getRequest();
 				$canEdit = $canEdit && !$request->getCheck( 'oldid' );
 				$asideContent .= $this->utils->renderComment(
-					$comment['userId'],
-					$comment['username'],
+					$comment['actorId'],
 					$timestamp,
 					$commentText,
 					$canEdit

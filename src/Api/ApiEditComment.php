@@ -56,8 +56,7 @@ class ApiEditComment extends ApiBase {
 		$user = $this->getUser();
 		$commentText = str_replace( "\n", '<br>', htmlspecialchars( $data['comment'] ) );
 		$result = $this->utils->renderComment(
-			$user->getId(),
-			$user->getName(),
+			$user->getActorId(),
 			$this->getCurrentTimestamp( $timestamp ),
 			$commentText,
 			true

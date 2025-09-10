@@ -3,6 +3,7 @@ namespace MediaWiki\Extension\InlineComments;
 
 use Content;
 use MediaWiki\Html\Html;
+use MediaWiki\MediawikiServices;
 use SlotDiffRenderer;
 
 class CommentSlotDiffRenderer extends SlotDiffRenderer {
@@ -126,6 +127,7 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 		$output = '';
 		$changed = true;
 		if ( $oldItem === null && $newItem !== null ) {
+			$newUsername = $this->getUsernameFromActorId( $newItem['actorId'] );
 			$output .= Html::rawElement(
 				'div',
 				[ 'class' => 'mw-inlinecomments-comment-diff' ],
@@ -141,11 +143,12 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 					Html::element(
 						'span',
 						[ 'class' => 'mw-inlinecomments-diff-username' ],
-						' —' . $newItem['username']
+						' —' . $newUsername
 					)
 				)
 			);
 		} elseif ( $newItem === null && $oldItem !== null ) {
+			$oldUsername = $this->getUsernameFromActorId( $oldItem['actorId'] );
 			$output .= Html::rawElement(
 				'div',
 				[ 'class' => 'mw-inlinecomments-comment-diff' ],
@@ -161,11 +164,12 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 					Html::element(
 						'span',
 						[ 'class' => 'mw-inlinecomments-diff-username' ],
-						' —' . $oldItem['username']
+						' —' . $oldUsername
 					)
 				)
 			);
 		} elseif ( ( $oldItem !== null && $newItem !== null ) && $oldItem['comment'] !== $newItem['comment'] ) {
+			$oldUsername = $this->getUsernameFromActorId( $oldItem['actorId'] );
 			$oldItemHtml = Html::element(
 				'span',
 				[ 'class' => 'mw-inlinecomments-comment-changed-old' ],
@@ -190,12 +194,13 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 					Html::element(
 						'span',
 						[ 'class' => 'mw-inlinecomments-diff-username' ],
-						' —' . $oldItem['username']
+						' —' . $oldUsername
 					)
 				)
 			);
 		} else {
 			if ( $newItem !== null ) {
+				$newUsername = $this->getUsernameFromActorId( $newItem['actorId'] );
 				$output .= Html::rawElement(
 					'div',
 					[ 'class' => 'mw-inlinecomments-comment-unchanged' ],
@@ -207,12 +212,24 @@ class CommentSlotDiffRenderer extends SlotDiffRenderer {
 					Html::element(
 						'span',
 						[ 'class' => 'mw-inlinecomments-diff-username' ],
-						' —' . $newItem['username']
+						' —' . $newUsername
 					)
 				);
 				$changed = false;
 			}
 		}
 		return [ 'html' => $output, 'changed' => $changed ];
+	}
+
+	/**
+	 * Fetch username using actorId
+	 *
+	 * @param int $actorId
+	 * @return string
+	 */
+	private function getUsernameFromActorId( int $actorId ) {
+		$services = MediaWikiServices::getInstance();
+		$user = $services->getUserFactory()->newFromActorId( $actorId );
+		return $user->getName();
 	}
 }
