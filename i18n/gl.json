@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"Toliño"
+		]
+	},
+	"inlinecomments-desc": "Permitir engadir comentarios a unha páxina",
+	"inlinecomments-addcomment-tooltip": "Comentar o texto destacado [Ctrl + Alt + m]",
+	"inlinecomments-addcomment-save": "Gardar",
+	"inlinecomments-addcomment-cancel": "Cancelar",
+	"apihelp-inlinecomments-add-summary": "Engadir un novo comentario en liña.",
+	"apihelp-inlinecomments-add-param-pre": "Texto anterior ao texto seleccionado.",
+	"apihelp-inlinecomments-add-param-body": "Texto a seleccionar.",
+	"apihelp-inlinecomments-add-param-container": "Nome do elemento que é o antepasado común do texto seleccionado.",
+	"apihelp-inlinecomments-add-param-comment": "Texto do comentario que se está a engadir.",
+	"inlinecomments-invaliditem": "Elemento non válido",
+	"action-inlinecomments-add": "engadir comentarios en liña",
+	"right-inlinecomments-add": "Engadir comentarios en liña",
+	"inlinecomments-editsummary-add": "Engadiuse o comentario «$1»",
+	"inlinecomments-editsummary-addreply": "Respondeuse ao comentario",
+	"inlinecomments-addcomment-reply": "Responder",
+	"inlinecomments-placeholder": "Escribe o teu comentario.",
+	"inlinecomments-missingpage": "Non se puideron editar os comentarios porque a páxina non existe.",
+	"inlinecomments-saveerror": "Produciuse un erro ao gardar os comentarios.",
+	"inlinecomments-addcomment-noitembyid": "Non se pode responder ao comentario porque non existe.",
+	"apihelp-inlinecomments-addreply-param-comment": "O texto da túa resposta",
+	"apihelp-inlinecomments-addreply-summary": "Engadir unha resposta a un comentario en liña",
+	"inlinecomments-error-notext": "Aviso: Produciuse un erro ao atopar o texto destacado. Recarga a páxina para verificar que se anotou o texto correcto."
+}
