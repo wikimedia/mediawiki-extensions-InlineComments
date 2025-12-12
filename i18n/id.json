@@ -1,11 +1,12 @@
 {
 	"@metadata": {
 		"authors": [
+			"Penyuwangi",
 			"Rebeccayoga"
 		]
 	},
-	"inlinecomments-editcomment-publish": "Terbitkan edit",
-	"inlinecomments-editcomment-unauthorized-error": "Kamu tidak berwenang untuk mengedit komentar ini",
-	"inlinecomments-edited-label": "diedit",
-	"apihelp-inlinecomments-editcomment-param-id": "ID komentar yang sedang kamu edit"
+	"inlinecomments-editcomment-publish": "Terbitkan suntingan",
+	"inlinecomments-editcomment-unauthorized-error": "Anda tidak berwenang untuk menyunting komentar ini",
+	"inlinecomments-edited-label": "disunting",
+	"apihelp-inlinecomments-editcomment-param-id": "ID komentar yang sedang Anda sunting"
 }
