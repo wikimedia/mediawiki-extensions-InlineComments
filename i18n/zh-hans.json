@@ -1,0 +1,29 @@
+{
+	"@metadata": {
+		"authors": [
+			"GuoPC"
+		]
+	},
+	"inlinecomments-desc": "允许对页面添加留言",
+	"inlinecomments-addcomment-tooltip": "在高亮文本上留言 [ctrl+alt+m]",
+	"inlinecomments-addcomment-save": "保存",
+	"inlinecomments-addcomment-cancel": "取消",
+	"apihelp-inlinecomments-add-summary": "添加新的行内留言。",
+	"apihelp-inlinecomments-add-param-pre": "所选文本之前的文本。",
+	"apihelp-inlinecomments-add-param-body": "要选择的文本。",
+	"apihelp-inlinecomments-add-param-container": "所选文本共同祖先元素的名称。",
+	"apihelp-inlinecomments-add-param-comment": "要添加的留言文本。",
+	"inlinecomments-invaliditem": "无效项目",
+	"action-inlinecomments-add": "添加行内留言",
+	"right-inlinecomments-add": "添加行内留言",
+	"inlinecomments-editsummary-add": "添加留言“$1”",
+	"inlinecomments-editsummary-addreply": "回复留言",
+	"inlinecomments-addcomment-reply": "回复",
+	"inlinecomments-placeholder": "输入您的留言。",
+	"inlinecomments-missingpage": "页面不存在，无法编辑留言。",
+	"inlinecomments-saveerror": "保存留言时出错。",
+	"inlinecomments-addcomment-noitembyid": "留言不存在，无法回复留言。",
+	"apihelp-inlinecomments-addreply-param-comment": "您所回复的文本",
+	"apihelp-inlinecomments-addreply-summary": "对行内留言添加回复",
+	"inlinecomments-error-notext": "警告：查找高亮文本时出错。请重新加载页面以验证是否已正确标注文本。"
+}
