@@ -1,7 +1,8 @@
 {
 	"@metadata": {
 		"authors": [
-			"Omotecho"
+			"Omotecho",
+			"Shirayuki"
 		]
 	},
 	"inlinecomments-desc": "ページにコメントを追加できる機能",
@@ -19,12 +20,12 @@
 	"apihelp-inlinecomments-add-param-containerclass": "共通の祖先に対応する <code>class</code> 属性。",
 	"apihelp-inlinecomments-add-param-skipcount": "指定の文字列に一致する範囲から最初の n 文字を除外。",
 	"inlinecomments-invaliditem": "項目が無効です",
-	"action-inlinecomments-add": "インライン コメントを追加する。",
-	"right-inlinecomments-add": "インラインコメントを追加する",
-	"action-inlinecomments-view": "インラインコメントを表示する",
-	"right-inlinecomments-view": "インラインコメントを表示",
-	"action-inlinecomments-edit-all": "インラインのコメントを全て編集",
-	"right-inlinecomments-edit-all": "インラインのコメントを全て編集",
+	"action-inlinecomments-add": "インラインコメントの追加",
+	"right-inlinecomments-add": "インラインコメントを追加",
+	"action-inlinecomments-view": "インラインコメントの閲覧",
+	"right-inlinecomments-view": "インラインコメントを閲覧",
+	"action-inlinecomments-edit-all": "インラインのコメントの編集",
+	"right-inlinecomments-edit-all": "インラインのコメントをすべて編集",
 	"tag-inlinecomments": "インライン コメント",
 	"tag-inlinecomments-description": "[https://www.mediawiki.org/wiki/Special:MyLanguage/Extension:InlineComments InlineComments]拡張機能を使ったコメント編集",
 	"inlinecomments-editsummary-add": "「$1」というコメントを追加しました",
