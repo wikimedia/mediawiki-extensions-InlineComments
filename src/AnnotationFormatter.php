@@ -155,7 +155,7 @@ class AnnotationFormatter extends HtmlFormatter {
 
 		$childNumb = $parent->snData['curLinkId'];
 		if ( $childNumb === null ) {
-			return;
+			return parent::characters( $parent, $text, $start, $length );
 		}
 
 		// Try and figure out what annotations were opened in a
