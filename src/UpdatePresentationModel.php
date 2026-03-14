@@ -26,7 +26,7 @@ class UpdatePresentationModel extends \EchoEventPresentationModel {
 			$i18nLabel = 'inlinecomments-title-close-message';
 		}
 		$msg = $this->msg( $i18nLabel );
-		$msg->params( $this->event->getTitle(), $this->event->getExtraParam( 'commentor' ) );
+		$msg->params( $this->event->getTitle()->getPrefixedText(), $this->event->getExtraParam( 'commentor' ) );
 		return $msg;
 	}
 

@@ -19,7 +19,7 @@ class UserPingPresentationModel extends \EchoEventPresentationModel {
 	/** @inheritDoc */
 	public function getHeaderMessage() {
 		$msg = $this->msg( 'inlinecomments-title-message' );
-		$msg->params( $this->event->getTitle(), $this->event->getExtraParam( 'commentor' ) );
+		$msg->params( $this->event->getTitle()->getPrefixedText(), $this->event->getExtraParam( 'commentor' ) );
 		return $msg;
 	}
 
