@@ -1,11 +1,38 @@
 {
 	"@metadata": {
 		"authors": [
-			"Ykhwong"
+			"Ykhwong",
+			"Tensama0415"
 		]
 	},
+	"inlinecomments-desc": "문서에 댓글을 추가할 수 있도록 허용",
+	"inlinecomments-addcomment-tooltip": "강조된 텍스트에 댓글을 달려면 [ctrl+alt+m]",
 	"inlinecomments-addcomment-save": "저장",
 	"inlinecomments-addcomment-cancel": "취소",
+	"apihelp-inlinecomments-add-summary": "새로운 인라인 댓글을 추가합니다.",
+	"apihelp-inlinecomments-add-param-pre": "선택된 텍스트 이전 텍스트입니다.",
+	"apihelp-inlinecomments-add-param-body": "선택할 텍스트입니다.",
+	"apihelp-inlinecomments-add-param-comment": "추가된 댓글의 텍스트입니다.",
+	"inlinecomments-invaliditem": "잘못된 항목",
+	"action-inlinecomments-add": "인라인 댓글을 추가할",
+	"right-inlinecomments-add": "인라인 댓글 추가",
+	"action-inlinecomments-view": "인라인 댓글을 볼",
+	"right-inlinecomments-view": "인라인 댓글 보기",
+	"action-inlinecomments-edit-all": "모든 인라인 댓글을 편집할",
+	"right-inlinecomments-edit-all": "모든 인라인 댓글 편집",
+	"tag-inlinecomments": "인라인 댓글",
+	"inlinecomments-editsummary-add": "추가된 댓글 \"$1\"",
+	"inlinecomments-editsummary-close": "닫힌 토론",
+	"inlinecomments-editsummary-addreply": "댓글에 답글을 달았습니다",
+	"inlinecomments-editsummary-editcomment": "편집된 댓글",
 	"inlinecomments-addcomment-reply": "답변",
-	"inlinecomments-addcomment-close": "토론 닫기"
+	"inlinecomments-addcomment-close": "토론 닫기",
+	"inlinecomments-editcomment-publish": "수정 사항 게시",
+	"inlinecomments-editcomment-unauthorized-error": "이 댓글을 수정할 권한이 없습니다",
+	"inlinecomments-placeholder": "댓글을 입력하세요.",
+	"inlinecomments-saveerror": "댓글 저장 중에 오류가 발생했습니다.",
+	"inlinecomments-edited-label": "편집됨",
+	"inlinecomments-primary-message": "문서 보기:",
+	"inlinecomments-mention-label": "문서 보기",
+	"apihelp-inlinecomments-addreply-param-comment": "답글의 텍스트"
 }
