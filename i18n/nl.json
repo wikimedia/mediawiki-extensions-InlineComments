@@ -2,7 +2,8 @@
 	"@metadata": {
 		"authors": [
 			"Mainframe98",
-			"McDutchie"
+			"McDutchie",
+			"Siebrand"
 		]
 	},
 	"inlinecomments-desc": "Toestaan dat reacties aan een pagina worden toegevoegd",
@@ -19,7 +20,7 @@
 	"apihelp-inlinecomments-add-param-containerid": "Het attribuut <code>id</code> van de gemeenschappelijke voorouder.",
 	"apihelp-inlinecomments-add-param-containerclass": "Het attribuut <code>class</code> van de gemeenschappelijke voorouder.",
 	"apihelp-inlinecomments-add-param-skipcount": "De eerste n stukjes tekst die hiermee overeenkomen overslaan.",
-	"inlinecomments-invaliditem": "Ongeldig element",
+	"inlinecomments-invaliditem": "Onjuist element",
 	"action-inlinecomments-add": "reacties in de tekst in te voegen",
 	"right-inlinecomments-add": "Reacties in de tekst invoegen",
 	"action-inlinecomments-view": "in de tekst ingevoegde reacties te bekijken",
