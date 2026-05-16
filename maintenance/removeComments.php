@@ -11,7 +11,6 @@ require_once "$IP/maintenance/Maintenance.php";
 use IDBAccessObject;
 use Maintenance;
 use MediaWiki\CommentStore\CommentStoreComment;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Title\Title;
 use User;
@@ -28,12 +27,12 @@ class RemoveComments extends Maintenance {
 			" It does not affect old revisions of pages or deleted pages"
 		);
 		$this->setBatchSize( 100 );
-		$this->wikiPageFactory = MediaWikiServices::getInstance()->getWikiPageFactory();
+		$this->wikiPageFactory = $this->getServiceContainer()->getWikiPageFactory();
 	}
 
 	public function execute() {
 		$dbr = $this->getDB( DB_REPLICA );
-		$slotRoleStore = MediaWikiServices::getInstance()->getSlotRoleStore();
+		$slotRoleStore = $this->getServiceContainer()->getSlotRoleStore();
 		// Don't use constants so this still works after uninstall.
 		$slotId = $slotRoleStore->acquireId( 'inlinecomments' );
 

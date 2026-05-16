@@ -5,7 +5,6 @@ use MediaWiki\Extension\InlineComments\AnnotationFormatter;
 use MediaWiki\Extension\InlineComments\AnnotationMarker;
 use MediaWiki\Extension\InlineComments\AnnotationUtils;
 use MediaWiki\MainConfigNames;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\User\ActorStore;
 use MediaWiki\User\UserFactory;
@@ -33,7 +32,7 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 	public function testMarkUp( string $inputHtml, array $annotations, string $expectedOutput, string $info ) {
 		$content = $this->getAC( $annotations );
 		$config = new HashConfig( [ 'InlineCommentsAutoDeleteComments' => true ] );
-		$services = MediaWikiServices::getInstance();
+		$services = $this->getServiceContainer();
 		$user = $services->getUserFactory()->newFromName( '127.0.0.1', UserNameUtils::RIGOR_NONE );
 		$title = $services->getTitleFactory()->newFromText( 'sample' );
 		$mockUserFactory = $this->getMockBuilder( UserFactory::class )
@@ -70,8 +69,8 @@ class AnnotationMarkerTest extends MediaWikiIntegrationTestCase {
 	 * @dataProvider provideUserMention
 	 */
 	public function testUserMention( array $annotations, string $expectedOutput, string $info ) {
-		$lang = MediaWikiServices::getInstance()->getLanguageFactory()->getLanguage( 'en' );
-		$services = MediaWikiServices::getInstance();
+		$services = $this->getServiceContainer();
+		$lang = $services->getLanguageFactory()->getLanguage( 'en' );
 		$user = $services->getUserFactory()->newFromName( '127.0.0.1', UserNameUtils::RIGOR_NONE );
 		$title = $services->getTitleFactory()->newFromText( 'sample' );
 		if ( $info == 'real user mention' ) {

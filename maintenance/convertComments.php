@@ -9,7 +9,6 @@ if ( $IP === false ) {
 require_once "$IP/maintenance/Maintenance.php";
 
 use Maintenance;
-use MediaWiki\MediaWikiServices;
 
 class ConvertComments extends Maintenance {
 
@@ -30,8 +29,9 @@ class ConvertComments extends Maintenance {
 
 	public function execute() {
 		$dbw = $this->getDB( DB_PRIMARY );
-		$slotRoleStore = MediaWikiServices::getInstance()->getSlotRoleStore();
-		$contentModelStore = MediaWikiServices::getInstance()->getContentModelStore();
+		$services = $this->getServiceContainer();
+		$slotRoleStore = $services->getSlotRoleStore();
+		$contentModelStore = $services->getContentModelStore();
 		// Don't use constants so this still works after uninstall.
 		$commentsId = $slotRoleStore->acquireId( 'inlinecomments' );
 		$newId = null;
