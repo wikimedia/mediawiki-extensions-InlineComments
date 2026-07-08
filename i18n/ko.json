@@ -62,6 +62,6 @@
 	"apihelp-inlinecomments-close-param-title": "토론을 닫을 문서의 제목입니다. 이것 또는 <var>pageid</var> 하나만 사용하세요. 둘 다는 사용하지 마세요.",
 	"apihelp-inlinecomments-close-param-pageid": "토론을 닫을 문서의 ID입니다. 이것 또는 <var>title</var> 하나만 사용하세요. 둘 다는 사용하지 마세요.",
 	"apihelp-inlinecomments-close-param-id": "닫으려는 댓글 또는 토론의 ID",
-	"inlinecomments-editsummary-autoclose": "{{PLURAL:$1|링크되었던 텍스트가 $2님에 의해 삭제된 후 토론이|링크되었던 텍스트가 $2님에 의해 삭제된 후 $1개 토론이}} 자동으로 닫힙니다.",
+	"inlinecomments-editsummary-autoclose": "{{PLURAL:$1|링크되었던 텍스트가 $2님에 의해 제거된 후 토론이|링크되었던 텍스트가 $2님에 의해 제거된 후 $1개 토론이}} 자동으로 닫힙니다.",
 	"inlinecomments-error-notext": "경고: 강조 표시된 텍스트를 찾는 도중 오류가 발생했습니다. 페이지를 새로 고침하여 올바른 텍스트가 주석 처리되었는지 확인하세요."
 }
