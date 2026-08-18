@@ -20,5 +20,6 @@
 	"inlinecomments-addcomment-noitembyid": "Op de Kommentar kann net geänwert ginn, well en net existéiert.",
 	"inlinecomments-primary-message": "Säit weisen:",
 	"inlinecomments-mention-label": "Säit weisen",
+	"apihelp-inlinecomments-addreply-param-id": "ID vum Kommentar, op deen Dir äntwert",
 	"apihelp-inlinecomments-addreply-param-comment": "Den Text vun Ärer Äntwert"
 }
