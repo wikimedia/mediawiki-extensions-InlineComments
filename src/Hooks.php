@@ -92,24 +92,27 @@ class Hooks implements
 
 		// TODO: Should page previews have annotations?
 		$annotations = $this->annotationFetcher->getAnnotations( (int)$out->getRevisionId() );
+
+		// Load the sidenote machinery whenever InlineComments is enabled.
+		// It must be initialized before makeComment.js can create a new comment.
+		$out->addJsConfigVars( 'wgInlineCommentsCanEdit', $canEditComments );
+		$out->addModules( 'ext.inlineComments.sidenotes' );
+		$out->addModuleStyles( 'ext.inlineComments.sidenotes.styles' );
+
 		if ( !$annotations || $annotations->isEmpty() ) {
-			return;
+    		return;
 		}
 
 		$html = $out->getHtml();
 		$out->clearHtml();
-		$result = $this->annotationMarker->markUp(
-			$html,
-			$annotations,
-			$out->getLanguage(),
-			$out->getUser(),
-			$out->getTitle()
-		);
-		$out->addHtml( $result );
 
-		$out->addJsConfigVars( 'wgInlineCommentsCanEdit', $canEditComments );
-		$out->addModules( 'ext.inlineComments.sidenotes' );
-		$out->addModuleStyles( 'ext.inlineComments.sidenotes.styles' );
+		$result = $this->annotationMarker->markUp(
+    		$html,
+    		$annotations,
+    		$out->getLanguage(),
+    		$out->getUser(),
+    		$out->getTitle()
+		);
 	}
 
 	/**
