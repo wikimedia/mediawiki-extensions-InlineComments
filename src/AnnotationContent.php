@@ -224,7 +224,7 @@ class AnnotationContent extends JsonContent {
 				'extra' => [
 					'commentor' => $commentor->getName(),
 					'action' => $action,
-					'initiator' => $initiator
+					'initiator' => $initiator->getId()
 				],
 				'title' => $title
 			] );
