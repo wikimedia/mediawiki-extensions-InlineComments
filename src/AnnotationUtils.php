@@ -15,7 +15,7 @@ class AnnotationUtils {
 	private ActorStore $actorStore;
 	private LBFactory $dbLoadBalancerFactory;
 
-	private array $users;
+	private array $userIds;
 
 	public function __construct(
 		UserFactory $userFactory,
@@ -25,7 +25,7 @@ class AnnotationUtils {
 		$this->userFactory = $userFactory;
 		$this->dbLoadBalancerFactory = $dbLoadBalancerFactory;
 		$this->actorStore = $actorStore;
-		$this->users = [];
+		$this->userIds = [];
 	}
 
 	public function renderComment(
@@ -34,7 +34,7 @@ class AnnotationUtils {
 		string $comment,
 		bool $editable = false
 	): array {
-		$this->users = [];
+		$this->userIds = [];
 		$commentHTML = preg_replace_callback(
 			'/@(\S+)/u',
 			[ $this, 'handleUserMention' ],
@@ -80,7 +80,7 @@ class AnnotationUtils {
 		);
 		$result = [
 			'commentHTML' => $commentHTML,
-			'users' => $this->users
+			'userIds' => $this->userIds
 		];
 		return $result;
 	}
@@ -101,7 +101,7 @@ class AnnotationUtils {
 				$displayName = str_replace( '_', ' ', $match );
 				$link = Linker::userLink( $mentionedUserId, $mentionedUser->getName(), $displayName );
 				$replacement = "@$link";
-				$this->users[] = $mentionedUser;
+				$this->userIds[] = $mentionedUser->getId();
 			}
 		}
 		return $replacement;

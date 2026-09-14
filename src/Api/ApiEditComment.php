@@ -62,13 +62,13 @@ class ApiEditComment extends ApiBase {
 			true
 		);
 		$commentHTML = $result[ 'commentHTML' ];
-		$users = $result[ 'users' ];
+		$userIds = $result[ 'userIds' ];
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
 			EchoEvent::create( [
 				'type' => 'inlinecomments-mention',
 				'extra' => [
-					'title' => $title,
-					'users' => $users,
+					'title' => $title->getId(),
+					'users' => $userIds,
 					'commentor' => $user->getName()
 				],
 				'title' => $title

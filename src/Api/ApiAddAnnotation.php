@@ -63,12 +63,12 @@ class ApiAddAnnotation extends ApiBase {
 			true
 		);
 		$commentHTML = $result[ 'commentHTML' ];
-		$users = $result[ 'users' ];
+		$userIds = $result[ 'userIds' ];
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
 			EchoEvent::create( [
 				'type' => 'inlinecomments-mention',
 				'extra' => [
-					'users' => $users,
+					'users' => $userIds,
 					'commentor' => $user->getName()
 				],
 				'title' => $title
