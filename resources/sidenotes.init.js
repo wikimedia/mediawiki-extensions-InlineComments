@@ -9,13 +9,13 @@ $( function () {
 	// Move #mw-annotations to be a sibling of the new div
 	$preContainer = $('#mw-inlinecomments-precontainer');
 	$annotations = $('#mw-inlinecomment-annotations');
+	$annotations.insertAfter($preContainer);
 	if ( $annotations.length && !window.matchMedia("not (min-width: 600px)").matches ) {
 		var annotationsWidth = $annotations.outerWidth();
 		$preContainer.css('width', 'calc(100% - ' + (annotationsWidth + 20) + 'px)');
 	} else {
 		$preContainer.css('width', '100%');
 	}
-	$annotations.insertAfter($preContainer);
 
 	var noteElms = document.querySelectorAll( '#mw-content-text #mw-inlinecomment-annotations .mw-inlinecomment-aside' );
 	var sidenoteManager = new mw.inlineComments.SidenoteManager(

@@ -178,6 +178,19 @@
 					that.select( this.id, offset );
 				}
 			);
+
+			// If there are no annotations yet (which probably
+			// means, if this specific code is getting called, that
+			// the user went to comment, cancelled, then went to
+			// comment again), re-reduce the width of the main text.
+			$annotations = $('#mw-inlinecomment-annotations');
+			if ( $annotations.width() == 0 ) {
+				$preContainer = $('#mw-inlinecomments-precontainer');
+				$asides = $('.mw-inlinecomment-aside');
+				var asidesWidth = $asides.outerWidth();
+				$preContainer.css('width', 'calc(100% - ' + (asidesWidth + 20) + 'px)');
+			}
+
 		},
 		remove: function ( id ) {
 			// For now, we assume no highlight in document yet.
