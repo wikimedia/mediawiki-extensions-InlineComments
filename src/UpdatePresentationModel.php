@@ -2,7 +2,9 @@
 
 namespace MediaWiki\Extension\InlineComments;
 
-class UpdatePresentationModel extends \EchoEventPresentationModel {
+use MediaWiki\Extension\Notifications\Formatters\EchoEventPresentationModel;
+
+class UpdatePresentationModel extends EchoEventPresentationModel {
 	/** @inheritDoc */
 	public function getIconType() {
 		return 'mention';

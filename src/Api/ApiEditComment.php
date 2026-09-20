@@ -2,13 +2,13 @@
 
 namespace MediaWiki\Extension\InlineComments\Api;
 
-use EchoEvent;
 use LogicException;
 use MediaWiki\Api\ApiBase;
 use MediaWiki\Api\ApiMain;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationUtils;
+use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Registration\ExtensionRegistry;
@@ -64,7 +64,7 @@ class ApiEditComment extends ApiBase {
 		$commentHTML = $result[ 'commentHTML' ];
 		$userIds = $result[ 'userIds' ];
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
-			EchoEvent::create( [
+			Event::create( [
 				'type' => 'inlinecomments-mention',
 				'extra' => [
 					'title' => $title->getId(),

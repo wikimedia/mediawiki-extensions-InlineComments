@@ -1,12 +1,12 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use EchoAttributeManager as AttributeManager;
-use EchoUserLocator as UserLocator;
 use LogicException;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Config\Config;
 use MediaWiki\Deferred\DeferredUpdates;
+use MediaWiki\Extension\Notifications\AttributeManager;
+use MediaWiki\Extension\Notifications\UserLocator;
 use MediaWiki\Language\Language;
 use MediaWiki\Output\Hook\BeforePageDisplayHook;
 use MediaWiki\Page\WikiPageFactory;

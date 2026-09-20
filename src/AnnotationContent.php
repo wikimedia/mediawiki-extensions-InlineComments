@@ -1,9 +1,9 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use EchoEvent;
 use LogicException;
 use MediaWiki\Content\JsonContent;
+use MediaWiki\Extension\Notifications\Model\Event;
 use MediaWiki\Json\FormatJson;
 use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Title\Title;
@@ -219,7 +219,7 @@ class AnnotationContent extends JsonContent {
 	 */
 	public function notifyInitiator( User $initiator, User $commentor, Title $title, string $action ) {
 		if ( ExtensionRegistry::getInstance()->isLoaded( 'Echo' ) ) {
-			EchoEvent::create( [
+			Event::create( [
 				'type' => 'inlinecomments-title-notify',
 				'extra' => [
 					'commentor' => $commentor->getName(),
