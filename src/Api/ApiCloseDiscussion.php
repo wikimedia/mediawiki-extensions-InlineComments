@@ -2,9 +2,9 @@
 
 namespace MediaWiki\Extension\InlineComments\Api;
 
-use ApiBase;
-use ApiMain;
 use LogicException;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationContentHandler;

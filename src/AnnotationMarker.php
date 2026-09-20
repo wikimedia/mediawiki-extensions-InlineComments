@@ -2,13 +2,13 @@
 namespace MediaWiki\Extension\InlineComments;
 
 // Namespace got renamed to be prefixed with Wikimedia!
-use Config;
-use Language;
+use MediaWiki\Config\Config;
+use MediaWiki\Language\Language;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Title\Title;
 use MediaWiki\User\ActorStore;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
-use User;
 use Wikimedia\Rdbms\LBFactory;
 use Wikimedia\RemexHtml\HTMLData;
 use Wikimedia\RemexHtml\Serializer\Serializer;

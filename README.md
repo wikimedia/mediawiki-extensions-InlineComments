@@ -8,7 +8,7 @@ For more information, see the online documentation at:
 https://www.mediawiki.org/wiki/Extension:InlineComments
 
 ## Version
-InlineComments is currently at version 1.1. It works with MediaWiki version 1.40 and
+InlineComments is currently at version 1.1. It works with MediaWiki version 1.43 and
 higher.
 
 ## Installing

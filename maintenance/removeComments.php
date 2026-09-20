@@ -8,12 +8,12 @@ if ( $IP === false ) {
 }
 require_once "$IP/maintenance/Maintenance.php";
 
-use IDBAccessObject;
-use Maintenance;
 use MediaWiki\CommentStore\CommentStoreComment;
+use MediaWiki\Maintenance\Maintenance;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Title\Title;
-use User;
+use MediaWiki\User\User;
+use Wikimedia\Rdbms\IDBAccessObject;
 
 class RemoveComments extends Maintenance {
 

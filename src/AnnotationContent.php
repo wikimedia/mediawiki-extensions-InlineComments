@@ -2,12 +2,12 @@
 namespace MediaWiki\Extension\InlineComments;
 
 use EchoEvent;
-use ExtensionRegistry;
-use FormatJson;
-use JsonContent;
 use LogicException;
+use MediaWiki\Content\JsonContent;
+use MediaWiki\Json\FormatJson;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Title\Title;
-use User;
+use MediaWiki\User\User;
 use Wikimedia\Timestamp\ConvertibleTimestamp;
 
 class AnnotationContent extends JsonContent {

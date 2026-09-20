@@ -1,8 +1,8 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use IContextSource;
-use JsonContentHandler;
+use MediaWiki\Content\JsonContentHandler;
+use MediaWiki\Context\IContextSource;
 
 class AnnotationContentHandler extends JsonContentHandler {
 	public function __construct() {

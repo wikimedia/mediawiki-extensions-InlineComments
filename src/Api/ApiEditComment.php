@@ -2,16 +2,16 @@
 
 namespace MediaWiki\Extension\InlineComments\Api;
 
-use ApiBase;
-use ApiMain;
 use EchoEvent;
-use ExtensionRegistry;
-use Language;
 use LogicException;
+use MediaWiki\Api\ApiBase;
+use MediaWiki\Api\ApiMain;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Extension\InlineComments\AnnotationContent;
 use MediaWiki\Extension\InlineComments\AnnotationUtils;
+use MediaWiki\Language\Language;
 use MediaWiki\Page\WikiPageFactory;
+use MediaWiki\Registration\ExtensionRegistry;
 use MediaWiki\Title\Title;
 use Wikimedia\ParamValidator\ParamValidator;
 

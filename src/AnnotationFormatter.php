@@ -1,13 +1,13 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use Language;
 use LogicException;
+use MediaWiki\Context\RequestContext;
 use MediaWiki\Html\Html;
+use MediaWiki\Language\Language;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Title\Title;
-use RequestContext;
-use User;
+use MediaWiki\User\User;
 use Wikimedia\RemexHtml\Serializer\HtmlFormatter;
 use Wikimedia\RemexHtml\Serializer\SerializerNode;
 

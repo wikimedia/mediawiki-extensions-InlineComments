@@ -4,8 +4,8 @@ namespace MediaWiki\Extension\InlineComments;
 use MediaWiki\Html\Html;
 use MediaWiki\Linker\Linker;
 use MediaWiki\User\ActorStore;
+use MediaWiki\User\User;
 use MediaWiki\User\UserFactory;
-use User;
 use Wikimedia\Rdbms\LBFactory;
 
 class AnnotationUtils {

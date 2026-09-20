@@ -1,15 +1,16 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use Content;
+use MediaWiki\Content\Content;
 use MediaWiki\Html\Html;
 use MediaWiki\MediawikiServices;
+use MediaWiki\Output\OutputPage;
 use SlotDiffRenderer;
 
 class CommentSlotDiffRenderer extends SlotDiffRenderer {
 
 	/** @inheritDoc */
-	public function addModules( \OutputPage $output ) {
+	public function addModules( OutputPage $output ) {
 		$output->addModules( 'ext.inlineComments.diff.styles' );
 	}
 

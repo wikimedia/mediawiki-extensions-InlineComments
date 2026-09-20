@@ -1,20 +1,20 @@
 <?php
 namespace MediaWiki\Extension\InlineComments;
 
-use Config;
-use DeferredUpdates;
 use EchoAttributeManager as AttributeManager;
 use EchoUserLocator as UserLocator;
-use Language;
 use LogicException;
 use MediaWiki\CommentStore\CommentStoreComment;
-use MediaWiki\Hook\BeforePageDisplayHook;
+use MediaWiki\Config\Config;
+use MediaWiki\Deferred\DeferredUpdates;
+use MediaWiki\Language\Language;
+use MediaWiki\Output\Hook\BeforePageDisplayHook;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Storage\Hook\MultiContentSaveHook;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
-use User;
+use MediaWiki\User\User;
 use Wikimedia\Rdbms\ILoadBalancer;
 
 class Hooks implements
