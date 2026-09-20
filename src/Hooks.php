@@ -9,13 +9,13 @@ use Language;
 use LogicException;
 use MediaWiki\CommentStore\CommentStoreComment;
 use MediaWiki\Hook\BeforePageDisplayHook;
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Page\WikiPageFactory;
 use MediaWiki\Permissions\PermissionManager;
 use MediaWiki\Storage\Hook\MultiContentSaveHook;
 use MediaWiki\Title\Title;
 use MediaWiki\User\Hook\UserGetReservedNamesHook;
 use User;
+use Wikimedia\Rdbms\ILoadBalancer;
 
 class Hooks implements
 	BeforePageDisplayHook,
@@ -27,6 +27,7 @@ class Hooks implements
 	private PermissionManager $permissionManager;
 	private Language $contentLanguage;
 	private Config $config;
+	private ILoadBalancer $loadBalancer;
 	private WikiPageFactory $wikiPageFactory;
 	/** @var bool Variable to guard against indef loop when removing comments */
 	private static $loopCheck = false;
@@ -37,6 +38,7 @@ class Hooks implements
 		PermissionManager $permissionManager,
 		Language $contentLanguage,
 		Config $config,
+		ILoadBalancer $loadBalancer,
 		WikiPageFactory $wikiPageFactory
 	) {
 		$this->annotationFetcher = $annotationFetcher;
@@ -44,6 +46,7 @@ class Hooks implements
 		$this->permissionManager = $permissionManager;
 		$this->contentLanguage = $contentLanguage;
 		$this->config = $config;
+		$this->loadBalancer = $loadBalancer;
 		$this->wikiPageFactory = $wikiPageFactory;
 	}
 
@@ -183,7 +186,7 @@ class Hooks implements
 				}
 			},
 			DeferredUpdates::POSTSEND,
-			MediaWikiServices::getInstance()->getDBLoadBalancer()->getConnection( DB_PRIMARY )
+			$this->loadBalancer->getConnection( DB_PRIMARY )
 		);
 	}
 
