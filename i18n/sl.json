@@ -1,12 +1,21 @@
 {
 	"@metadata": {
 		"authors": [
-			"Eleassar"
+			"Eleassar",
+			"Upwinxp"
 		]
 	},
+	"inlinecomments-desc": "Dovoli dodajanje komentarjev na stran",
+	"inlinecomments-addcomment-save": "Shrani",
+	"inlinecomments-addcomment-cancel": "Prekliči",
+	"apihelp-inlinecomments-add-summary": "Dodaj nov medbesedilni komentar.",
+	"apihelp-inlinecomments-add-param-title": "Naslov strani, na katero želite dodati komentar. Uporabite to ali <var>pageid</var>, vendar ne obojega.",
+	"apihelp-inlinecomments-add-param-pageid": "ID strani, na katero želite dodati komentar. Uporabite to ali <var>title</var>, vendar ne obojega.",
+	"apihelp-inlinecomments-add-param-pre": "Besedilo pred izbranim besedilom.",
 	"action-inlinecomments-edit-all": "urejanje vseh medbesedilnih komentarjev",
 	"right-inlinecomments-edit-all": "Urejanje vseh medbesedilnih komentarjev",
 	"inlinecomments-editsummary-editcomment": "Urejeni komentar",
+	"inlinecomments-addcomment-reply": "Odgovori",
 	"inlinecomments-editcomment-publish": "Objavi urejanje",
 	"inlinecomments-editcomment-unauthorized-error": "Za urejanje tega komentarja niste pooblaščeni.",
 	"inlinecomments-edited-label": "urejano",
