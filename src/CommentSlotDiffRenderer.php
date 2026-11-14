@@ -3,7 +3,7 @@ namespace MediaWiki\Extension\InlineComments;
 
 use MediaWiki\Content\Content;
 use MediaWiki\Html\Html;
-use MediaWiki\MediawikiServices;
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Output\OutputPage;
 use SlotDiffRenderer;
 
